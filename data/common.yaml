@@ -1,0 +1,11 @@
+---
+users:
+  hcs:
+    ensure: present
+    name: Harvard Computer Society
+    email:
+      - systems@hcs.harvard.edu
+    uid: 500
+    authorized_keys: 
+      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDecDosh9f7BSCqEBfo43YQAMmReeJ7b7SJ9pADcqXtmzRN4fCwIcG8iYm2crpwOwPcnA5RrETTMgo4j/3Bnn0nb1v3/W68a+LPYS81bxLiVLc9vIWKpLXavHQAZJC7FWWT4iX+4EtoCHG7dYkAHMe3884HaQA//2+QJDY4u33CgwGwhGnInXeuvg/q8wQbys5yVs3p9uz7bMf23uSJzLs14C1a/TKIn1u/10Gx3dZVzlwNrgxnAej/H/ulFi4WNBXtaee/oraG/S28zCn97RsUC02wzlqqksJ2wi1olmwSiv/1lTiYhA5qL1DKetPPbOa+802spxbu5eKH/eSthxPr HCS
+

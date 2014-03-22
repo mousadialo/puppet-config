@@ -3,6 +3,7 @@
   - yaml
 
 :hierarchy:
+  - "machines/%{::machine_type}"
   - "%{::operatingsystem}"
   - common
 
