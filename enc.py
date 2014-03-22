@@ -22,6 +22,6 @@ except AttributeError:
 try:
     hosts = open("data/hosts.yaml")
     data = yaml.load(hosts)
-    print "---\n" + yaml.dump(data[template_type], default_flow_style=False).rstrip()
+    print yaml.dump(data[template_type], explicit_start=True, default_flow_style=False).rstrip()
 except:
     print "Something went wrong! Are you sure the yaml config exists?"
