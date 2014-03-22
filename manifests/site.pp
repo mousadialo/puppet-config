@@ -1,5 +1,1 @@
-import "classes/*"
-
-node default {
-	include default_node
-}
+hiera_include('classes')

@@ -2,6 +2,10 @@
 :backends:
   - yaml
 
+:hierarchy:
+  - "%{::operatingsystem}"
+  - common
+
 :yaml:
   :datadir: /etc/puppet/data
 

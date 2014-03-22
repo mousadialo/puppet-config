@@ -1,0 +1,21 @@
+---
+login:
+  parameters:
+    machine_type: login
+  environment: production
+web:
+  parameters:
+    machine_type: web
+  environment: production
+generic:
+  parameters:
+    machine_type: generic
+  environment: production
+mail:
+  parameters:
+    machine_type: mail
+  environment: production
+mailman:
+  parameters:
+    machine_type: mailman
+  environment: production

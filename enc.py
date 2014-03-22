@@ -2,6 +2,7 @@ import yaml
 import sys
 import re
 
+# basic error checking
 if len(sys.argv) < 2:
     print "No host provided!"
     sys.exit(0)
@@ -15,11 +16,12 @@ if node is None:
 try:
     template_type = re.search('^[a-z][a-z]*', node).group(0)
 except AttributeError:
-    print "Didn't find a server type from hostname!"
+    print "Couldn't extract a server type from hostname!"
     sys.exit(1)
 
 try:
-    template = open("data/"+template_type+".yaml", 'r')
-    print yaml.load(template)
+    hosts = open("data/hosts.yaml")
+    data = yaml.load(hosts)
+    print "---\n" + yaml.dump(data[template_type], default_flow_style=False).rstrip()
 except:
     print "Something went wrong! Are you sure the yaml config exists?"
