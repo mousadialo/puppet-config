@@ -1,6 +1,5 @@
 #!/usr/bin/env ruby
-# This file was borrowed from Carl (github: @zenzen) 
-# Use it to compare against enc.py. output order doesn't seem to matter
+# This script was borrowed from carl@hcs (github: @zenzen) 
 
 require 'yaml'
 
@@ -11,5 +10,9 @@ node = ARGV[0]
 raise "No host provided" if node.nil?
 
 hosts = YAML.load_file(File.join(File.dirname(__FILE__), 'data', 'hosts.yaml'))
+
+# For our purposes, use regex to pull out the server type from the hostname
+node = node[/^[a-z][a-z]*/,0]
+raise "Unable to determine server type" if node.nil?
 
 print YAML.dump(hosts.fetch(node))

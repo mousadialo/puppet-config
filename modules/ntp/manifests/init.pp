@@ -5,7 +5,7 @@ class ntp {
   }
 
   service { 'ntpd':
-    ensure => ensure,
+    ensure => running,
     enable => true,
     require => Package['ntp'],
     name => 'ntp'
