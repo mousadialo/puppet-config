@@ -1,0 +1,71 @@
+<VirtualHost *:80>
+  ServerName mail.hcs.harvard.edu
+  ServerAdmin webmaster@hcs
+  DocumentRoot /var/www/mail.hcs.harvard.edu/roundcube-webmail
+
+  ServerSignature On
+
+  RewriteEngine On
+
+  # Redirect all non-SSL access attempts to SSL
+  RewriteRule ^(.*)$ https://mail.hcs.harvard.edu$1 [R=301,L]
+
+  # Turn on mod_php
+  <IfModule !mod_php5.c>
+    LoadModule php5_module /usr/lib/apache2/modules/libphp5.so
+  </IfModule>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Directory "/var/www/mail.hcs.harvard.edu/roundcube-webmail">
+    # Use mod_php instead of suPHP
+    suPHP_Engine Off
+    AddHandler application/x-httpd-php .php
+
+    Options FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    allow from all
+  </Directory>
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName mail.hcs.harvard.edu
+  ServerAdmin webmaster@hcs
+  DocumentRoot /var/www/mail.hcs.harvard.edu/roundcube-webmail
+
+  SSLEngine on
+  SSLCertificateFile /etc/ssl/certs/star.hcs.harvard.edu.crt
+  SSLCertificateKeyFile /etc/ssl/private/star.hcs.harvard.edu.key
+  SSLCertificateChainFile /etc/ssl/certs/gd_bundle.crt
+  SSLProtocol -ALL +SSLv3 +TLSv1
+  SSLCipherSuite HIGH:MEDIUM
+
+  ServerSignature On
+
+  RewriteEngine On
+
+  # Turn on mod_php
+  <IfModule !mod_php5.c>
+    LoadModule php5_module /usr/lib/apache2/modules/libphp5.so
+  </IfModule>
+
+  <Directory />
+    Options FollowSymLinks
+    AllowOverride None
+  </Directory>
+
+  <Directory "/var/www/mail.hcs.harvard.edu/roundcube-webmail">
+    # Use mod_php instead of suPHP
+    suPHP_Engine Off
+    AddHandler application/x-httpd-php .php
+
+    Options FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    allow from all
+  </Directory>
+</VirtualHost>
