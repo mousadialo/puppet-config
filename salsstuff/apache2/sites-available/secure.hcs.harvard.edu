@@ -33,7 +33,7 @@
 
 # A bit silly now, but with multiple machines this is important
   <Proxy balancer://tomcat>
-# TODO: this is a template so we can make this a for loop
+# TODO: this is a template so we can make this a for loop (pre-pheonix)
     BalancerMember ajp://aquila.private.hcs.harvard.edu:8009
     ProxySet lbmethod=byrequests
   </Proxy>
