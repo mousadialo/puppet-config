@@ -10,18 +10,18 @@ class apache2 {
     require => Package['apache2']
   }
 
-  file { '/etc/apache2/httpd.conf':
-    ensure => file,
-    source => 'puppet:///modules/apache2/httpd.conf',
-    notify => Service['apache2'],
-    require => Package['apache2']
-  }
-
-  file { '/etc/apache2/hcs-conf.d':
-    ensure => directory,
-    source => 'puppet:///modules/apache2/hcs-conf.d',
+  # drop all the apache2 files
+  file { '/etc/apache2':
+    ensure  => directory,
     recurse => true,
-    notify => Service['apache2'],
-    require => Package['apache2']
+    source  => 'puppet:///modules/apache2'
   }
+  /*###########################################
+    List of apache2 files required:
+    '/etc/apache2/hcs-conf.d/tilde-rewrites.conf'
+    '/etc/apache2/hcs-conf.d/redirects.conf'
+    '/etc/apache2/hcs-conf.d/userdir.conf'
+    '/etc/apache2/hcs-conf.d/directories.conf'
+
+  *###########################################*/
 }
