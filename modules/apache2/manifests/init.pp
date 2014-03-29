@@ -135,6 +135,7 @@ class apache2 {
       group   => root
       notify  => Service['apache2'],
     }
+
     file {'/etc/php5/apache2/php.ini':
       ensure  => file,
       source  => "puppet:///modules/apache2/php/apache2/php.ini",
