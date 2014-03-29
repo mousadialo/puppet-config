@@ -1,8 +1,0 @@
-NameVirtualHost *
-<VirtualHost *>
-	ServerAdmin webmaster@hcs
-	
-	ServerSignature On
-
-    Redirect / http://www.hcs.harvard.edu/
-</VirtualHost>
