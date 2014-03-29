@@ -15,7 +15,7 @@ mail:
   parameters:
     machine_type: mail
   environment: production
-mailman:
+lists:
   parameters:
-    machine_type: mailman
+    machine_type: lists
   environment: production
