@@ -41,5 +41,7 @@ define apache2::mod($with_conf = false) {
       require => [Package['apache2'], File["${title}-mod-availible-conf"]],
     }
   }
+
+  Class['apache2'] -> Apache2::Mod["$title"]
 }
 

@@ -11,4 +11,6 @@ define apache2::config_file () {
     notify  => Service['apache2'],
     require => Package['apache2'],
   }
+
+  Class['apache2'] -> Apache2::Mod["$title"]
 }

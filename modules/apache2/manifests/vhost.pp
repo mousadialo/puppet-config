@@ -20,4 +20,6 @@ define apache2::vhost() {
     group   => 'root',
     require => [Package['apache2'], File["${title}-site-availible"]],
   }
+
+  Class['apache2'] -> Apache2::Vhost["$title"]
 }
