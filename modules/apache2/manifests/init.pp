@@ -30,7 +30,7 @@ class apache2 {
           ensure => directory,
           owner  => root,
           group  => root,
-        require => Package['apache2'],
+        require => Package['apache2']
     }
 
 
