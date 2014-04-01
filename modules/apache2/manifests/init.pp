@@ -29,12 +29,12 @@ class apache2 {
   # TODO: change this back to web!!!!
   if $::machine_type == 'generic' {
 
-    /*
-    file{ '/etc/apache2/sites-availible':
-          ensure => directory,
-          require => Package['apache2'],
-    }
-    */
+    #
+    #file{ '/etc/apache2/sites-availible':
+    #      ensure => directory,
+    #      require => Package['apache2'],
+    #}
+    #
 
 
     # Configurations shipped with Apache. We minimally edit these files.
@@ -134,13 +134,13 @@ class apache2 {
     # Remove default php confs
     # NOTE: this is probably bad.
     # we already tried to update the php5 load and conf files above...
-/*    file { "/etc/apache2/mods-enabled/php5.load":
-      ensure => absent
-    }
-    file { "/etc/apache2/mods-enabled/php5.conf":
-      ensure => absent
-    }
-*/
+    #    file { "/etc/apache2/mods-enabled/php5.load":
+    #  ensure => absent
+    #}
+    #file { "/etc/apache2/mods-enabled/php5.conf":
+    #  ensure => absent
+    #}
+    #
 
     # Restart apache2 every time we make changes to this .ini file
     file {'/etc/php5/cgi/php.ini':

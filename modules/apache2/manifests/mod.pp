@@ -42,6 +42,6 @@ define apache2::mod($with_conf = false) {
     }
   }
 
-  Class['apache2'] -> Apache2::Mod["$title"]
+  Class['apache2'] -> Apache2::Mod[$title]
 }
 
