@@ -1,4 +1,4 @@
-/* With conf specifies whether conf file should be copied as well. */
+# With conf specifies whether conf file should be copied as well.
 define apache2::mod($with_conf = false) {
   include apache2
 
@@ -13,8 +13,8 @@ define apache2::mod($with_conf = false) {
   }
 
   file {"${title}-mod-enabled":
-    path    => "/etc/apache2/mods-enabled/${title}.load",
     ensure  => link,
+    path    => "/etc/apache2/mods-enabled/${title}.load",
     target  => "/etc/apache2/mods-availible/${title}.load",
     owner   => 'root',
     group   => 'root',
@@ -33,8 +33,8 @@ define apache2::mod($with_conf = false) {
     }
 
     file {"${title}-mod-enabled-conf":
-      path    => "/etc/apache2/mods-enabled/${title}.conf",
       ensure  => link,
+      path    => "/etc/apache2/mods-enabled/${title}.conf",
       target  => "/etc/apache2/mods-availible/${title}.conf",
       owner   => 'root',
       group   => 'root',

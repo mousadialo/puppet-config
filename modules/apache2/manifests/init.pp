@@ -1,30 +1,33 @@
+# apache2 configuration
+# will install and configure apache2
+# web servers will get more specific configuration
 class apache2 {
 
-  /* These should be applied to all machines */
+  # These should be applied to all machines
   package { 'apache2':
     ensure => installed
   }
 
   service { 'apache2':
-    ensure => true,
-    enable => true,
+    ensure  => true,
+    enable  => true,
     require => Package['apache2']
   }
 
-  /* Files */
+  # FILES
 
-  /* Environment variables used by other config files */
+  # Environment variables used by other config files
   apache2::config_file { 'envvars': }
 
-  /* This is the main apache configuratio file. It sets high level directives
-   * and includes sites-enabled and conf.d */
+  # This is the main apache configuratio file. It sets high level directives
+  # and includes sites-enabled and conf.d
   apache2::config_file { 'apache2.conf': }
 
-  /* Which ports should listen on */
+  # Which ports should listen on
   apache2::config_file { 'ports.conf': }
 
   # TODO: change this back to web!!!!
-  if $machine_type == 'generic' {
+  if $::machine_type == 'generic' {
 
     /*
     file{ '/etc/apache2/sites-availible':
@@ -34,13 +37,13 @@ class apache2 {
     */
 
 
-    /* Configurations shipped with Apache. We minimally edit these files. */
+    # Configurations shipped with Apache. We minimally edit these files.
     apache2::config_file { 'conf.d/charset': }
     apache2::config_file { 'conf.d/localized-error-pages': }
     apache2::config_file { 'conf.d/other-vhosts-access-log': }
     apache2::config_file { 'conf.d/security': }
 
-    /* HCS enabled virtual hosts. */
+    # HCS enabled virtual hosts.
     apache2::vhost{ '000-default': }
     apache2::vhost{ 'hcs.harvard.edu': }
     apache2::vhost{ 'hcs.harvard.edu-ssl': }
@@ -48,36 +51,36 @@ class apache2 {
     apache2::vhost{ 'secure.hcs.harvard.edu': }
     apache2::vhost{ 'users-vhosts': }
 
-    /* These do spiffy HCS specific things like redirects for special people,
-     * hosting from user directories and removing the tilde. These are applied to
-     * secure and non-secure pages. */
+    # These do spiffy HCS specific things like redirects for special people,
+    # hosting from user directories and removing the tilde. These are applied to
+    # secure and non-secure pages.
     apache2::config_file { 'hcs-conf.d/directories.conf': }
     apache2::config_file { 'hcs-conf.d/redirects.conf': }
     apache2::config_file { 'hcs-conf.d/tilde-rewrites.conf': }
     apache2::config_file { 'hcs-conf.d/userdir.conf': }
 
-    /* HCS configurations for non-secure pages */
+    # HCS configurations for non-secure pages
     apache2::config_file { 'hcs-nonsecure-conf.d/redirects.conf': }
 
-    /* HCS configurations for secure pages */
+    # HCS configurations for secure pages
     apache2::config_file { 'hcs-ssl-conf.d/phpmyadim.conf': }
     apache2::config_file { 'hcs-ssl-conf.d/rt.conf': }
 
-    /* Packages */
+    # PACKAGES
 
-    /* Apache modules */
+    # Apache modules
     package { 'libapache2-mod-php5': }
     package { 'libapache2-mod-suphp': }
     package { 'libapache2-mod-fcgid': }
 
-    /* Perl modules */
+    # Perl modules
     package { 'libapache-session-perl': }
     package { 'libapache2-mod-perl2': }
 
-    /* Python packages */
+    # Python packages
     package { 'libapache2-mod-python': }
 
-    /* RT */
+    # RT
     package { 'request-tracker4':
       require => Package['apache2']
     }
@@ -91,7 +94,7 @@ class apache2 {
       require => Package['request-tracker4']
     }
 
-    /* Mods enabled */
+    # Mods enabled */
     apache2::mod { 'auctions': }
     apache2::mod { 'authnz-ldap': }
     # TODO: WHAT IS THIS?
@@ -128,8 +131,9 @@ class apache2 {
     apache2::mod { 'suexec': }
     apache2::mod { 'userdir': }
 
-    /* Remove default php confs */
-    # NOTE: this is probably bad. we already tried to update the php5 load and conf files above...
+    # Remove default php confs
+    # NOTE: this is probably bad.
+    # we already tried to update the php5 load and conf files above...
 /*    file { "/etc/apache2/mods-enabled/php5.load":
       ensure => absent
     }
@@ -138,10 +142,10 @@ class apache2 {
     }
 */
 
-    /* Restart apache2 every time we make changes to this .ini file */
+    # Restart apache2 every time we make changes to this .ini file
     file {'/etc/php5/cgi/php.ini':
       ensure  => file,
-      source  => "puppet:///modules/apache2/php/php.ini",
+      source  => 'puppet:///modules/apache2/php/php.ini',
       owner   => root,
       group   => root,
       notify  => Service['apache2'],
@@ -149,7 +153,7 @@ class apache2 {
 
     file {'/etc/php5/apache2/php.ini':
       ensure  => file,
-      source  => "puppet:///modules/apache2/php/apache2/php.ini",
+      source  => 'puppet:///modules/apache2/php/apache2/php.ini',
       owner   => root,
       group   => root,
       notify  => Service['apache2']

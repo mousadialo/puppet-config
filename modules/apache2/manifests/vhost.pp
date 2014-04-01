@@ -1,3 +1,4 @@
+# function to drop apache mod files
 define apache2::vhost() {
   include apache2
 
@@ -12,8 +13,8 @@ define apache2::vhost() {
   }
 
   file {"${title}-site-enabled":
-    path    => "/etc/apache2/sites-enabled/${title}",
     ensure  => link,
+    path    => "/etc/apache2/sites-enabled/${title}",
     target  => "/etc/apache2/sites-availible/${title}",
     owner   => 'root',
     group   => 'root',

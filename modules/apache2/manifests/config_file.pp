@@ -1,3 +1,4 @@
+# function to drop generic apache2 configuration files
 define apache2::config_file () {
   include apache2
 
