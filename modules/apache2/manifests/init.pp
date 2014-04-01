@@ -26,6 +26,14 @@ class apache2 {
   # TODO: change this back to web!!!!
   if $machine_type == 'generic' {
 
+    file{'/etc/apache2/sites-availible':
+          ensure => directory,
+          owner  => root,
+          group  => root,
+        require => Package['apache2'],
+    }
+
+
     /* Configurations shipped with Apache. We minimally edit these files. */
     apache2::config_file { 'conf.d/charset': }
     apache2::config_file { 'conf.d/localized-error-pages': }
