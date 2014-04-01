@@ -23,7 +23,7 @@ class apache2 {
   /* Which ports should listen on */
   apache2::config_file { 'ports.conf': }
 
-  # TODO: change this to web!!!!
+  # TODO: change this back to web!!!!
   if $machine_type == 'generic' {
 
     /* Configurations shipped with Apache. We minimally edit these files. */
@@ -121,13 +121,14 @@ class apache2 {
     apache2::mod { 'userdir': }
 
     /* Remove default php confs */
-    file { "/etc/apache2/mods-enabled/php5.load":
+    # NOTE: this is probably bad. we already tried to update the php5 load and conf files above...
+/*    file { "/etc/apache2/mods-enabled/php5.load":
       ensure => absent
     }
     file { "/etc/apache2/mods-enabled/php5.conf":
       ensure => absent
     }
-
+*/
     /* Restart apache2 every time we make changes to this .ini file */
     file {'/etc/php5/cgi/php.ini':
       ensure  => file,
