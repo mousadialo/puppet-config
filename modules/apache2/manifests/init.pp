@@ -28,9 +28,9 @@ class apache2 {
 
     file{'/etc/apache2/sites-availible':
           ensure => directory,
-          owner  => root,
-          group  => root,
-        require => Package['apache2']
+          owner  => root
+          group  => roo,
+        require => Package['apache2'],
     }
 
 
