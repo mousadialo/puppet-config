@@ -23,8 +23,8 @@ class apache2 {
   /* Which ports should listen on */
   apache2::config_file { 'ports.conf': }
 
-
-  if $machine_type == 'web' {
+  # TODO: change this to web!!!!
+  if $machine_type == 'generic' {
 
     /* Configurations shipped with Apache. We minimally edit these files. */
     apache2::config_file { 'conf.d/charset': }
@@ -86,7 +86,8 @@ class apache2 {
     /* Mods enabled */
     apache2::mod { 'auctions': }
     apache2::mod { 'authnz-ldap': }
-    apache2::mod { 'authnz-ldap': }
+    # TODO: WHAT IS THIS?
+    #apache2::mod { 'authnz-ldap': }
     apache2::mod { 'cgi': }
     apache2::mod { 'dav': }
     apache2::mod { 'dav-fs':
