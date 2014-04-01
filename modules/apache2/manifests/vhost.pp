@@ -21,5 +21,4 @@ define apache2::vhost() {
     require => [Package['apache2'], File["${title}-site-availible"]],
   }
 
-  Class['apache2'] -> Apache2::Vhost[$title]
 }

@@ -19,8 +19,7 @@ define apache2::mod($with_conf = false) {
     owner   => 'root',
     group   => 'root',
     notify  => Service['apache2'],
-    require => [Package['apache2'], File["${title}-mod-availible"]],
-  }
+    require => [Package['apache2'], File["${title}-mod-availible"]], }
 
   if $with_conf {
     file {"${title}-mod-availible-conf":
@@ -42,6 +41,5 @@ define apache2::mod($with_conf = false) {
     }
   }
 
-  Class['apache2'] -> Apache2::Mod[$title]
 }
 

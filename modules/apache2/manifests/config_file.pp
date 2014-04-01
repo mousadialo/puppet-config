@@ -12,5 +12,4 @@ define apache2::config_file () {
     require => Package['apache2'],
   }
 
-  Class['apache2'] -> Apache2::Config_file[$title]
 }
