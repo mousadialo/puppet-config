@@ -83,4 +83,3 @@ define apache2::mod($with_conf = false) {
     }
   }
 }
-
