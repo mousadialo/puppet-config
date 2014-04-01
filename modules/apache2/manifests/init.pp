@@ -107,7 +107,7 @@ class apache2 {
     apache2::mod { 'headers': }
     apache2::mod { 'include': }
     apache2::mod { 'ldap': }
-    apache2::mod { 'mim_magic':
+    apache2::mod { 'mime_magic':
       with_conf => true
     }
     apache2::mod { 'mod_python': }
