@@ -26,12 +26,12 @@ class apache2 {
   # TODO: change this back to web!!!!
   if $machine_type == 'generic' {
 
-    file{'/etc/apache2/sites-availible':
+    /*
+    file{ '/etc/apache2/sites-availible':
           ensure => directory,
-          owner  => root
-          group  => roo,
-        require => Package['apache2'],
+          require => Package['apache2'],
     }
+    */
 
 
     /* Configurations shipped with Apache. We minimally edit these files. */
