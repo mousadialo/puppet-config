@@ -17,7 +17,8 @@ class apache2 {
   # FILES
 
   # TODO: remove this if we are doing a fresh install
-  # file{ ['/etc/apache2', '/etc/apache2/mods-enabled', '/etc/apache2/sites-enabled' ] :
+  # file{ ['/etc/apache2', '/etc/apache2/mods-enabled',
+  #         '/etc/apache2/sites-enabled' ] :
   #  ensure  => directory,
   #  require => Package['apache2'],
   #  notify  => Service['apache2']
@@ -51,13 +52,13 @@ class apache2 {
     apache2::vhost{ 'user-vhosts': }
 
     # create the hcs conf directories
-    file{ [ '/etc/apache2/hcs-conf.d', 
-            '/etc/apache2/hcs-nonsecure-conf.d', 
+    file{ [ '/etc/apache2/hcs-conf.d',
+            '/etc/apache2/hcs-nonsecure-conf.d',
             '/etc/apache2/hcs-ssl-conf.d' ]:
-      ensure => directory,
+      ensure  => directory,
       require => Package['apache2'],
     }
-    
+
     # These do spiffy HCS specific things like redirects for special people,
     # hosting from user directories and removing the tilde. These are applied to
     # secure and non-secure pages.
@@ -139,10 +140,10 @@ class apache2 {
     apache2::mod { 'userdir': }
 
     # Remove default php confs
-    file { "/etc/apache2/mods-enabled/php5.load":
+    file { '/etc/apache2/mods-enabled/php5.load':
       ensure => absent
     }
-    file { "/etc/apache2/mods-enabled/php5.conf":
+    file { '/etc/apache2/mods-enabled/php5.conf':
       ensure => absent
     }
 
@@ -153,6 +154,7 @@ class apache2 {
       owner   => root,
       group   => root,
       notify  => Service['apache2'],
+      require => Package['libapache2-mod-php5']
     }
 
     file {'/etc/php5/apache2/php.ini':
@@ -160,7 +162,8 @@ class apache2 {
       source  => 'puppet:///modules/apache2/php/apache2/php.ini',
       owner   => root,
       group   => root,
-      notify  => Service['apache2']
+      notify  => Service['apache2'],
+      require => Package['libapache2-mod-php5']
     }
   }
 }
