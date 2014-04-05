@@ -18,7 +18,7 @@ TODOs
 - script to connect agent to master
 - fix apache2 bugs
 - config for mail and mailman
-
+- configuration for timezone (base class) set to US EAST
 
 APACHE
 ----
