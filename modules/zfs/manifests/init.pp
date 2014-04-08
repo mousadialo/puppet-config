@@ -10,8 +10,8 @@ class zfs {
   }
   ->
   zpool { 'tank':
-    ensure => present
-    raidz  => ['xvdf xvdg xvdh xvdi xvdj']
+   ensure => present
+   raidz  => ['xvdf xvdg xvdh xvdi xvdj']
   }
   ->
   zfs {'/mnt/tank/home':
