@@ -116,16 +116,7 @@ class apache2 {
     apache2::mod { 'headers': }
     apache2::mod { 'include': }
     apache2::mod { 'ldap': }
-    # TODO: remove this
-    #apache2::mod { 'mime_magic':
-    #  with_conf => true
-    #}
     apache2::mod { 'mod_python': }
-    # TODO: remove these
-    #apache2::mod { 'perl': }
-    #apache2::mod { 'php5':
-    #  with_conf => true
-    #}
     apache2::mod { 'proxy':
       with_conf => true
     }
