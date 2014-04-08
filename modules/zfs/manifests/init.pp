@@ -16,10 +16,6 @@ class zfs {
   ->
   zfs {'/mnt/tank/home':
     ensure   => present,
-    require  => Class['nfs']
-  }
-  zfs {'':
-    ensure   => present,
     #sharenfs => on,
     #require  => Class['nfs']
   }
