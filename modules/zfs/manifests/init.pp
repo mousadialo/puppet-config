@@ -2,6 +2,7 @@
 # This configuration currently sets up the file zpool, not the clients
 class zfs {
   include apt
+  include nfs
 
   apt::ppa { 'ppa:zfs-native/stable': }
   ->
@@ -16,8 +17,10 @@ class zfs {
   ->
   zfs {'tank/home':
     ensure     => present,
-    mountpoint => '/mnt/tank/home'
-    #sharenfs  => on,
+    canmount   => off,
+    mountpoint => '/mnt/tank/home',
+    sharenfs   => on,
+    require    => Package['nfs-kernel-server']
     #require   => Class['nfs']
   }
 }
