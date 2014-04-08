@@ -14,9 +14,10 @@ class zfs {
    raidz  => ['xvdf', 'xvdg', 'xvdh', 'xvdi', 'xvdj']
   }
   ->
-  zfs {'/mnt/tank/home':
-    ensure   => present,
-    #sharenfs => on,
-    #require  => Class['nfs']
+  zfs {'tank/home':
+    ensure     => present,
+    mountpoint => '/mnt/tank/home'
+    #sharenfs  => on,
+    #require   => Class['nfs']
   }
 }
