@@ -1,3 +1,5 @@
+# ZFS configuration for HCS file machine
+# This configuration currently sets up the file zpool, not the clients
 class zfs {
   include apt
 

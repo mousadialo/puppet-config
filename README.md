@@ -3,6 +3,11 @@ puppet-config
 
 HCS Puppet Configuration Files
 
+INSTALLATION
+`git submodule init`
+`git submodule update`
+
+
 When writing puppet configuration, you should be sure to lint your manifests to conform to the style guide. This will help catch minor bugs as well.
 
 Install the puppet-lint gem. You'll need rubygem (and Ruby).
@@ -13,6 +18,9 @@ To run the puppet linter:
 `puppet-lint --with-filename <directory>`
 
 To fix warnings and errors, look them up on puppet-lint.com.
+
+
+
 
 TODOs
 - script to connect agent to master
