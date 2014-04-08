@@ -3,4 +3,4 @@
 	url = git@github.com:puppetlabs/puppetlabs-apt.git
 [submodule "modules/nfs"]
 	path = modules/nfs
-	url = git@github.com:haraldsk/puppet-module-nfs.git
+	url = git@github.com:hcs/puppet-module-nfs.git
