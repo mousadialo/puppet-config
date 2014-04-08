@@ -1,15 +1,14 @@
-puppet-config
-=============
+HCS Puppet Configuration
+=========================
 
-HCS Puppet Configuration Files
-
-INSTALLATION
+### INSTALLATION
 `git submodule init`
 `git submodule update`
 
-
+### WRITING PUPPET
 When writing puppet configuration, you should be sure to lint your manifests to conform to the style guide. This will help catch minor bugs as well.
 
+#### Linter
 Install the puppet-lint gem. You'll need rubygem (and Ruby).
 `apt-get install rubygems`
 `gem install puppet-lint`
