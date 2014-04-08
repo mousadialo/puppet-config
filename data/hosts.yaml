@@ -19,3 +19,7 @@ lists:
   parameters:
     machine_type: lists
   environment: production
+file:
+  parameters:
+    machine_type: file
+  environment: production
