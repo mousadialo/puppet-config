@@ -20,9 +20,12 @@ class nfs {
   else {
     class { 'nfs::server':
       nfs_v4 => true,
+      nfs_v4_mount_root => '/nfs',
       nfs_v4_export_root_clients =>
         '10.0.0.0/16(rw,fsid=root,no_subtree_check,async,no_root_squash)'
     }
-      Nfs::Client::Mount <<| |>>
+      Nfs::Client::Mount <<| |>> {
+        atboot => true
+     }
   }
 }
