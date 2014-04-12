@@ -17,7 +17,7 @@ class zfs {
   ->
   zfs {'tank/home':
     ensure     => present,
-    canmount   => off,
+    canmount   => on,
     mountpoint => '/mnt/tank/home',
     sharenfs   => on,
     require    => Package['nfs-kernel-server']
