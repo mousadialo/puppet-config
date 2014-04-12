@@ -23,3 +23,7 @@ file:
   parameters:
     machine_type: file
   environment: production
+bifrost:
+  parameters:
+    machine_type: gateway
+  environment: production
