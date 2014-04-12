@@ -1,0 +1,240 @@
+# # # HCS Internal
+
+# Board aliases.  These and the project directors (below) are the only hardcoded aliases which need to be periodically updated.
+prez: saagar,wxiao
+bizman: wanga
+communications: akandola,rzou,anson
+newmembers: hgulati
+project:
+
+# Project directors. (changed all to board April 2013)
+acctserv-director: board
+dinners-director: board 
+seminars-director: board
+systems-director: board 
+
+# General redirections for pseudo accounts
+abuse: systems
+acct-outgoing: as-outgoing
+acctmonarch: acctserv-director
+admin: hcsa,abrody,joe,vsant,jhoon,danz,jscushman,carl,ebensing,chandras,saagar,salvatore
+advertising: business,prez,hcsa
+alumni: board
+as-outgoing: hcsa,danz,joe,keito,abrody,jhoon,jscushman,chandras,leigh,michaelchen,powerpak,ebensing,vsant,salvatore,sdeshpan,kennyyu,jpalay,rttest,gparrish,rzou,wxiao,wanga,abowman,heli,hirshjain,pkraft,lingyachao,hgulati,fwidjaja,nishkakar,anyway,shai,jsani,mavo,jonahk,akandola,erin,klim,louis,pantela,grayputnam,ankitgupta
+bin: systems
+bind: systems
+board: hcsa,prez,secretary,bizman,communications,project,newmembers
+# appointed by zeilberg to handle incoming mail from hascs (mar '03).  modified by gdb (25 Aug 09) to see if anything actually comes here
+bullshit-coordinator: systems
+business: bizman
+clamav: systems
+daemon: systems
+datamatch: datamtch
+dinners: systems
+dos: systems-director
+elections: systems
+events: systems
+feedback: board
+ftp: ftpmaster
+ftp-bugs: ftp
+ftpmaster: systems
+games: systems
+# We have a Google account for calendars and such (keito)
+google: board
+gopher: online-svcs,prez
+# Omg, are you even serious, get this nonsense out of here
+help: acctserv
+hcs: info
+# Dynamically expands into the hvirt group.
+hvirt: hcsa, gdb,keito,jscushman,carl,abrody,rait,jkroll,quentin,jhoon,broder
+info: board
+kmem: systems
+lp: systems
+mail2nose-admin: news
+mailnull: systems
+man: systems
+# We have an MSDN AA subscription as of April 29, 2008 (jkroll)
+msdn: info
+news: systems
+online-svcs: systems,prez
+operator: systems
+# O'Reilly sends us free books
+oreilly: info
+# 04/08/09 - Paypal acct (vsant)
+paypal: bizman,board
+pop: systems
+perl: dmitby,seminar
+president: prez
+projects: project
+ris: systems
+root: systems
+sccs: systems
+secretary: communications
+security: systems
+seminar: events
+seminars: events
+surveys: systems
+smmsp: systems
+sshd: systems
+sys: systems
+system: systems
+# Systems dynamically expands to be everyone in the systems group.
+systems: hcsa, joe,vsant,zhang9,tdimiduk,danz,jkroll,gdasher,ml2,keito,abrody,kevin,carl,jhoon,nishihara,jscushman,leigh,michaelchen,chandras,efarber,ebensing,salvatore,sdeshpan,board,grayputnam
+toor: systems
+tty: systems
+usenet: prez
+uucp: systems
+uucpa: systems
+valentine: datamatch
+webmaster: systems
+webmistress: systems
+# Old name of admin group.
+wheel: admin
+www: systems
+www-help: systems
+xten: systems
+
+# # # HCS group aliases
+
+# # Aliased to another HCS address
+abrw: abhw
+absk-info: absk
+avs: abhw
+cherniav:ead
+cloud9: zero
+ehl: eliot
+germania: hgsc
+hhkc: hhks
+hic: hcic
+hpe: thud
+hrci: hci
+hrra:hrrc
+hrrc: gop
+hruc: huc
+hsa: kjhashim
+hsacater: hsa
+# Accidentally misspelled their own account name...
+icthus:	ichthus
+ldssa: lssa
+lohoco: loho
+lowell-jcr: loho
+opportun: opportunes
+redbean: lao
+sama: siama
+shoryuhai: kendo
+# 12/18/07--Easy misspelling for a list. [jkroll]
+storiographia: storiografia
+wh20polo: womspolo
+wmun: worldmun
+veritones: veritone
+
+# # Forwarding outside of HCS
+aaass: aaass@fas
+amandel: aaron@eecs.harvard.edu
+banshee: rachel@post.harvard.edu
+bash: kwak@fas
+bryantn: bryantn@fas.harvard.edu
+cat3: czuch@hotmail.com
+cmwendl: cmwendl@post.harvard.edu
+crimson: online@thecrimson
+dlopez: hcs@dlopez.com
+dchui: dchui@mindspring.com
+ecolson: ecolson@husc.harvard.edu
+eekim: eekim@eekim.com
+epark: epark@fas.harvard.edu
+eshmu: elliot@interport.net
+hcgs: leingang@math
+jsutaria: jsutaria@post.harvard.edu
+kemiller: kemiller@post.harvard.edu
+kjhashim: kjhashim@post.harvard.edu
+lbg: lbg-harvard@mit.edu
+lee2: lee2@fas.harvard.edu
+# House society alias. (gdb, 26 Aug 09: sbose is still a FAS user but likely a different person)
+leverett-arts: sbose@fas,lfrazier@uhs
+ljames: ljames@fas.harvard.edu
+jtlin: jtlin@post.harvard.edu
+kim9: michael_kim@post.harvard.edu
+minerva: h-minerva@mit.edu
+nkang: nina_kang@post.harvard.edu
+rho: rho@husc.harvard.edu
+rjklein: robbieklein@yahoo.com
+roosevelt-steering: harvard-steercom-members@rooseveltinstitution.org
+rtsai: rtsai@us.oracle.com
+transinfo: ThomasKelson_Lewis@post.harvard.edu,barusch@fas.harvard.edu
+truesdel: czuch@hotmail.com
+smandel: smandel@fas.harvard.edu
+wollman: wollman@fas.harvard.edu
+womenlax: scarls@mba97.hbs.edu
+woo: woo@fas.harvard.edu
+yang10: f.yang@itserv.com
+
+# # # Aliases for HCS Members
+alpert: dbalpert
+amoon-pager: moon-pager
+amridley: ridley
+batpecker: slking
+bimmler: wkj
+bolen-pager: bolen-pager@eecs.harvard.edu
+brauwerm: roger
+buehl: jaime
+cpalmer: palmer
+cstable-folk: dmolnar,parno,zeilberg,stein@eecs.harvard.edu
+daftuar: sdaftuar
+dalpert: dbalpert
+dkrinsky: krinsky
+epstein: mike
+eva: eholtz
+fire: eden
+freshports: philz
+groz: zeilberg
+gusmo: pgusmor
+holland7: dholland
+homunculus: zeilberg
+janet: jerosenb
+kleinr: rjklein
+kmiller: kemiller
+krinski: krinsky
+krinksy: krinsky
+.krinsky: krinsky
+krinsky-hcs: \krinsky
+krisnky: krinsky
+mafia-announce: :include: /home/people/lotze/mafia-announce
+mafia-discuss: :include: /home/people/lotze/mafia-discuss
+malan-pager: malan
+maryanthe: malliar
+matrix: shrenik
+mepstein: mike
+mjepst: mike
+moon: amoon
+moon-pager: 6178995734@mobile.att.net
+morgenst: jsmjsm
+nfrm: cjlopez@fas.harvard.edu
+nina: nkang
+noam: zeilberg
+noamz: zeilberg
+quinsky: krinsky
+rc5: bolen
+rklein: rjklein
+stsfp: cimartin,dev,dmolnar,zeilberg,stsfp
+suhas: sdaftuar
+tybalt: calvarez,jstarkey@quinsky.eecs.harvard.edu,sjha@fas.harvard.edu,aaron@eecs.harvard.edu
+veejie-poo: beaureg
+vi: beaureg
+wkj-manager: wkj+manager@eecs.harvard.edu
+007: bolen
+
+# # # Programs
+# AcctServ
+# The acctserv account is spam filtered, so you need to modify
+# the procmail recipe if you need to update settings.
+acctserv: "|/usr/bin/procmail -m /etc/request-tracker3.6/procmail/general"
+acctserv-comment: "|/usr/bin/rt-mailgate --queue general --action comment --url https://www.hcs.harvard.edu/rt"
+acctserv-notickets: systems
+security-tix: "|/usr/bin/procmail -m /etc/request-tracker3.6/procmail/security"
+security-tix-comment: "|/usr/bin/rt-mailgate --queue security --action comment --url https://www.hcs.harvard.edu/rt"
+
+# # # System-required
+MAILER-DAEMON: postmaster
+nobody: /dev/null
+devnull: /dev/null
+postmaster: root
