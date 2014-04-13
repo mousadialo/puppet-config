@@ -57,7 +57,7 @@ define nfs::client::mount (
 
 
    if $bindmount != undef {
-     nfs::client::mount::nfs_v4::bindmount { "${_nfs4_mount}": 
+     nfs::client::mount::nfs_v4::bindmount { "${_nfs4_mount}":
        ensure     => $ensure,
        mount_name => $bindmount,
      }
@@ -137,7 +137,7 @@ define nfs::client::mount::nfs_v4::root (
 
 
  if $bindmount != undef {
-   nfs::client::mount::nfs_v4::bindmount { "${_nfs4_mount}": 
+   nfs::client::mount::nfs_v4::bindmount { "${_nfs4_mount}":
      ensure     => $ensure,
      mount_name => $bindmount,
    }
@@ -149,7 +149,7 @@ define nfs::client::mount::nfs_v4::root (
 }
 
 
-define nfs::client::mount::nfs_v4::bindmount ( 
+define nfs::client::mount::nfs_v4::bindmount (
   $ensure = 'present',
   $mount_name
   ) {

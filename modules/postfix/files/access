@@ -1,0 +1,15 @@
+ FAS Mail Servers
+140.247.35 OK
+
+# HCS backup server (hcs-backup.seas.harvard.edu)
+# TODO: pull the IP(s) from bcfg once mail backup is bcfg'd
+140.247.173.24 OK
+
+# Whitelist production
+140.247.89 OK
+
+# Whitelist Hilles rack
+140.247.182 OK
+
+# Whitelist list server(s) for makelist VRFY checks
+10.245.65.21 OK
