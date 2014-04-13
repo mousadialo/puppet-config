@@ -12,7 +12,7 @@ define postfix::postmapfile ($name) {
   file { "/etc/postfix/${name}":
     ensure  => file,
     path    => "/etc/postfix/${name}",
-    source  => "puppet://modules/postfix/${title}",
+    source  => "puppet:///modules/postfix/${title}",
     owner   => 'root',
     group   => 'root',
     notify  => Exec["postmap${name}"],
