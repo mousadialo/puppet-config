@@ -22,7 +22,7 @@ class nfs {
       nfs_v4 => true,
       nfs_v4_mount_root => '/nfs'
     }
-    Nfs::Client::Mount {'nfs':
+    nfs::client::mount {'nfs':
         server => hiera('nfs-server'),
         share => 'tank',
         atboot => true
