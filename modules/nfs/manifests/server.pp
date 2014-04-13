@@ -42,7 +42,6 @@ class nfs::server (
   $nfs_v4_export_root           = $nfs::params::nfs_v4_export_root,
   $nfs_v4_export_root_clients   = $nfs::params::nfs_v4_export_root_clients,
   $nfs_v4_idmap_domain          = $nfs::params::domain,
-  # 
   $nfs_v4_root_export_ensure    = 'mounted',
   $nfs_v4_root_export_mount     = undef,
   $nfs_v4_root_export_remounts  = false,
@@ -62,7 +61,7 @@ class nfs::server (
 
 class nfs::server::configure {
 
-  concat {'/etc/exports': 
+  concat {'/etc/exports':
     require => Class["nfs::server::${nfs::server::osfamily}"]
   }
 
