@@ -18,14 +18,12 @@ class nfs {
 
   # Anything else that requires NFS will be using the filer as a client
   else {
-    class { 'nfs::server':
+    class { 'nfs::client':
       nfs_v4 => true,
-      nfs_v4_mount_root => '/nfs',
-      nfs_v4_export_root_clients =>
-        '10.0.0.0/16(rw,fsid=root,no_subtree_check,async,no_root_squash)'
+      nfs_v4_mount_root => '/nfs'
     }
-      Nfs::Client::Mount <<| |>> {
+    Nfs::Client::Mount <<| |>> {
         atboot => true
-     }
+    }
   }
 }
