@@ -46,7 +46,8 @@ define nfs::client::mount (
 
     mount {"shared $share by $::clientcert on ${_nfs4_mount}":
       ensure   => $ensure,
-      device   => "${server}:/${share}",
+      #device   => "${server}:/${share}",
+      device   => '10.0.12.250:/tank',
       fstype   => 'nfs4',
       name     => "${_nfs4_mount}",
       options  => $options,

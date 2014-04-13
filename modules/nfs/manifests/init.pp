@@ -9,7 +9,7 @@ class nfs {
         '10.0.0.0/16(rw,fsid=root,no_subtree_check,async,no_root_squash)'
     }
 
-    nfs::server::export{ "/mnt/${zfs::zpool_name}":
+    nfs::server::export{ "/mnt/tank":
       ensure  => 'mounted',
       clients => '10.0.0.0/16(rw,fsid=root,no_subtree_check,async,no_root_squash)',
       require  => Class['zfs']
