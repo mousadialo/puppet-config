@@ -1,6 +1,6 @@
 # ZFS configuration for HCS file machine
 # This configuration currently sets up the file zpool, not the clients
-class zfs {
+class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   include apt
   include nfs
 
@@ -10,17 +10,15 @@ class zfs {
     ensure => latest,
   }
   ->
-  zpool { 'tank':
+  zpool { $zpool_name:
    ensure => present,
    raidz  => ['xvdf', 'xvdg', 'xvdh', 'xvdi', 'xvdj']
   }
   ->
-  zfs {'tank/home':
+  zfs { "${zpool_name}/${dataset_name}":
     ensure     => present,
     canmount   => on,
-    mountpoint => '/mnt/tank/home',
-    sharenfs   => on,
+    mountpoint => "/mnt/${zpool_name}/${dataset_name}",
     require    => Package['nfs-kernel-server']
-    #require   => Class['nfs']
   }
 }

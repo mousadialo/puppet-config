@@ -3,7 +3,7 @@ define nfs::server::export (
   $v4_export_name = regsubst($name, '.*/(.*)', '\1' ),
   $clients = 'localhost(ro)',
   $bind = 'rbind',
-  # globals for this share 
+  # globals for this share
   # propogated to storeconfigs
   $ensure = 'mounted',
   $mount = undef,
@@ -81,7 +81,7 @@ define nfs::server::export::configure (
   }
 }
 
-define nfs::server::export::nfs_v4::bindmount ( 
+define nfs::server::export::nfs_v4::bindmount (
   $ensure = 'mounted',
   $bind = $bind,
   $v4_export_name
