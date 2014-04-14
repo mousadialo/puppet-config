@@ -1,6 +1,6 @@
 classes:
   - ntp
-  - base
+#  - base
 
 # TODO: audit these
 base_packages:
