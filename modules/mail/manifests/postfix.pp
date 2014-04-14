@@ -1,5 +1,5 @@
 # postfix configuration for HCS mail servers
-class postfix {
+class mail::postfix {
 
   package { 'postfix':
     ensure => installed

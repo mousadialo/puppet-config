@@ -1,6 +1,6 @@
 # function to postmap a file if changed
-define postfix::postmapfile ($name) {
-  include postfix
+define mail::postmapfile ($name) {
+  include mail::postfix
 
   exec { "postmap${name}":
     command     => "/usr/sbin/postmap /etc/postfix/${name}",
