@@ -20,7 +20,7 @@ class mail::postfix {
   # main.cf configuration
   file { '/etc/postfix/main.cf':
     ensure  => present,
-    source  => 'puppet:///modules/postfix/main.cf',
+    source  => 'puppet:///modules/mail/postfix/main.cf',
     notify  => Service['postfix'],
     require => Package['postfix']
   }
@@ -28,14 +28,14 @@ class mail::postfix {
   # master.cf configuration
   file { '/etc/postfix/master.cf':
     ensure  => present,
-    source  => 'puppet:///modules/postfix/master.cf',
+    source  => 'puppet:///modules/mail/postfix/master.cf',
     notify  => Service['postfix'],
     require => Package['postfix']
   }
 
   file { '/etc/postfix/nobl_cidr':
     ensure  => present,
-    source  => 'puppet:///modules/postfix/nobl_cidr',
+    source  => 'puppet:///modules/mail/postfix/nobl_cidr',
     notify  => Service['postfix'],
     require => Package['postfix']
   }
@@ -59,7 +59,7 @@ class mail::postfix {
   file { '/etc/aliases':
     ensure  => file,
     path    => '/etc/aliases',
-    source  => 'puppet:///modules/postfix/aliases',
+    source  => 'puppet:///modules/mail/postfix/aliases',
     owner   => 'root',
     group   => 'root',
     notify  => Exec['postalias_aliases'],
