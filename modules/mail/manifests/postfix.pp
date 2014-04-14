@@ -10,9 +10,11 @@ class mail::postfix {
   }
 
   service { 'postfix':
-    ensure  => running,
-    enable  => true,
-    require => Package['postfix'],
+    ensure    => running,
+    enable    => true,
+    restart   => true,
+    require   => Package['postfix'],
+    subscribe => File['/etc/postfix/main.cf']
   }
 
   # main.cf configuration
@@ -50,14 +52,14 @@ class mail::postfix {
   exec { 'postalias_aliases':
     command     => '/usr/sbin/postalias /etc/aliases',
     refreshonly =>  true,
-    require     => [Package['postfix'], File["/etc/postfix/${name}"]],
+    require     => [Package['postfix'], File['/etc/aliases']],
     notify      => Service['postfix']
   }
 
   file { '/etc/aliases':
     ensure  => file,
     path    => '/etc/aliases',
-    source  => 'puppet://modules/postfix/aliases',
+    source  => 'puppet:///modules/postfix/aliases',
     owner   => 'root',
     group   => 'root',
     notify  => Exec['postalias_aliases'],

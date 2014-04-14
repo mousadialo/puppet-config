@@ -27,6 +27,14 @@ TODOs
 - config for mail and mailman
 - configuration for timezone (base class) set to US EAST
 
+MAIL
+-----
+- postfix is loading. need to figure out how to make it work properly...
+- need dovecot now.
+- setup postgrey
+- postfix: figure out VRFY TODO in master.cf (lists ip address)
+
+
 APACHE
 ----
 Need to move over certs and keys specified in sites-availible/hcs.harvard.edu-ssl
