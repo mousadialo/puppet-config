@@ -1,9 +1,9 @@
 # HCS NFS configuration, used for ZFS setup
 class nfs {
 
-  nfs_server = hiera('nfs-server')
-  zpool_name = hiera('zfs::zpool_name')
-  dataset_name = hiera('zfs::dataset_name')
+  $nfs_server = hiera('nfs-server')
+  $zpool_name = hiera('zfs::zpool_name')
+  $dataset_name = hiera('zfs::dataset_name')
 
   if $::machine_type == 'file' {
     package { 'nfs-kernel-server':
