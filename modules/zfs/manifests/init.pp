@@ -19,6 +19,7 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     ensure     => present,
     canmount   => on,
     mountpoint => "/mnt/${zpool_name}/${dataset_name}",
+    sharenfs   => '*:rw'
     require    => Package['nfs-kernel-server']
   }
 }
