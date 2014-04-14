@@ -1,6 +1,8 @@
 classes:
   - ntp
+#  - base
 
+# TODO: audit these
 base_packages:
   - build-essential
   - bwm-ng
