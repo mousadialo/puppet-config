@@ -43,10 +43,10 @@ class mail::postfix {
   # we want to ensure the following files are postmapped if modified
   # this means that we will refresh the postmap dbs automatically
   # the postmapfile command also adds the file to the correct location
-  postfix::postmapfile { 'access': name => access }
-  postfix::postmapfile { 'blacklist': name => blacklist }
-  postfix::postmapfile { 'canonical': name => canonical }
-  postfix::postmapfile { 'nobl': name => nobl }
+  mail::postmapfile { 'access': name => access }
+  mail::postmapfile { 'blacklist': name => blacklist }
+  mail::postmapfile { 'canonical': name => canonical }
+  mail::postmapfile { 'nobl': name => nobl }
 
   # we want to ensure that we postalias the aliases files
   exec { 'postalias_aliases':
