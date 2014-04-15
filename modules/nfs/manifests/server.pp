@@ -62,6 +62,7 @@ class nfs::server (
 class nfs::server::configure {
 
   concat {'/etc/exports':
+    # HCS:
     # Saagar: we're following the git issue fix from 
     # https://github.com/haraldsk/puppet-module-nfs/issues/2
 

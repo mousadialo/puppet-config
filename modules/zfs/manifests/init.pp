@@ -11,8 +11,8 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   }
   ->
   zpool { $zpool_name:
-   ensure => present,
-   raidz  => ['xvdf', 'xvdg', 'xvdh', 'xvdi', 'xvdj'],
+    ensure => present,
+    raidz  => ['xvdf', 'xvdg', 'xvdh', 'xvdi', 'xvdj'],
   }
   ->
   zfs { "${zpool_name}/${dataset_name}":

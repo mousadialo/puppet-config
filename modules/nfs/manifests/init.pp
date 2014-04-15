@@ -8,7 +8,7 @@ class nfs {
 
   if $::machine_type == 'file' {
     package { 'nfs-kernel-server':
-          ensure => 'installed'
+      ensure => 'installed'
     }
   }
 
@@ -24,11 +24,11 @@ class nfs {
       nfs_v4_mount_root => '/nfs'
     }
     nfs::client::mount {'nfs':
-        server => "${nfs_server}",
-        share  => "/${zpool_name}/${dataset_name}",
-        mount  => "/mnt/${zpool_name}/${dataset_name}",
+        server  => $nfs_server,
+        share   => "/${zpool_name}/${dataset_name}",
+        mount   => "/mnt/${zpool_name}/${dataset_name}",
         options => 'vers=3,defaults',
-        atboot => true
+        atboot  => true
     }
   }
 }
