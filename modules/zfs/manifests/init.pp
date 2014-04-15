@@ -4,6 +4,12 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   include apt
   include nfs
 
+  apt::ppa { 'ppa:zfs-native/stable': }
+  ->
+  package { 'ubuntu-zfs':
+    ensure => latest,
+  }
+  ->
   zpool { $zpool_name:
    ensure => present,
    raidz  => ['xvdf', 'xvdg', 'xvdh', 'xvdi', 'xvdj']
