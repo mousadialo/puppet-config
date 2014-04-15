@@ -1,15 +1,18 @@
-$mount_dir = hiera('nfs-mount-dir')
+class web {
 
-include nfs
+  $mount_dir = hiera('nfs-mount-dir')
 
-# We want to symlink our home directory to nfs
-file {"home":
-  ensure  => link,
-  path    => '/home',
-  target  => $mount_dir,
-  owner   => 'ubuntu',
-  group   => 'ubuntu',
-  # Must have mounted it
-  require => Nfs::Client::Mount['nfs']
+  include nfs
+
+  # We want to symlink our home directory to nfs
+  file {"home":
+    ensure  => link,
+    path    => '/home',
+    target  => $mount_dir,
+    owner   => 'ubuntu',
+    group   => 'ubuntu',
+    # Must have mounted it
+    require => Nfs::Client::Mount['nfs']
+  }
+
 }
-
