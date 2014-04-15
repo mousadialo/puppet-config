@@ -30,4 +30,12 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     sharenfs   => 'rw',
     require    => Package['nfs-kernel-server']
   }
+  ->
+  file { 'home':
+    ensure  => directory,
+    path    => "/${zpool_name}/${dataset_name}/ubuntu",
+    owner   => 'ubuntu',
+    group   => 'ubuntu',
+    mode    => 644
+  }
 }

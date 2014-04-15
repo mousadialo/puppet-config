@@ -9,6 +9,7 @@ class web {
     ensure  => link,
     path    => '/home',
     target  => $mount_dir,
+    force   => 'true'
     owner   => 'ubuntu',
     group   => 'ubuntu',
     # Must have mounted it
