@@ -15,9 +15,7 @@ class nfs {
   # Filer should not mount nfs
   if $::machine_type != 'file' {
 
-    notify{"The value is: ${nfs_server}": }
-    notify{"The value is: ${zpool_name}": }
-    notify{"The value is: ${dataset_name}": }
+    $mount_dir = hiera('nfs-mount-dir')
 
     class { 'nfs::client':
       nfs_v4            => false,
@@ -26,7 +24,7 @@ class nfs {
     nfs::client::mount {'nfs':
         server => "${nfs_server}",
         share  => "/${zpool_name}/${dataset_name}",
-        mount  => "/mnt/${zpool_name}/${dataset_name}",
+        mount  => $mount_dir,
         options => 'vers=3,default',
         atboot => true
     }

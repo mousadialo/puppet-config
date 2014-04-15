@@ -10,6 +10,14 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     ensure => latest,
   }
   ->
+  /* Correct permissions, owner, and group */
+  file {'/tank/home':
+    ensure => directory,
+    owner  => 'ubuntu',
+    group  => 'ubuntu',
+    mode   => 644,
+  }
+  ->
   zpool { $zpool_name:
    ensure => present,
    raidz  => ['xvdf', 'xvdg', 'xvdh', 'xvdi', 'xvdj'],

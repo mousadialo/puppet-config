@@ -1,0 +1,1 @@
+When you try to create zpool with puppet's built in 'zpool' resource, it throws an error that the EBS volumes are 'potentially availible'. There is no way to force create. The way around this is to create the zpool manually, and then destroy it.

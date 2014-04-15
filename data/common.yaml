@@ -1,4 +1,5 @@
 ---
 nfs-server: '10.0.12.250'
+nfs-mount-dir: '/mnt/tank/home'
 zfs::zpool_name: 'tank'
 zfs::dataset_name: 'home'
