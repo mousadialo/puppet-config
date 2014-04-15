@@ -2,3 +2,4 @@
 classes:
   - apache2
   - nfs
+  - web
