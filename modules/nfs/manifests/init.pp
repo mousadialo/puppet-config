@@ -25,7 +25,7 @@ class nfs {
         server => $nfs_server,
         share  => "/${zpool_name}/${dataset_name}",
         mount  => $mount_dir,
-        options => 'vers=3,default',
+        options => 'vers=3,defaults',
         atboot => true
     }
   }
