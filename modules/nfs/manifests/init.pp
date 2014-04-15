@@ -5,6 +5,10 @@ class nfs {
   $zpool_name = hiera('zfs::zpool_name')
   $dataset_name = hiera('zfs::dataset_name')
 
+  notify{"The value is: ${nfs_server}": }
+  notify{"The value is: ${zpool_name}": }
+  notify{"The value is: ${dataset_name}": }
+
   if $::machine_type == 'file' {
     package { 'nfs-kernel-server':
           ensure => 'installed'
