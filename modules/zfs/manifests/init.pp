@@ -12,15 +12,14 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   ->
   zpool { $zpool_name:
    ensure => present,
-   raidz  => ['xvdf', 'xvdg', 'xvdh', 'xvdi', 'xvdj'],
-   force  => true
+   raidz  => ['/dev/xvdf', '/dev/xvdg', '/dev/xvdh', '/dev/xvdi', '/dev/xvdj'],
   }
   ->
   zfs { "${zpool_name}/${dataset_name}":
     ensure     => present,
     canmount   => on,
     mountpoint => "/mnt/${zpool_name}/${dataset_name}",
-    sharenfs   => '*:rw',
+    sharenfs   => 'rw',
     require    => Package['nfs-kernel-server']
   }
 }
