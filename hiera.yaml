@@ -4,6 +4,7 @@
 
 :hierarchy:
   - "machines/%{::machine_type}"
+  - hcs
   - "%{::operatingsystem}"
   - common
 
