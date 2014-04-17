@@ -8,7 +8,7 @@ class gateway::network_gateway {
     mode   => '0755'
   }
 
-  file { '/etc/sysctl.d/ip_forward.conf':
+  file { '/etc/sysctl.d/50-ip_forward.conf':
     ensure => present,
     source => 'puppet:///modules/gateway/50-ip_forward.conf',
   }

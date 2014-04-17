@@ -15,7 +15,7 @@ http://docs.puppetlabs.com/guides/puppetlabs_package_repositories.html
 `sudo apt-get puppet-common`
 
 Validate a file by running the following command.
-`puppet puppet validate <FILENAME>`
+`puppet parser validate <FILENAME>`
 
 (You can also validate the files by running puppet, but you should do this on a development server)
 
