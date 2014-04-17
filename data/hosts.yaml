@@ -27,3 +27,7 @@ bifrost:
   parameters:
     machine_type: gateway
   environment: production
+ldap:
+  parameters:
+    machine_type: ldap
+  environment: production
