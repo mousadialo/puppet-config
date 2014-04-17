@@ -5,6 +5,14 @@ class ldap::server {
     ensure => installed
   }
 
+  package { '389-ds-admin':
+    ensure => installed
+  }
+
+  package { '389-ds-console':
+    ensure => installed
+  }
+
   package { 'ldap-utils':
     ensure => installed
   }
