@@ -28,8 +28,9 @@ class ldap::client {
   file {'/etc/ldap.conf':
     ensure  => file,
     source  => 'puppet:///modules/ldap/ldap.conf',
-    #owner  => 'root',
-    #group  => 'root',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '644',
     notify  => Package['ldap-auth-client'],
     require => Package['ldap-auth-client']
   }
@@ -37,8 +38,9 @@ class ldap::client {
   file {'/etc/ldap/ldap.conf':
     ensure  => file,
     source  => 'puppet:///modules/ldap/ldap/ldap.conf',
-    #owner  => 'root',
-    #group  => 'root',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '644',
     notify  => Package['ldap-auth-client'],
     require => Package['ldap-auth-client']
   }
@@ -46,8 +48,9 @@ class ldap::client {
   file {'/etc/nsswitch.conf':
     ensure  => file,
     source  => 'puppet:///modules/ldap/nsswitch.conf',
-    #owner  => 'root',
-    #group  => 'root',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '644',
     notify  => Service['nscd'],
     require => Package['nscd']
   }
