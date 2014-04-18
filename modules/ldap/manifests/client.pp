@@ -31,7 +31,6 @@ class ldap::client {
     owner   => 'root',
     group   => 'root',
     mode    => '644',
-    notify  => Package['ldap-auth-client'],
     require => Package['ldap-auth-client']
   }
 
@@ -41,7 +40,6 @@ class ldap::client {
     owner   => 'root',
     group   => 'root',
     mode    => '644',
-    notify  => Package['ldap-auth-client'],
     require => Package['ldap-auth-client']
   }
 
