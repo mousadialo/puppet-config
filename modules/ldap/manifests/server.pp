@@ -1,6 +1,6 @@
 # HCS LDAP server configuration
 # NOTE: This class should not be used!
-# Look at the private HCS ducks (docs) for instructions on setting up an LDAP server
+# Look at the README for instructions on setting up an LDAP server
 class ldap::server {
 
   package { '389-ds-base':
