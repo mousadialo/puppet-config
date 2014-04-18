@@ -2,37 +2,29 @@ HCS Puppet Configuration
 =========================
 
 ### INSTALLATION
-Just pull this repository.
+Just pull this repository.  
 You'll want to place it in `/etc/puppet` on a puppetmaster server.
 
 ### WRITING PUPPET
 When writing puppet configuration, you should be sure to lint your manifests to conform to the style guide. This will help catch minor bugs as well.
 
 #### VALIDATE
-Install puppet-common on your machine. You may need the puppetlabs repository.
+Install puppet-common on your machine. You may need the puppetlabs repository.  
 http://docs.puppetlabs.com/guides/puppetlabs_package_repositories.html
 
 `sudo apt-get puppet-common`
 
-Validate a file by running the following command.
-`puppet parser validate <FILENAME>`
+Validate a file by running the following command: `puppet parser validate <FILENAME>`
 
-(You can also validate the files by running puppet, but you should do this on a development server)
-
-
+(You can also validate the files by running puppet from a client, but you should do this on a development server)
 
 #### Linter
 Install the puppet-lint gem. You'll need rubygem (and Ruby).
-`apt-get install rubygems`
-`gem install puppet-lint`
+-`apt-get install rubygems`
+-`gem install puppet-lint`
 
-To run the puppet linter:
-`puppet-lint --with-filename <directory>`
-
+To run the puppet linter: `puppet-lint --with-filename <directory>`
 To fix warnings and errors, look them up on puppet-lint.com.
-
-
-
 
 ###TODOs
 - script to connect agent to master
@@ -45,7 +37,6 @@ To fix warnings and errors, look them up on puppet-lint.com.
 - dovecot is loading, need to test it though!
 - setup postgrey
 - postfix: figure out VRFY TODO in master.cf (lists ip address)
-
 
 ###APACHE
 Need to move over certs and keys specified in sites-availible/hcs.harvard.edu-ssl
@@ -66,24 +57,24 @@ webmail with roundcube
 ###LDAP Server Setup
 
 #### Tools
-LDAP Directory Server [this is required!!!] - this stores the LDAP ldifs (information) and can be queried by the clients for auth
-`sudo apt-get install 389-ds-base`
-LDAP Admin Server (sys admin server) - this is a tool that helps moderate the server and should be uninstalled after use.
-`sudo apt-get install 389-admin`
-LDAP Admin GUI - This is the GUI that connects to the admin for easy use.
-`sudo apt-get install 389-ds-console`
+LDAP Directory Server [this is required!!!] - this stores the LDAP ldifs (information) and can be queried by the clients for auth  
+`sudo apt-get install 389-ds-base`  
+LDAP Admin Server (sys admin server) - this is a tool that helps moderate the server and should be uninstalled after use.  
+`sudo apt-get install 389-admin`  
+LDAP Admin GUI - This is the GUI that connects to the admin for easy use.  
+`sudo apt-get install 389-ds-console`  
 
 #### Export data from existing server
-You need to take a cut of the LDAP database into an ldif file.
-If using the Admin GUI
+You need to take a cut of the LDAP database into an ldif file.  
+If using the Admin GUI  
 - create a file (ex: domain.ldif) and run `chown dirsrv:dirsrv domain.ldif`
 - you will need to ssh using -Y to forward X11 sessions to your computer
 - then run `389-console &` to run the process in the background
 - the GUI will pop up (it's pretty slow) but you can then export the database into `domain.ldif`
 
-If using ldapsearch
-`ldapsearch -Wx -D "cn=Directory Manager" -b "dc=hcs,dc=harvard,dc=edu" > domain.ldif`
-The -W flag will ask for the LDAP password. And now we have a cut of the data.
+If using ldapsearch  
+`ldapsearch -Wx -D "cn=Directory Manager" -b "dc=hcs,dc=harvard,dc=edu" > domain.ldif`  
+The -W flag will ask for the LDAP password. And now we have a cut of the data.  
 
 #### Importing data into new server
 - Install the tools as per commands above.
