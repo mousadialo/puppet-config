@@ -86,4 +86,3 @@ The -W flag will ask for the LDAP password. And now we have a cut of the data.
 - restart the dirsrv (`sudo service dirsrv restart`). any errors are logged in /var/log/dirsrv (again be root, sudo -i)
 - run the 389-console and import the data
 - you can now check the data by using `ldapsearch -x` (this won't work correctly if you didn't set up the ldap.conf)
-
