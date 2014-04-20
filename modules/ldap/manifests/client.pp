@@ -36,7 +36,7 @@ class ldap::client {
     source  => 'puppet:///modules/ldap/ldap.conf',
     owner   => 'root',
     group   => 'root',
-    mode    => '644',
+    mode    => '0644',
     require => Package['ldap-auth-client']
   }
 
@@ -47,7 +47,7 @@ class ldap::client {
     source  => 'puppet:///modules/ldap/ldap-server/ldap.conf',
     owner   => 'root',
     group   => 'root',
-    mode    => '644',
+    mode    => '0644',
     require => Package['ldap-auth-client']
   }
 
@@ -56,7 +56,7 @@ class ldap::client {
     source  => 'puppet:///modules/ldap/nsswitch.conf',
     owner   => 'root',
     group   => 'root',
-    mode    => '644',
+    mode    => '0644',
     notify  => Service['nscd'],
     require => Package['nscd']
   }
@@ -67,7 +67,7 @@ class ldap::client {
     source => 'puppet:///modules/ldap/sshd_conf',
     owner  => 'root',
     group  => 'root',
-    mode   => '644',
+    mode   => '0644',
     notify => Service['sshd']
   }
 

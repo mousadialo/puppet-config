@@ -30,7 +30,7 @@ class ldap::server {
     source  => 'puppet:///modules/ldap/ldap.conf',
     owner   => 'root',
     group   => 'root',
-    mode    => '644',
+    mode    => '0644',
     notify  => Service['dirsrv'],
     require => Package['389-ds-base']
   }
@@ -39,7 +39,7 @@ class ldap::server {
     source  => 'puppet:///modules/ldap/00core.ldif',
     owner   => 'root',
     group   => 'root',
-    mode    => '644',
+    mode    => '0644',
     notify  => Service['dirsrv'],
     require => Package['389-ds-base']
   }
