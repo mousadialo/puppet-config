@@ -25,6 +25,12 @@ class ldap::client {
     require => Package['nscd']
   }
 
+  service { 'sshd':
+    ensure    => running,
+    enable    => true,
+    subscribe => File['/etc/ssh/sshd_conf']
+  }
+
   file {'/etc/ldap.conf':
     ensure  => file,
     source  => 'puppet:///modules/ldap/ldap.conf',
@@ -34,9 +40,11 @@ class ldap::client {
     require => Package['ldap-auth-client']
   }
 
+  # This is distinct from the above file and is probably the more important one!
+  # Don't mix the previous ldap.conf and this one!
   file {'/etc/ldap/ldap.conf':
     ensure  => file,
-    source  => 'puppet:///modules/ldap/ldap/ldap.conf',
+    source  => 'puppet:///modules/ldap/ldap-server/ldap.conf',
     owner   => 'root',
     group   => 'root',
     mode    => '644',
@@ -51,6 +59,16 @@ class ldap::client {
     mode    => '644',
     notify  => Service['nscd'],
     require => Package['nscd']
+  }
+
+  # TODO: make this a separate module, potentially part of the base module
+  file {'/etc/ssh/sshd_conf':
+    ensure => file,
+    source => 'puppet:///modules/ldap/sshd_conf',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '644',
+    notify => Service['sshd']
   }
 
 }
