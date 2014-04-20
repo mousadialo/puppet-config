@@ -25,7 +25,7 @@ class ldap::client {
     require => Package['nscd']
   }
 
-  service { 'sshd':
+  service { 'ssh':
     ensure    => running,
     enable    => true,
   }
@@ -67,7 +67,7 @@ class ldap::client {
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
-    notify => Service['sshd']
+    notify => Service['ssh']
   }
 
 }
