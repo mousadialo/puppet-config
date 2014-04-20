@@ -19,7 +19,7 @@ class ldap::client {
   #  enable => true,
   #}
 
-  service { 'ncsd':
+  service { 'nscd':
     ensure  => running,
     enable  => true,
     require => Package['nscd']
