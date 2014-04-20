@@ -28,7 +28,6 @@ class ldap::client {
   service { 'sshd':
     ensure    => running,
     enable    => true,
-    subscribe => File['/etc/ssh/sshd_config']
   }
 
   file {'/etc/ldap.conf':
@@ -62,9 +61,9 @@ class ldap::client {
   }
 
   # TODO: make this a separate module, potentially part of the base module
-  file {'/etc/ssh/sshd_conf':
+  file {'/etc/ssh/sshd_config':
     ensure => file,
-    source => 'puppet:///modules/ldap/sshd_conf',
+    source => 'puppet:///modules/ldap/sshd_config',
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
