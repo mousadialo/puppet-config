@@ -34,8 +34,7 @@ class apache2 {
   # Environment variables used by other config files
   apache2::config_file { 'envvars': }
 
-  ## TODO: change this back to web!!!!
-  if $::machine_type == 'generic' {
+  if $::machine_type == 'web' {
 
     # Configurations shipped with Apache. We minimally edit these files.
     apache2::config_file { 'conf.d/charset': }

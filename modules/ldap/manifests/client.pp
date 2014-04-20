@@ -28,7 +28,7 @@ class ldap::client {
   service { 'sshd':
     ensure    => running,
     enable    => true,
-    subscribe => File['/etc/ssh/sshd_conf']
+    subscribe => File['/etc/ssh/sshd_config']
   }
 
   file {'/etc/ldap.conf':
