@@ -1,5 +1,6 @@
 # configuration for ldap client machines
 class ldap::client {
+  $ldap_server = hiera('ldap-server')
 
   package { 'ldap-auth-client':
     ensure => installed
