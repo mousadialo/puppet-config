@@ -34,7 +34,7 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   ->
   /* TODO Template this along with the zfs datasets */
   /* Correct permissions, owner, and group */
-  file {'/tank/home':
+  file {"/${zpool_name}/home":
     ensure => directory,
     owner  => 'root',
     group  => 'root',
@@ -51,6 +51,15 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     require    => Package['nfs-kernel-server']
   }
   ->
+  ->
+  /* Correct permissions, owner, and group */
+  file {"/${zpool_name}/home/people":
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => 644,
+  }
+  ->
   zfs { "${zpool_name}/home/people":
     ensure     => present,
     canmount   => on,
@@ -59,8 +68,7 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     require    => Package['nfs-kernel-server']
   }
   ->
-  /* Correct permissions, owner, and group */
-  file {'/tank/home/people':
+  file {"/${zpool_name}/home/groups":
     ensure => directory,
     owner  => 'root',
     group  => 'root',
@@ -70,12 +78,12 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   zfs { "${zpool_name}/home/groups":
     ensure     => present,
     canmount   => on,
-    mountpoint => "/${zpool_name}/home/groups",
+    mountpoint => "/${zpool_name}/home/people",
     sharenfs   => 'rw',
     require    => Package['nfs-kernel-server']
   }
   ->
-  file {'/tank/home/groups':
+  file {"/${zpool_name}/home/general":
     ensure => directory,
     owner  => 'root',
     group  => 'root',
@@ -90,7 +98,7 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     require    => Package['nfs-kernel-server']
   }
   ->
-  file {'/tank/home/general':
+  file {"/${zpool_name}/home/hcs":
     ensure => directory,
     owner  => 'root',
     group  => 'root',
@@ -103,12 +111,5 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     mountpoint => "/${zpool_name}/home/hcs",
     sharenfs   => 'rw',
     require    => Package['nfs-kernel-server']
-  }
-  ->
-  file {'/tank/home/hcs':
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => 644,
   }
 }
