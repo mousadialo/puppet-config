@@ -41,35 +41,6 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     mode   => 644,
   }
   ->
-  /* Correct permissions, owner, and group */
-  file {'/tank/home/people':
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => 644,
-  }
-  ->
-  file {'/tank/home/groups':
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => 644,
-  }
-  ->
-  file {'/tank/home/general':
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => 644,
-  }
-  ->
-  file {'/tank/home/hcs':
-    ensure => directory,
-    owner  => 'root',
-    group  => 'root',
-    mode   => 644,
-  }
-  ->
 
   # TODO template this
   zfs { "${zpool_name}/home":
@@ -88,12 +59,27 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     require    => Package['nfs-kernel-server']
   }
   ->
+  /* Correct permissions, owner, and group */
+  file {'/tank/home/people':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => 644,
+  }
+  ->
   zfs { "${zpool_name}/home/groups":
     ensure     => present,
     canmount   => on,
     mountpoint => "/${zpool_name}/home/groups",
     sharenfs   => 'rw',
     require    => Package['nfs-kernel-server']
+  }
+  ->
+  file {'/tank/home/groups':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => 644,
   }
   ->
   zfs { "${zpool_name}/home/general":
@@ -104,11 +90,25 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     require    => Package['nfs-kernel-server']
   }
   ->
+  file {'/tank/home/general':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => 644,
+  }
+  ->
   zfs { "${zpool_name}/home/hcs":
     ensure     => present,
     canmount   => on,
     mountpoint => "/${zpool_name}/home/hcs",
     sharenfs   => 'rw',
     require    => Package['nfs-kernel-server']
+  }
+  ->
+  file {'/tank/home/hcs':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => 644,
   }
 }
