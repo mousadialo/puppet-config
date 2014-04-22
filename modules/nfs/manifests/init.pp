@@ -1,5 +1,8 @@
 # HCS NFS configuration, used for ZFS setup
-class nfs {
+class nfs ($nfs_home_directory = 'false' ) {
+  /*
+   * nfs_home_directory If true, the /home directory is mounted from the filer.
+   */
 
   $nfs_server = hiera('nfs-server')
   $zpool_name = hiera('zfs::zpool_name')
