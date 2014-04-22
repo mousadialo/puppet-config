@@ -60,7 +60,9 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
    * are already in use. There is no force flag so we must execute the command
    * manually. */
   exec { 'create-zpool':
-    command => "/sbin/zpool create -f ${zpool_name} raidz xvdf xvdg xvdh xvdi xvdj",
+    command => "zpool create -f ${zpool_name} raidz xvdf xvdg xvdh xvdi xvdj",
+    cwd => '/',
+    logoutput => true,
     user => 'root',
     path => ["/sbin"],
     # Do not create the zpool if it already exists
