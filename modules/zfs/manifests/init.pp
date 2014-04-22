@@ -29,7 +29,7 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     user => 'root',
     path => ["/sbin"],
     # Do not create the zpool if it already exists
-    #unless => "zpool list | grep ${zpool_name} 2> /dev/null"
+    unless => "zpool list | grep ${zpool_name} 2> /dev/null"
   }
   ->
   /* TODO Template this along with the zfs datasets */
