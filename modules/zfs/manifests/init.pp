@@ -51,7 +51,6 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     require    => Package['nfs-kernel-server']
   }
   ->
-  ->
   /* Correct permissions, owner, and group */
   file {"/${zpool_name}/home/people":
     ensure => directory,
@@ -78,7 +77,7 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   zfs { "${zpool_name}/home/groups":
     ensure     => present,
     canmount   => on,
-    mountpoint => "/${zpool_name}/home/people",
+    mountpoint => "/${zpool_name}/home/groups",
     sharenfs   => 'rw',
     require    => Package['nfs-kernel-server']
   }
