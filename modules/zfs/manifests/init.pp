@@ -17,7 +17,7 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     group  => 'root',
     mode   => 644,
   }
-  =>
+  ->
   /* HACK Puppet provides the zpool resource. For whatever reason, when you try
    * to use it to create a zpool it fails because it thinks that our EBS volumes
    * are already in use. There is no force flag so we must execute the command
