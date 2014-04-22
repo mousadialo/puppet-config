@@ -6,7 +6,7 @@ relay_domains = $mydestination, eecs.harvard.edu,
 
 # strip foo.bar.hcs.harvard.edu -> hcs.harvard.edu
 masquerade_domains = gtest.hcs.harvard.edu solarsail.hcs.harvard.edu 
-  lists.hcs.harvard.edu hcs.harvard.edu
+  lists.hcs.harvard.edu hcs.harvard.edu hcs.so
 
 # Don't let people collect valid adresses by polling us.
 disable_vrfy_command = yes
