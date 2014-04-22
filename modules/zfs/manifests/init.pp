@@ -11,10 +11,47 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   }
   ->
   /* Correct permissions, owner, and group */
+  file {'/tank':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => 644,
+  }
+  ->
+  /* Correct permissions, owner, and group */
   file {'/tank/home':
     ensure => directory,
-    owner  => 'ubuntu',
-    group  => 'ubuntu',
+    owner  => 'root',
+    group  => 'root',
+    mode   => 644,
+  }
+  ->
+  /* Correct permissions, owner, and group */
+  file {'/tank/home/people':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => 644,
+  }
+  ->
+  file {'/tank/home/groups':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => 644,
+  }
+  ->
+  file {'/tank/home/general':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => 644,
+  }
+  ->
+  file {'/tank/home/hcs':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
     mode   => 644,
   }
   ->
