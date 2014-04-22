@@ -31,5 +31,19 @@ class nfs ($nfs_home_directory = 'false' ) {
         options => 'vers=3,defaults',
         atboot => true
     }
+
+    if str2bool($nfs_home_directory) {
+      # We want to symlink our home directory to nfs
+      file {"home":
+        ensure  => link,
+        path    => '/home',
+        target  => $mount_dir,
+        force   => 'true',
+        owner   => 'root',
+        group   => 'root',
+        # Must have mounted it
+        require => Nfs::Client::Mount['nfs']
+      }
+    }
   }
 }
