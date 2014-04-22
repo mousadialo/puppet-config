@@ -23,7 +23,7 @@ class nfs {
     }
     nfs::client::mount {'nfs':
         server => $nfs_server,
-        share  => "/${zpool_name}/${dataset_name}",
+        share  => "/${zpool_name}/home",
         mount  => $mount_dir,
         options => 'vers=3,defaults',
         atboot => true
