@@ -62,7 +62,7 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   exec { 'create-zpool':
     command => "zpool create -f ${zpool_name} raidz xvdf xvdg xvdh xvdi xvdj",
     user => 'root',
-    path => ["/usr/bin", "/usr/sbin"],
+    path => ["/sbin"],
     # Do not create the zpool if it already exists
     unless => "zpool list | grep ${zpool_name} 2> /dev/null"
   }
