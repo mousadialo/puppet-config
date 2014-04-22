@@ -13,12 +13,6 @@ class ldap::client {
     ensure => installed
   }
 
-  # I think we want to ignore this...
-  #service { 'libnss-ldap':
-  #  ensure => stopped,
-  #  enable => true,
-  #}
-
   service { 'nscd':
     ensure  => running,
     enable  => true,
@@ -32,7 +26,7 @@ class ldap::client {
 
   file {'/etc/ldap.conf':
     ensure  => file,
-    source  => 'puppet:///modules/ldap/ldap.conf',
+    content => template('ldap/ldap-server.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
@@ -43,7 +37,7 @@ class ldap::client {
   # Don't mix the previous ldap.conf and this one!
   file {'/etc/ldap/ldap.conf':
     ensure  => file,
-    source  => 'puppet:///modules/ldap/ldap-server/ldap.conf',
+    content => template('ldap/ldap.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
@@ -69,5 +63,4 @@ class ldap::client {
     mode   => '0644',
     notify => Service['ssh']
   }
-
 }
