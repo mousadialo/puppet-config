@@ -32,8 +32,6 @@ class nfs ($nfs_home_directory = 'false' ) {
         atboot => true
     }
 
-    notify{ $nfs_home_directory }
-
     if str2bool($nfs_home_directory) {
       # We want to symlink our home directory to nfs
       file {"home":
