@@ -10,7 +10,6 @@ class nfs ($nfs_home_directory = 'false' ) {
   $zpool_name = hiera('zfs::zpool_name')
   $dataset_name = hiera('zfs::dataset_name')
 
-
   if $::machine_type == 'file' {
     package { 'nfs-kernel-server':
       ensure => 'installed'
@@ -45,7 +44,7 @@ class nfs ($nfs_home_directory = 'false' ) {
         group   => 'root',
         # 1) Must have mounted nfs
         # 2) Ubuntu user has a new, local home directory
-        require => [Nfs::Client::Mount['nfs'], User['ubuntu']]
+        require => [Nfs::Client::Mount['nfs'], User['hcs']]
       }
     }
   }
