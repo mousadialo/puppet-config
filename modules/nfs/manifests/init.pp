@@ -44,9 +44,9 @@ class nfs ($nfs_home_directory = 'false' ) {
         force   => 'true',
         owner   => 'root',
         group   => 'root',
-        # Must have mounted it
-        require => Nfs::Client::Mount['nfs'],
-        require => Base::Users::User['ubuntu'] # make sure ubuntu user has a new, local  home directory
+        # 1) Must have mounted nfs
+        # 2) Ubuntu user has a new, local home directory
+        require => [Nfs::Client::Mount['nfs'], Base::Users::User['ubuntu']]
       }
     }
   }
