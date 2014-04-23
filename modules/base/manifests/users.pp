@@ -12,6 +12,6 @@ class base::users {
   } ->
   user { 'ubuntu':
     ensure => present,
-    home => '/local/home/ubuntu'
+    home   => '/local/home/ubuntu',
   }
 }
