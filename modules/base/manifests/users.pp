@@ -5,13 +5,15 @@ class base::users {
   file { '/local/home':
     ensure => directory
   } ->
-  file { '/local/home/ubuntu':
+  file { '/local/home/hcs':
     ensure => directory,
-    source => '/home/ubuntu',
+    source => '/home/hcs',
     recurse => true
   } ->
-  user { 'ubuntu':
+  user { 'hcs':
     ensure => present,
-    home => '/local/home/ubuntu'
+    home => '/local/home/hcs',
+    comment => 'HCS root user',
+    groups => ['adm', 'admin-lite', 'admin'] #TODO remove admin and add admin-lite to sudoers like on cato
   }
 }

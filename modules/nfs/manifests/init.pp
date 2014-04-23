@@ -4,10 +4,11 @@ class nfs ($nfs_home_directory = 'false' ) {
    * nfs_home_directory If true, the /home directory is mounted from the filer.
    */
 
+  require base
+
   $nfs_server = hiera('nfs-server')
   $zpool_name = hiera('zfs::zpool_name')
   $dataset_name = hiera('zfs::dataset_name')
-
 
   if $::machine_type == 'file' {
     package { 'nfs-kernel-server':
@@ -43,7 +44,7 @@ class nfs ($nfs_home_directory = 'false' ) {
         group   => 'root',
         # 1) Must have mounted nfs
         # 2) Ubuntu user has a new, local home directory
-        require => [Nfs::Client::Mount['nfs'], Base::Users::User['ubuntu']]
+        require => Nfs::Client::Mount['nfs'],
       }
     }
   }
