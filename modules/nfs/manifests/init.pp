@@ -24,7 +24,7 @@ class nfs ($nfs_home_directory = 'false' ) {
     class { 'nfs::client':
       nfs_v4            => false,
       nfs_v4_mount_root => '/nfs'
-    }
+    } ->
     nfs::client::mount {'nfs':
         server => $nfs_server,
         share  => "/${zpool_name}/home",
@@ -46,6 +46,68 @@ class nfs ($nfs_home_directory = 'false' ) {
         # 2) Ubuntu user has a new, local home directory
         require => [Nfs::Client::Mount['nfs'], User['hcs']]
       }
+    }
+
+    package { 'autofs':
+      ensure  => installed,
+      require => Nfs::Client::Mount['nfs']
+    }
+    service { 'autofs':
+      ensure => running,
+      enable => true,
+      require => Package['autofs']
+    }
+
+    file { '/etc/autofs': 
+      ensure => directory,
+      owner  => 'root',
+      group  => 'root',
+    }
+
+    file {"/etc/auto.master":
+      ensure  => file,
+      source  => "puppet:///modules/nfs/autofs/auto.master",
+      owner   => 'root',
+      group   => 'root',
+      notify  => Service['autofs'],
+      require => Package['autofs']
+    }
+
+    file {"/etc/autofs/nfs.people":
+      ensure  => file,
+      content => template('nfs/autofs/nfs.people'),
+      owner   => 'root',
+      group   => 'root',
+      notify  => Service['autofs'],
+      require => [Package['autofs'], File['/etc/autofs']]
+
+    }
+
+    file {"/etc/autofs/nfs.groups":
+      ensure  => file,
+      content => template('nfs/autofs/nfs.groups'),
+      owner   => 'root',
+      group   => 'root',
+      notify  => Service['autofs'],
+      require => [Package['autofs'], File['/etc/autofs']]
+    }
+
+    file {"/etc/autofs/nfs.general":
+      ensure  => file,
+      content => template('nfs/autofs/nfs.general'),
+      owner   => 'root',
+      group   => 'root',
+      notify  => Service['autofs'],
+      require => [Package['autofs'], File['/etc/autofs']]
+    }
+
+    file {"/etc/autofs/nfs.hcs":
+      ensure  => file,
+      content => template('nfs/autofs/nfs.general'),
+      owner   => 'root',
+      group   => 'root',
+      notify  => Service['autofs'],
+      require => [Package['autofs'], File['/etc/autofs']]
     }
   }
 }

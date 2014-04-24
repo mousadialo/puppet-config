@@ -1,5 +1,15 @@
 class base::users {
 
+  user { 'hcs':
+    ensure   => present,
+    gid      => 'root',
+    home     => '/local/home/hcs',
+    comment  => 'HCS root user',
+    shell    => '/bin/bash',
+    password => '9cdd51b6f09b8572c15a24a717827e124b3355cf',
+    groups   => ['adm', /*'admin-lite',*/ 'admin'] #TODO remove admin, make admin-lite the gid and add it to to sudoers like on cato
+  } ->
+
   file { '/local':
     ensure => directory
   } ->
@@ -12,15 +22,6 @@ class base::users {
     ensure => directory,
   } ->
 
-  user { 'hcs':
-    ensure   => present,
-    gid      => 'root',
-    home     => '/local/home/hcs',
-    comment  => 'HCS root user',
-    shell    => '/bin/bash',
-    password => '9cdd51b6f09b8572c15a24a717827e124b3355cf',
-    groups   => ['adm', /*'admin-lite',*/ 'admin'] #TODO remove admin, make admin-lite the gid and add it to to sudoers like on cato
-  } ->
   file {
     "/local/home/hcs/.ssh":
       ensure => directory,
