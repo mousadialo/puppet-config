@@ -2,24 +2,34 @@ classes:
   - ntp
 #  - base
 
-# TODO: audit these
+# TODO: do we need the cloud packages?
+# TODO: we should define which base services are on/off
 base_packages:
-  - build-essential
-  - bwm-ng
-  - curl
-  - dstat
-  - git
-  - gnupg
-  - htop
-  - iftop
-  - iotop
-  - mtr-tiny
-  - netcat-openbsd
-  - pv
-  - ruby1.9.1
-  - rubygems
-  - screen
-  - tcpdump
-  - tmux
-  - traceroute
-  - vim
+
+  # standard packages
+  - ubuntu-minimal
+  - ubuntu-standard
+  - linux-virtual
+
+  # basic packages
+  - acpid
+  - apport
+  - aptitude
+  - bind9-host
+  - crda
+  - fonts-ubuntu-font-family-console
+  - grub-pc
+  - landscape-client
+  - openssh-server
+  - tasksel
+  - update-notifier-common
+  - w3m
+  - whoopsie
+  - wireless-tools
+  - wpasupplicant
+
+  # AWS packages
+  - cloud-init
+  - cloud-initramfs-growroot
+  - cloud-initramfs-rescuevol
+  - grub-legacy-ec2
