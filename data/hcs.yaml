@@ -36,29 +36,75 @@ userfacing_packages:
   - python3-dev
   - python3-numpy
 
-
-  # TODO: FNISH UP HERE
   # Ruby
+  - rails
+  - rake
+  - ruby
+  - ruby-bundler
+  - ruby-dev
+  - ruby-erubis
+  - ruby-eventmachine
+  - ruby-mysql
+  - ruby-net-ssh
+  - ruby-nokogiri
+  - ruby-sqlite3
+  - ruby1.9.1
+  - ruby1.9.1-dev
+  - rubygems
+
   # Node JS
+  - coffeeescript
+  - nodejs
+  - nodejs-dev
+  - npm
+
   # Version Control
-  # Editors
-  # General Utilities
-  # Resolve package ambiguities
-  - bwm-ng
-  - curl
-  - dstat
+  - bzr
   - git
+  - mercurial
+  - subversion
+
+  # Editors
+  - emacs23-nox
+  - vim
+
+  # General Utilities
+  - alpine
+  - apache2-utils
+  - cowsay
+  - cscope
+  - curl
+  - exuberant-ctags
+  - finger
+  - gdb
   - gnupg
+  - ldap-utils
+  - mutt
+  - mysql-client
+
+  # Resolve package ambiguities
+  - ledit
+  - libblas3gf
+  - liblapack3gf
+  - libmemcache-client-ruby
+  - libtzinfo-ruby
+  - python-greenlet
+  - ruby-builder
+  - ruby-i18n
+  - ruby-rack
+  - ruby-text-format
+  - ttf-dejavu-core
+
+  # additional packages just because
+  - bwm-ng
+  - dstat
   - htop
   - iftop
   - iotop
   - mtr-tiny
   - netcat-openbsd
   - pv
-  - ruby1.9.1
-  - rubygems
   - screen
   - tcpdump
   - tmux
   - traceroute
-  - vim
