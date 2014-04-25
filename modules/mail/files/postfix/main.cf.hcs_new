@@ -1,0 +1,75 @@
+mydestination = localhost.localdomain, localhost, $myhostname, $mydomain,
+  lists.hcs.harvard.edu
+
+relay_domains = $mydestination, eecs.harvard.edu, 
+  solarsail.hcs.harvard.edu
+
+# strip foo.bar.hcs.harvard.edu -> hcs.harvard.edu
+masquerade_domains = gtest.hcs.harvard.edu solarsail.hcs.harvard.edu 
+  lists.hcs.harvard.edu hcs.harvard.edu hcs.so
+
+# Don't let people collect valid adresses by polling us.
+disable_vrfy_command = yes
+
+#HCS: rewrite @fas to the correct address
+canonical_maps = hash:/etc/postfix/canonical
+
+#HCS: need to have local_recipient_maps for transport tables
+local_recipient_maps = proxy:unix:passwd.byname $alias_maps $transport_maps
+
+#HCS: Forward list traffic correctly
+transport_maps = hash:/nfs/transport/transport
+
+alias_maps = hash:/etc/aliases
+alias_database = hash:/etc/aliases
+
+home_mailbox = .inbox
+forward_path = $home/.forward
+
+#HCS: Replace .forward business with procmail integration on the mail server
+mailbox_command = /usr/bin/procmail -a "$EXTENSION"
+
+# SIZE LIMITS
+# see http://www.postfix.org/resource.html
+body_checks_size_limit = 51200
+bounce_size_limit = 50000
+header_size_limit = 102400
+message_size_limit = 10240000
+
+# 1GB; default 50MB
+mailbox_size_limit = 1073741824
+
+#HCS: Enable amavis content-filtering
+#HCS: See master.cf for service that listens for amavis returned mail
+#content_filter = smtp-amavis:[127.0.0.1]:10024
+
+mynetworks = $config_directory/mynetworks
+
+#HCS: DNS Blacklisting
+smtpd_client_restrictions =
+  permit_mynetworks,
+  check_client_access hash:/etc/postfix/nobl,
+  check_client_access cidr:/etc/postfix/nobl_cidr,
+  reject_rbl_client zen.spamhaus.org,
+  reject_rbl_client dnsbl.njabl.org,
+  reject_rbl_client bl.spamcop.net,
+  permit
+
+#HCS: Greylisting--/etc/postfix/access is a hash containing whitelisted IP addrs
+smtpd_recipient_restrictions =
+  permit_mynetworks,
+  reject_non_fqdn_recipient,
+  reject_unauth_destination,
+  check_sender_access hash:/etc/postfix/blacklist,
+  check_client_access hash:/etc/postfix/access,
+  check_policy_service inet:127.0.0.1:60000,
+
+smtpd_banner = ESMTP
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no
+
+mailbox_size_limit = 0
+recipient_delimiter = +
+
