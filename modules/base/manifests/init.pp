@@ -2,6 +2,7 @@
 class base {
   include base::timezone
   include base::users
+  include base::alpine
 
   # install the base packages listed in data/hcs.yaml
   $packages = hiera_array('userfacing_packages')
