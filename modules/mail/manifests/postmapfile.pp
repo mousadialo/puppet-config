@@ -1,13 +1,6 @@
 # function to postmap a file if changed
-define mail::postmapfile ($name) {
+define mail::postmapfile ($name, $map=false) {
   include mail::postfix
-
-  exec { "postmap${name}":
-    command     => "/usr/sbin/postmap /etc/postfix/${name}",
-    refreshonly =>  true,
-    require     => [Package['postfix'], File["/etc/postfix/${name}"]],
-    notify      => Service['postfix']
-  }
 
   file { "/etc/postfix/${name}":
     ensure  => file,
@@ -15,8 +8,17 @@ define mail::postmapfile ($name) {
     source  => "puppet:///modules/mail/postfix/${title}",
     owner   => 'root',
     group   => 'root',
-    notify  => Exec["postmap${name}"],
     require => Package['postfix']
+  }
+
+  # we don't want to postmap everything, because some files are config files
+  if $map {
+    exec { "postmap${name}":
+      command     => "/usr/sbin/postmap /etc/postfix/${name}",
+      refreshonly =>  true,
+      require     => [Package['postfix'], File["/etc/postfix/${name}"]],
+      notify      => Service['postfix']
+    }
   }
 
 }
