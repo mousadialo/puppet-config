@@ -33,6 +33,13 @@ class mail::postfix {
     require => Package['postfix']
   }
 
+  file { '/etc/postfix/mynetworks':
+    ensure  => present,
+    source  => 'puppet:///modules/mail/postfix/mynetworks',
+    notify  => Service['postfix'],
+    require => Package['postfix']
+  }
+
   file { '/etc/postfix/nobl_cidr':
     ensure  => present,
     source  => 'puppet:///modules/mail/postfix/nobl_cidr',
