@@ -20,5 +20,5 @@ define mail::postmapfile ($name, $map=false) {
       notify      => Service['postfix']
     }
   }
-
+  notify {"map is ${map}"}
 }
