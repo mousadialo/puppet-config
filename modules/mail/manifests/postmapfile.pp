@@ -12,7 +12,7 @@ define mail::postmapfile ($name, $map=false) {
   }
 
   # we don't want to postmap everything, because some files are config files
-  if $map {
+  if $map == true {
     exec { "postmap${name}":
       command     => "/usr/sbin/postmap /etc/postfix/${name}",
       refreshonly =>  true,
