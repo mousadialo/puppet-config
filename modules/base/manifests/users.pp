@@ -32,11 +32,11 @@ class base::users {
       mode   => '0700';
 
     '/local/home/hcs/.ssh/authorized_keys':
-      ensure  => present,
-      owner   => 'hcs',
-      group   => 'root',
-      mode    => '0600',
-      # TODO: make this an HCS default key
-      content => 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAyu3Ag2EAyQcCrl6QYP/8677H2EeqlIYT2j3RTha+DItH5Q/mg6FLCCX48Lc/qYRjXPrDaYN7SEDajYavHV9goSikmsAOzavM52PiaC9NY2QiDJ/QG50yq/GbKs0wYMTLwWeGNkUwpc/vem7tatdsPpSJKWZ5SajggZApb9e41mjI1SzeN5J8nLQMcpsptdpzk+PPC7jjYdxio30b1EEkgJ1mioEXwhEtOgK40uvETtw7aGADcNNykALA5vUGeSLwsIHHa+HrGZS+Hy2sxp89dboJs3HuYyNhU0ROdR1KoQ8kp7WqMajolESiYZ8vpxOa2+mt/Dcc0BYSs5jKJLwcaw== srinchiera@college.harvard.edu'
+      ensure => present,
+      owner  => 'hcs',
+      group  => 'root',
+      mode   => '0600',
+      source => '/home/ubuntu/.ssh/authorized_keys'
+      #content => 'ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAyu3Ag2EAyQcCrl6QYP/8677H2EeqlIYT2j3RTha+DItH5Q/mg6FLCCX48Lc/qYRjXPrDaYN7SEDajYavHV9goSikmsAOzavM52PiaC9NY2QiDJ/QG50yq/GbKs0wYMTLwWeGNkUwpc/vem7tatdsPpSJKWZ5SajggZApb9e41mjI1SzeN5J8nLQMcpsptdpzk+PPC7jjYdxio30b1EEkgJ1mioEXwhEtOgK40uvETtw7aGADcNNykALA5vUGeSLwsIHHa+HrGZS+Hy2sxp89dboJs3HuYyNhU0ROdR1KoQ8kp7WqMajolESiYZ8vpxOa2+mt/Dcc0BYSs5jKJLwcaw== srinchiera@college.harvard.edu'
   }
 }
