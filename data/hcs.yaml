@@ -20,7 +20,6 @@ userfacing_packages:
   - php5-mysql
   - php5-sqlite
 
-
   # Python
   - ipython
   - python
