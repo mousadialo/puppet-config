@@ -1,0 +1,15 @@
+#
+# $Id: auto.master,v 1.4 2005/01/04 14:36:54 raven Exp $
+#
+# Sample auto.master file
+# This is an automounter map and it has the following format
+# key [ -mount-options-separated-by-comma ] location
+# For details of the format look at autofs(5).
+#/misc  /etc/auto.misc --timeout=60
+#/smb /etc/auto.smb
+#/misc  /etc/auto.misc
+#/net /etc/auto.net
+/mnt/tank/home/people /etc/autofs/nfs.people rw,relatime,nosuid,nodev
+/mnt/tank/home/groups /etc/autofs/nfs.groups rw,relatime,nosuid,nodev
+/mnt/tank/home/hcs /etc/autofs/nfs.hcs rw,relatime,nosuid,nodev
+/mnt/tank/home/general /etc/autofs/nfs.general rw,relatime,nosuid,nodev

@@ -1,8 +1,10 @@
 ---
 :backends:
+  - eyaml
   - yaml
 
 :hierarchy:
+  - "machines/web.eyaml"
   - "machines/%{::machine_type}"
   - hcs
   - "%{::operatingsystem}"
@@ -10,3 +12,11 @@
 
 :yaml:
   :datadir: /etc/puppet/data
+
+# Encrypted .yaml data
+:eyaml:
+  :datadir: /etc/puppet/data
+
+  # Location of keys
+  :pkcs7_private_key: /home/ubuntu/keys/private_key.pkcs7.pem
+  :pkcs7_public_key:  /home/ubuntu/keys/public_key.pkcs7.pem

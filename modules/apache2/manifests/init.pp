@@ -155,5 +155,31 @@ class apache2 {
       notify  => Service['apache2'],
       require => Package['libapache2-mod-php5']
     }
+
+    # Certificates
+    file {'/etc/ssl/certs/star.hcs.harvard.edu.crt':
+      ensure => file,
+      source => 'puppet:///modules/apache2/apache2/star.hcs.harvard.edu.crt',
+      owner  => root,
+      group  => root,
+      mode   => 644
+    }
+
+    file {'/etc/ssl/certs/gd_bundle.crt':
+      ensure => file,
+      source => 'puppet:///modules/apache2/apache2/gd_bundle.crt',
+      owner  => root,
+      group  => root,
+      mode   => 644
+    }
+
+    # HCS super private key
+    file {'/etc/ssl/private/star.hcs.harvard.edu.key':
+      ensure => file,
+      content => hiera('star.hcs.harvard.edu.key'),
+      owner  => root,
+      group  => root,
+      mode   => 600
+    }
   }
 }
