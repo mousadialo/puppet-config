@@ -20,7 +20,6 @@ userfacing_packages:
   - php5-mysql
   - php5-sqlite
 
-
   # Python
   - ipython
   - python
@@ -57,7 +56,7 @@ userfacing_packages:
   - rubygems
 
   # Node JS
-  - coffeeescript
+  - coffeescript
   - nodejs
   - nodejs-dev
   - npm
@@ -82,7 +81,7 @@ userfacing_packages:
   - finger
   - gdb
   - gnupg
-  - ldap-utils
+  #- ldap-utils
   - mutt
   - mysql-client
 

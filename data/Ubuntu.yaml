@@ -1,6 +1,6 @@
 classes:
   - ntp
-#  - base
+  - base
 
 # TODO: do we need the cloud packages?
 # TODO: we should define which base services are on/off
