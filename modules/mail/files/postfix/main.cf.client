@@ -7,6 +7,8 @@ append_dot_mydomain = no
 
 # Mail should be sent (by cron, pine, etc) as @hcs not @machine.hcs
 myorigin = $mydomain
+masquerade_domains = hcs.so
+
 # Pipe all mail to mail.hcs
 relayhost = [mail.hcs.harvard.edu]
 # Don't let other machines send mail to us
