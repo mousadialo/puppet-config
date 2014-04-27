@@ -10,7 +10,8 @@ myorigin = $mydomain
 masquerade_domains = hcs.so
 
 # Pipe all mail to mail.hcs
-relayhost = [mail.hcs.harvard.edu]
+#relayhost = [mail.hcs.harvard.edu]
+relayhost = hcs.so
 # Don't let other machines send mail to us
 mynetworks = 127.0.0.0/8
 inet_interfaces = loopback-only
