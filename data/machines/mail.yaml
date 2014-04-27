@@ -1,4 +1,6 @@
 ---
 classes:
+  - nfs
+  - ldap
   - mail
   - pam
