@@ -2,4 +2,7 @@
 classes:
   - nfs
   - ldap
+  # we want a null client setup
+  - mail
+
 nfs::nfs_home_directory: 'true'
