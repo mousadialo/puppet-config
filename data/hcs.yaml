@@ -56,7 +56,7 @@ userfacing_packages:
   - rubygems
 
   # Node JS
-  - coffeeescript
+  - coffeescript
   - nodejs
   - nodejs-dev
   - npm
@@ -81,7 +81,7 @@ userfacing_packages:
   - finger
   - gdb
   - gnupg
-  - ldap-utils
+  #- ldap-utils
   - mutt
   - mysql-client
 
