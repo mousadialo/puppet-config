@@ -4,3 +4,5 @@ classes:
   - ldap
   - mail
   - pam
+
+nfs::nfs_home_directory: 'true'
