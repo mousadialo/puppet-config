@@ -1,4 +1,5 @@
 ---
+fqdn: 'hcs.so'
 nfs-server: '10.0.12.251'
 ldap-server: 'ldap://54.85.64.52'
 nfs-mount-dir: '/mnt/tank/home'

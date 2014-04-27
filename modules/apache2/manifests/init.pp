@@ -16,14 +16,6 @@ class apache2 {
 
   # FILES
 
-  # TODO: remove this if we are doing a fresh install
-  # file{ ['/etc/apache2', '/etc/apache2/mods-enabled',
-  #         '/etc/apache2/sites-enabled' ] :
-  #  ensure  => directory,
-  #  require => Package['apache2'],
-  #  notify  => Service['apache2']
-  #}
-
   # This is the main apache configuratio file. It sets high level directives
   # and includes sites-enabled and conf.d
   apache2::config_file { 'apache2.conf': }
