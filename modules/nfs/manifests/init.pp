@@ -117,7 +117,7 @@ class nfs ($nfs_home_directory = 'false' ) {
   # clients. It should be identical on clients and server
   file {'/etc/idmapd.conf':
     ensure  => file,
-    content => template('ldap/idmapd.conf.erb'),
+    content => template('nfs/idmapd.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
