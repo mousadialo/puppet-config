@@ -69,7 +69,8 @@ class nfs::client::debian::service {
   } else {
       service {
         'idmapd':
-          ensure => stopped,
+          # Ummmmmmmmmmm.... This was set to stop but I changed it
+          ensure => running,
       }
   }
 }
