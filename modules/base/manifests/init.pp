@@ -5,7 +5,7 @@ class base {
   include base::alpine
 
   # install the base packages listed in data/hcs.yaml
-  # TODO SORRY SAAGAR I REMOVED THIS  
+/*
   $packages_userfacing = hiera_array('userfacing_packages')
   package { $packages_userfacing:
     ensure => installed
@@ -16,5 +16,6 @@ class base {
   package { $packages_ubuntu:
     ensure => installed
   }
+*/
 
 }
