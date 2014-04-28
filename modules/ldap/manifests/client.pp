@@ -14,10 +14,6 @@ class ldap::client {
     ensure => installed
   }
 
-  service { 'idmapd':
-    ensure => installed
-  }
-
   service { 'nscd':
     ensure  => running,
     enable  => true,
@@ -69,15 +65,4 @@ class ldap::client {
     notify => Service['ssh']
   }
 
-  # This file is used for mapping user ids and group ids between filer and
-  # clients. We put it here because mapping is done via ldap.
-  file {'/etc/idmapd.conf':
-    ensure  => file,
-    content => template('ldap/idmapd.conf.erb'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    require => File['/etc/nsswitch.conf'],
-    notify  => Service['idmapd']
-  }
 }

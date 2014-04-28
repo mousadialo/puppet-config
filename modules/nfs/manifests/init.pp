@@ -5,10 +5,12 @@ class nfs ($nfs_home_directory = 'false' ) {
    */
 
   include base
+  include ldap
 
   $nfs_server = hiera('nfs-server')
   $zpool_name = hiera('zfs::zpool_name')
   $dataset_name = hiera('zfs::dataset_name')
+  $fqdn = hiera('fqdn')
 
   if $::machine_type == 'file' {
     package { 'nfs-kernel-server':
@@ -110,4 +112,17 @@ class nfs ($nfs_home_directory = 'false' ) {
       require => [Package['autofs'], File['/etc/autofs']]
     }
   }
+
+  # This file is used for mapping user ids and group ids between filer and
+  # clients. It should be identical on clients and server
+  file {'/etc/idmapd.conf':
+    ensure  => file,
+    content => template('ldap/idmapd.conf.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => File['/etc/nsswitch.conf'],
+    notify  => Service['idmapd']
+  }
+
 }
