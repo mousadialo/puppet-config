@@ -12,7 +12,7 @@ class apache2 {
   }
 
   service { 'apache2':
-    ensure  => true,
+    ensure  => running,
     enable  => true,
     require => Package['apache2']
   }
@@ -31,6 +31,43 @@ class apache2 {
 
   if $::machine_type == 'web' {
 
+    # Shibboleth packages
+    package { 'shibboleth-sp2-schemas':
+      ensure => installed
+    } ->
+    package { 'libshibsp-dev':
+      ensure => installed
+    } ->
+    package { 'libshibsp-doc':
+      ensure => installed
+    } ->
+    package { 'libapache2-mod-shib2':
+      ensure => installed
+    } ->
+    package { 'opensaml2-tools':
+      ensure => installed
+    } ->
+    service { 'shibd':
+      ensure  => running,
+      enable  => true,
+      require => Package['apache2']
+    } ->
+    # HUIT IDP metadata
+    file { '/etc/shibboleth/huit-idp-metadata.xml':
+      ensure  => file,
+      source  => 'puppet:///modules/apache2/shibboleth/huit-idp-metadata.xml',
+      owner   => 'root',
+      group   => 'root'
+    } ->
+    # Main shibboleth configuration file
+    file { '/etc/shibboleth/shibboleth2.xml':
+      ensure  => file,
+      content => template('apache2/shibboleth2.xml.erb'),
+      owner   => 'root',
+      group   => 'root',
+      notify  => [Service['shibd'], Service['apache2']],
+    }
+
     # Configurations shipped with Apache. We minimally edit these files.
     apache2::config_file { 'conf.d/charset': }
     apache2::config_file { 'conf.d/localized-error-pages': }
@@ -44,16 +81,8 @@ class apache2 {
     apache2::vhost{ 'secure.hcs.harvard.edu': }
     apache2::vhost{ 'user-vhosts': }
 
-    file { '/etc/apache2/sites-availible/hcs.harvard.edu-ssl-site-availible':
-      ensure  => file,
-      content => template('apache2/hcs.harvard.edu-ssl'),
-      owner   => 'root',
-      group   => 'root',
-      notify  => Service['apache2'],
-      require => Package['apache2']
-    }
 
-    file { '/etc/apache2/sites-availible/hcs.harvard.edu-ssl-site-enabled':
+    file { '/etc/apache2/sites-availible/hcs.harvard.edu-ssl':
       ensure  => file,
       content => template('apache2/hcs.harvard.edu-ssl'),
       owner   => 'root',
@@ -61,15 +90,13 @@ class apache2 {
       notify  => Service['apache2'],
       require => Package['apache2']
     } ->
-    file { '/etc/apache2/sites-availible/hcs.harvard.edu-ssl-site-enabled':
+    file { '/etc/apache2/sites-enabled/hcs.harvard.edu-ssl':
       ensure  => link,
-      path    => '/etc/apache2/sites-enabled/hcs.harvard.edu-ssl',
       target  => '/etc/apache2/sites-available/hcs.harvard.edu-ssl',
       owner   => 'root',
       group   => 'root',
       require => Package['apache2']
     }
-
 
     # create the hcs conf directories
     file{ [ '/etc/apache2/hcs-conf.d',
