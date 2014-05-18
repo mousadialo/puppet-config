@@ -1,17 +1,21 @@
 NameVirtualHost *:443
 <VirtualHost *:443>
-  Servername www.hcs.harvard.edu
+  Servername <%=@fqdn%>
+  ServerAlias *.<%=@fqdn%>
+  UseCanonicalName On
   DocumentRoot /var/www/hcs.harvard.edu/htdocs
   ServerAdmin webmaster@hcs
   SSLEngine on
   SSLCertificateFile /etc/ssl/certs/star.hcs.harvard.edu.crt
   SSLCertificateKeyFile /etc/ssl/private/star.hcs.harvard.edu.key
   SSLCertificateChainFile /etc/ssl/certs/gd_bundle.crt
-  SSLProtocol -ALL +SSLv3 +TLSv1.2
+  SSLProtocol -ALL +SSLv3 +TLSv1
   SSLCipherSuite ECDHE-RSA-AES256-SHA384:RC4:AES256-SHA256:HIGH:!MD5:!aNULL:!EDH:!AESGCM
   SSLHonorCipherOrder on
 
   ServerSignature On
+
+  WSGIScriptAlias /secure /var/www/hcs.harvard.edu-ssl/helios/helios.wsgi
 
   <Directory />
     Options FollowSymLinks
@@ -20,11 +24,14 @@ NameVirtualHost *:443
 
   # Base website is the same for ssl as for non-ssl
   # Access to pages is controlled within drupal
-  <Directory "/var/www/hcs.harvard.edu/htdocs">
+  <Directory "/local/home/hcs/helios">
+    AuthType Shibboleth
+    ShibRequireSession On
+    require valid-user
+
     Order allow,deny
-    allow from all
-    Options FollowSymLinks MultiViews
-    AllowOverride All
+    Allow from all
+
   </Directory>
 
   # Turn on mod_php because many of our services use it instead
