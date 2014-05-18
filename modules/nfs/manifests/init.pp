@@ -37,7 +37,7 @@ class nfs ($nfs_home_directory = 'false' ) {
 
     if str2bool($nfs_home_directory) {
       # We want to symlink our home directory to nfs
-      file {"home":
+      file { 'home':
         ensure  => link,
         path    => '/home',
         target  => $mount_dir,
@@ -47,6 +47,18 @@ class nfs ($nfs_home_directory = 'false' ) {
         # 1) Must have mounted nfs
         # 2) Ubuntu user has a new, local home directory
         require => [Nfs::Client::Mount['nfs'], User['hcs']]
+      }
+
+      # HACK nscd caches all of the users groups from ldap. Whenever a sudo
+      # user does an apt-get their groups get all screwed up. We restart nscd
+      # everytime we do an apt-get so their groups are synced to ldap. This
+      # file is going here because if we symlink the home directory it means
+      # that ldap users are going to be logging in.
+      file { '/etc/apt/apt.conf.d/00restartnscd':
+        ensure  => file,
+        source  => "puppet:///modules/nfs/nscd-restart",
+        owner   => 'root',
+        group   => 'root',
       }
     }
 
@@ -60,7 +72,7 @@ class nfs ($nfs_home_directory = 'false' ) {
       require => Package['autofs']
     }
 
-    file { '/etc/autofs': 
+    file { '/etc/autofs':
       ensure => directory,
       owner  => 'root',
       group  => 'root',
