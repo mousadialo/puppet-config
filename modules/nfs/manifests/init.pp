@@ -18,6 +18,26 @@ class nfs ($nfs_home_directory = 'false' ) {
     }
   }
 
+  if $::machine_type == 'web' {
+
+    # Mount our web directories
+    nfs::client::mount {'www-hcs.harvard.edu':
+        server => $nfs_server,
+        share  => "/${zpool_name}/services/www-hcs.harvard.edu",
+        mount  => '/mnt/tank/www-hcs.harvard.edu',
+        options => 'vers=3,defaults',
+        atboot => true
+    }
+
+    nfs::client::mount {'www-hcs.harvard.edu-ssl':
+        server => $nfs_server,
+        share  => "/${zpool_name}/services/www-hcs.harvard.edu-ssl",
+        mount  => '/mnt/tank/www-hcs.harvard.edu-ssl',
+        options => 'vers=3,defaults',
+        atboot => true
+    }
+  }
+
   # Filer should not mount nfs
   if $::machine_type != 'file' {
 

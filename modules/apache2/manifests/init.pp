@@ -3,6 +3,8 @@
 # web servers will get more specific configuration
 class apache2 {
 
+  require nfs
+
   # These should be applied to all machines
   package { 'apache2':
     ensure => installed
@@ -172,6 +174,27 @@ class apache2 {
       owner  => root,
       group  => root,
       mode   => 600
+    }
+
+    # Symlink our web files to appropriate location
+    file { '/var/www/hcs.harvard.edu':
+      ensure  => link,
+      target  => '/mnt/tank/services/www-hcs.harvard.edu',
+      force   => 'true',
+      owner   => 'root',
+      group   => 'root',
+      # Must have mounted www-hcs.harvard.edu
+      require => Nfs::Client::Mount['www-hcs.harvard.edu']
+    }
+
+    file { '/var/www/hcs.harvard.edu-ssl':
+      ensure  => link,
+      target  => '/mnt/tank/services/www-hcs.harvard.edu-ssl',
+      force   => 'true',
+      owner   => 'root',
+      group   => 'root',
+      # Must have mounted www-hcs.harvard.edu-ssl
+      require => Nfs::Client::Mount['www-hcs.harvard.edu-ssl']
     }
   }
 }
