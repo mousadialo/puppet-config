@@ -12,6 +12,10 @@ class nfs ($nfs_home_directory = 'false' ) {
   $dataset_name = hiera('zfs::dataset_name')
   $fqdn = hiera('fqdn')
 
+  service { 'idmapd': 
+    ensure => running
+  }
+
   if $::machine_type == 'file' {
     package { 'nfs-kernel-server':
       ensure => 'installed'

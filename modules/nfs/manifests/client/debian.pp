@@ -60,6 +60,7 @@ class nfs::client::debian::service {
       hasstatus => false,
     } 
 
+  /* HCS - We already declare this in our init.
   if $nfs::client::debian::nfs_v4 {
     service {
       'idmapd':
@@ -69,8 +70,8 @@ class nfs::client::debian::service {
   } else {
       service {
         'idmapd':
-          # Ummmmmmmmmmm.... This was set to stop but I changed it
           ensure => running,
       }
   }
+  */
 }
