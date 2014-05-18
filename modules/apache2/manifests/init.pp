@@ -4,6 +4,7 @@
 class apache2 {
 
   require nfs
+  $fqdn = hiera('fqdn')
 
   # These should be applied to all machines
   package { 'apache2':
@@ -39,10 +40,36 @@ class apache2 {
     # HCS enabled virtual hosts.
     apache2::vhost{ 'default': }
     apache2::vhost{ 'hcs.harvard.edu': }
-    apache2::vhost{ 'hcs.harvard.edu-ssl': }
     apache2::vhost{ 'mail.hcs.harvard.edu': }
     apache2::vhost{ 'secure.hcs.harvard.edu': }
     apache2::vhost{ 'user-vhosts': }
+
+    file { '/etc/apache2/sites-availible/hcs.harvard.edu-ssl-site-availible':
+      ensure  => file,
+      content => template('apache2/hcs.harvard.edu-ssl'),
+      owner   => 'root',
+      group   => 'root',
+      notify  => Service['apache2'],
+      require => Package['apache2']
+    }
+
+    file { '/etc/apache2/sites-availible/hcs.harvard.edu-ssl-site-enabled':
+      ensure  => file,
+      content => template('apache2/hcs.harvard.edu-ssl'),
+      owner   => 'root',
+      group   => 'root',
+      notify  => Service['apache2'],
+      require => Package['apache2']
+    } ->
+    file { '/etc/apache2/sites-availible/hcs.harvard.edu-ssl-site-enabled':
+      ensure  => link,
+      path    => '/etc/apache2/sites-enabled/hcs.harvard.edu-ssl',
+      target  => '/etc/apache2/sites-available/hcs.harvard.edu-ssl',
+      owner   => 'root',
+      group   => 'root',
+      require => Package['apache2']
+    }
+
 
     # create the hcs conf directories
     file{ [ '/etc/apache2/hcs-conf.d',
