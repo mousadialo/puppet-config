@@ -47,11 +47,6 @@ class apache2 {
     package { 'opensaml2-tools':
       ensure => installed
     } ->
-    service { 'shibd':
-      ensure  => running,
-      enable  => true,
-      require => Package['apache2']
-    } ->
     # HUIT IDP metadata
     file { '/etc/shibboleth/huit-idp-metadata.xml':
       ensure  => file,
@@ -66,7 +61,12 @@ class apache2 {
       owner   => 'root',
       group   => 'root',
       notify  => [Service['shibd'], Service['apache2']],
-    }
+    } ->
+    service { 'shibd':
+      ensure    => running,
+      enable    => true,
+      require   => Package['apache2']
+    } 
 
     # Configurations shipped with Apache. We minimally edit these files.
     apache2::config_file { 'conf.d/charset': }
@@ -210,7 +210,7 @@ class apache2 {
       source => 'puppet:///modules/apache2/apache2/star.hcs.harvard.edu.crt',
       owner  => root,
       group  => root,
-      mode   => 644
+      mode   => '0644'
     }
 
     file {'/etc/ssl/certs/gd_bundle.crt':
@@ -218,23 +218,23 @@ class apache2 {
       source => 'puppet:///modules/apache2/apache2/gd_bundle.crt',
       owner  => root,
       group  => root,
-      mode   => 644
+      mode   => '0644'
     }
 
     # HCS super private key
     file {'/etc/ssl/private/star.hcs.harvard.edu.key':
-      ensure => file,
+      ensure  => file,
       content => hiera('star.hcs.harvard.edu.key'),
-      owner  => root,
-      group  => root,
-      mode   => 600
+      owner   => root,
+      group   => root,
+      mode    => '0600'
     }
 
     # Symlink our web files to appropriate location
     file { '/var/www/hcs.harvard.edu':
       ensure  => link,
       target  => '/mnt/tank/services/www-hcs.harvard.edu',
-      force   => 'true',
+      force   => true,
       owner   => 'root',
       group   => 'root',
       # Must have mounted www-hcs.harvard.edu
@@ -244,7 +244,7 @@ class apache2 {
     file { '/var/www/hcs.harvard.edu-ssl':
       ensure  => link,
       target  => '/mnt/tank/services/www-hcs.harvard.edu-ssl',
-      force   => 'true',
+      force   => true,
       owner   => 'root',
       group   => 'root',
       # Must have mounted www-hcs.harvard.edu-ssl
