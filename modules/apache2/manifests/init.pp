@@ -17,6 +17,11 @@ class apache2 {
     require => Package['apache2']
   }
 
+  service { 'ssh':
+    ensure => running,
+    enable => true
+  }
+
   # FILES
 
   # This is the main apache configuratio file. It sets high level directives
@@ -254,5 +259,16 @@ class apache2 {
       # Must have mounted www-hcs.harvard.edu-ssl
       require => Nfs::Client::Mount['www-hcs.harvard.edu-ssl']
     }
-  }
+
+    # in order for helios to run, the web servers should have
+    # a slightly different ssh config
+    file { '/ssh/sshd_config':
+      ensure => link,
+      target => '/etc/ssh/sshd_config',
+      force  => true,
+      owner  => 'root',
+      group  => 'root',
+      notify => Service['ssh']
+    }
+ }
 }
