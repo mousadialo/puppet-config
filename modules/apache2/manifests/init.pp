@@ -171,11 +171,15 @@ class apache2 {
     apache2::mod { 'proxy_balancer': }
     apache2::mod { 'proxy_http': }
     apache2::mod { 'rewrite': }
+    apache2::mod { 'shib2': }
     apache2::mod { 'ssl':
       with_conf => true
     }
     apache2::mod { 'suexec': }
     apache2::mod { 'userdir': }
+    apache2::mod { 'wsgi':
+      with_conf => true
+    }
 
     # Remove default php confs
     file { '/etc/apache2/mods-enabled/php5.load':
