@@ -25,6 +25,7 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     logoutput => true,
     user => 'root',
     path => ["/sbin"],
+    timeout => 0, # this will take a while
     # Do not create the zpool if it already exists
     unless => "/sbin/zpool list | /bin/grep ${zpool_name} 2> /dev/null"
   }

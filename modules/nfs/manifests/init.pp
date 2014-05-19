@@ -5,14 +5,36 @@ class nfs ($nfs_home_directory = 'false' ) {
    */
 
   include base
+  include ldap
 
   $nfs_server = hiera('nfs-server')
   $zpool_name = hiera('zfs::zpool_name')
   $dataset_name = hiera('zfs::dataset_name')
+  $fqdn = hiera('fqdn')
 
   if $::machine_type == 'file' {
     package { 'nfs-kernel-server':
       ensure => 'installed'
+    }
+  }
+
+  if $::machine_type == 'web' {
+
+    # Mount our web directories
+    nfs::client::mount {'www-hcs.harvard.edu':
+        server => $nfs_server,
+        share  => "/${zpool_name}/services/www-hcs.harvard.edu",
+        mount  => '/mnt/tank/www-hcs.harvard.edu',
+        options => 'vers=3,defaults',
+        atboot => true
+    }
+
+    nfs::client::mount {'www-hcs.harvard.edu-ssl':
+        server => $nfs_server,
+        share  => "/${zpool_name}/services/www-hcs.harvard.edu-ssl",
+        mount  => '/mnt/tank/www-hcs.harvard.edu-ssl',
+        options => 'vers=3,defaults',
+        atboot => true
     }
   }
 
@@ -35,7 +57,7 @@ class nfs ($nfs_home_directory = 'false' ) {
 
     if str2bool($nfs_home_directory) {
       # We want to symlink our home directory to nfs
-      file {"home":
+      file { 'home':
         ensure  => link,
         path    => '/home',
         target  => $mount_dir,
@@ -45,6 +67,18 @@ class nfs ($nfs_home_directory = 'false' ) {
         # 1) Must have mounted nfs
         # 2) Ubuntu user has a new, local home directory
         require => [Nfs::Client::Mount['nfs'], User['hcs']]
+      }
+
+      # HACK nscd caches all of the users groups from ldap. Whenever a sudo
+      # user does an apt-get their groups get all screwed up. We restart nscd
+      # everytime we do an apt-get so their groups are synced to ldap. This
+      # file is going here because if we symlink the home directory it means
+      # that ldap users are going to be logging in.
+      file { '/etc/apt/apt.conf.d/00restartnscd':
+        ensure  => file,
+        source  => "puppet:///modules/nfs/nscd-restart",
+        owner   => 'root',
+        group   => 'root',
       }
     }
 
@@ -58,7 +92,7 @@ class nfs ($nfs_home_directory = 'false' ) {
       require => Package['autofs']
     }
 
-    file { '/etc/autofs': 
+    file { '/etc/autofs':
       ensure => directory,
       owner  => 'root',
       group  => 'root',
@@ -110,4 +144,17 @@ class nfs ($nfs_home_directory = 'false' ) {
       require => [Package['autofs'], File['/etc/autofs']]
     }
   }
+
+  # This file is used for mapping user ids and group ids between filer and
+  # clients. It should be identical on clients and server
+  file {'/etc/idmapd.conf':
+    ensure  => file,
+    content => template('nfs/idmapd.conf.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => File['/etc/nsswitch.conf'],
+    notify  => Service['idmapd']
+  }
+
 }
