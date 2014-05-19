@@ -82,7 +82,7 @@ class apache2 {
     apache2::vhost{ 'user-vhosts': }
 
 
-    file { '/etc/apache2/sites-availible/hcs.harvard.edu-ssl':
+    file { '/etc/apache2/sites-available/hcs.harvard.edu-ssl':
       ensure  => file,
       content => template('apache2/hcs.harvard.edu-ssl'),
       owner   => 'root',
