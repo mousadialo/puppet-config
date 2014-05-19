@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:shibmd="urn:mace:shibboleth:metadata:1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" entityID="https://fed.huit.harvard.edu/idp/shibboleth">
+
+    <IDPSSODescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:2.0:protocol">
+
+        <Extensions>
+            <shibmd:Scope regexp="false">harvard.edu</shibmd:Scope>
+        </Extensions>
+
+        <KeyDescriptor>
+            <ds:KeyInfo>
+                <ds:X509Data>
+                    <ds:X509Certificate>
+MIIDPDCCAiSgAwIBAgIVAMHQ2+0FLgQvpn9LL0UhXMMNPuAgMA0GCSqGSIb3DQEB
+BQUAMB8xHTAbBgNVBAMTFGZlZC5odWl0LmhhcnZhcmQuZWR1MB4XDTEzMDgxNDE2
+MzcwMFoXDTE2MDgxNDE2MzcwMFowHzEdMBsGA1UEAxMUZmVkLmh1aXQuaGFydmFy
+ZC5lZHUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCx7RtyRasKHsaM
+y5JjRalxmd0wQ5f/2vRZ3/7mf2tsz7F/Omm7iehUvqdUQ1VHcqz0YtYI6LCpRsv0
+cAadIN+A52Z+mRxVS0ipqmo7dWEzq/l/a+FIFL/WH7GGhzT2CkS63egZqVwmjfGi
+nD48x8eb5iNJiFl+86nKnBd9OPa4Lu8SMZAIrIHmbMJiaZg5AMpTBqx7Aswvjw+K
+YdzwShYnIz9BJJyKmx2KM0hAFn3Rx344xeBKZ8x74Tfi2Nf/9mg+EXUNHokOmmOw
+qTDsISKfBb8B4Wi2HgFziiK0YsUPnPphaELyYz65jt7/myQq479PuBwkXDatZbkf
+dG49sFY3AgMBAAGjbzBtMEwGA1UdEQRFMEOCFGZlZC5odWl0LmhhcnZhcmQuZWR1
+hitodHRwczovL2ZlZC5odWl0LmhhcnZhcmQuZWR1L2lkcC9zaGliYm9sZXRoMB0G
+A1UdDgQWBBQPaXv5xewHpvA6acA9EguQxtTnIDANBgkqhkiG9w0BAQUFAAOCAQEA
+EFbJC6L/TSNQ+2GhnbWDQkWDsR+GafRumjv5K4uSIPSJbn9LTwJKVDA8AwOGYyM3
+z1kLIOKdJU+rh+ZzFRBNHNa9Hwdn0rb6mv/4H6FzlSDHVh+5H+r0ohZW7mlKXi39
+4iJ2Vg1B/edJsF6jpgCZ/hNMqdvIWFIaUYSUkLLyf2gqod6vGRj69+KnPHDSYblY
+khJAS6iLBV6oXpiLnFLsMOx3PPbDlcFKjI/GlNVR9zKfvtdLZw+pKKGa8q2tARdV
+fvoMZweNsx+LViC1oJSfNXRQGFcipJmzV0lotUCf2YiU3fAkkCQjv/QB/WD1cBn1
+fSvxgeeh4nx2Wy1uwFlYcA==
+
+                    </ds:X509Certificate>
+                </ds:X509Data>
+            </ds:KeyInfo>
+        </KeyDescriptor>
+
+        <NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat>
+        <NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat>
+        <NameIDFormat>urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified</NameIDFormat>
+
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://fed.huit.harvard.edu/idp/profile/SAML2/POST/SSO"/>
+
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://fed.huit.harvard.edu/idp/profile/SAML2/POST-SimpleSign/SSO"/>
+
+        <SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://fed.huit.harvard.edu/idp/profile/SAML2/Redirect/SSO"/>
+    </IDPSSODescriptor>
+
+    <Organization>
+        <OrganizationName xml:lang="en">Harvard University</OrganizationName>
+        <OrganizationDisplayName xml:lang="en">Harvard University</OrganizationDisplayName>
+        <OrganizationURL xml:lang="en">http://www.harvard.edu/</OrganizationURL>
+    </Organization>
+
+    <ContactPerson contactType="support">
+        <GivenName>IdP Support Team</GivenName>
+        <EmailAddress>idp_support@harvard.edu</EmailAddress>
+    </ContactPerson>
+
+</EntityDescriptor>

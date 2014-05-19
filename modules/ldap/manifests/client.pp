@@ -64,4 +64,5 @@ class ldap::client {
     mode   => '0644',
     notify => Service['ssh']
   }
+
 }
