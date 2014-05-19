@@ -10,23 +10,23 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     ensure => latest,
   }
   ->
-  /* Correct permissions, owner, and group */
+  # Correct permissions, owner, and group
   file {'/tank':
     ensure => directory,
     owner  => 'root',
     group  => 'root',
-    mode   => 644,
+    mode   => '0644',
   }
   ->
-  /* Our EBS instances already contain all the necsesary user data. */
+  # Our EBS instances already contain all the necsesary user data.
   exec { 'import-zpool':
-    command => "zpool import -f ${zpool_name}",
-    cwd => '/',
+    command   => "zpool import -f ${zpool_name}",
+    cwd       => '/',
     logoutput => true,
-    user => 'root',
-    path => ["/sbin"],
-    timeout => 0, # this will take a while
+    user      => 'root',
+    path      => ['/sbin'],
+    timeout   => 0, # this will take a while
     # Do not create the zpool if it already exists
-    unless => "/sbin/zpool list | /bin/grep ${zpool_name} 2> /dev/null"
+    unless    => "/sbin/zpool list | /bin/grep ${zpool_name} 2> /dev/null"
   }
 }

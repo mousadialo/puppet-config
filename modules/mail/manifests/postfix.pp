@@ -52,9 +52,9 @@ class mail::postfix {
   }
   else {
     # servers that aren't mail should use the NULL client configuration
-    file { "/etc/postfix/main.cf":
+    file { '/etc/postfix/main.cf':
       ensure  => file,
-      source  => "puppet:///modules/mail/postfix/main.cf.client",
+      source  => 'puppet:///modules/mail/postfix/main.cf.client',
       owner   => 'root',
       group   => 'root',
       require => Package['postfix']

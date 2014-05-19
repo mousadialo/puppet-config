@@ -1,3 +1,4 @@
+# set up the time syncing servers
 class ntp {
 
   package { 'ntp':
@@ -5,16 +6,16 @@ class ntp {
   }
 
   service { 'ntpd':
-    ensure => running,
-    enable => true,
+    ensure  => running,
+    enable  => true,
     require => Package['ntp'],
-    name => 'ntp'
+    name    => 'ntp'
   }
 
   file { '/etc/ntp.conf':
-    ensure => present,
-    source => 'puppet:///modules/ntp/ntp.conf',
-    notify => Service['ntpd'],
+    ensure  => present,
+    source  => 'puppet:///modules/ntp/ntp.conf',
+    notify  => Service['ntpd'],
     require => Package['ntp']
   }
 
