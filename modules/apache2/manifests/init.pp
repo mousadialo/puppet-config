@@ -126,6 +126,19 @@ class apache2 {
     # Apache modules
     package { 'libapache2-mod-php5': }
     package { 'libapache2-mod-suphp': }
+
+    # Custom suphp conf which disables checking the Document root. If we don't
+    # do this it errors because we symlink our /var/www to
+    # /mnt/tank/hcs.harvard.edu
+    file {'/etc/suphp/suphp.conf':
+      ensure  => file,
+      source  => 'puppet:///modules/apache2/apache2/mod-config/suphp.conf',
+      owner   => root,
+      group   => root,
+      notify  => Service['apache2'],
+      require => Package['libapache2-mod-suphp']
+    }
+
     package { 'libapache2-mod-fcgid': }
 
     # Perl modules
