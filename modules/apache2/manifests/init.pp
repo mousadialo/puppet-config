@@ -237,7 +237,7 @@ class apache2 {
     # Symlink our web files to appropriate location
     file { '/var/www/hcs.harvard.edu':
       ensure  => link,
-      target  => '/mnt/tank/services/www-hcs.harvard.edu',
+      target  => '/mnt/tank/www-hcs.harvard.edu',
       force   => true,
       owner   => 'root',
       group   => 'root',
@@ -247,7 +247,7 @@ class apache2 {
 
     file { '/var/www/hcs.harvard.edu-ssl':
       ensure  => link,
-      target  => '/mnt/tank/services/www-hcs.harvard.edu-ssl',
+      target  => '/mnt/tank/www-hcs.harvard.edu-ssl',
       force   => true,
       owner   => 'root',
       group   => 'root',
