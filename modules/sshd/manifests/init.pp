@@ -9,7 +9,7 @@ class sshd {
     # Web config is a little different in order to make helios work
     file {'/etc/ssh/sshd_config':
       ensure => file,
-      source => 'puppet:///modules/ssh/sshd_config.web',
+      source => 'puppet:///modules/sshd/sshd_config.web',
       owner  => 'root',
       group  => 'root',
       mode   => '0644',
@@ -18,7 +18,7 @@ class sshd {
   } else {
     file {'/etc/ssh/sshd_config':
       ensure => file,
-      source => 'puppet:///modules/ssh/sshd_config',
+      source => 'puppet:///modules/sshd/sshd_config',
       owner  => 'root',
       group  => 'root',
       mode   => '0644',
