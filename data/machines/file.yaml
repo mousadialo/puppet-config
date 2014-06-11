@@ -2,4 +2,5 @@
 classes:
   - nfs
   - zfs
+  - ssh
   - ldap

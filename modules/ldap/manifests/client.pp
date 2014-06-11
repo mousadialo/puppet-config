@@ -20,11 +20,6 @@ class ldap::client {
     require => Package['nscd']
   }
 
-  service { 'ssh':
-    ensure    => running,
-    enable    => true,
-  }
-
   file {'/etc/ldap.conf':
     ensure  => file,
     content => template('ldap/ldap-server.conf.erb'),
@@ -54,15 +49,4 @@ class ldap::client {
     notify  => Service['nscd'],
     require => Package['nscd']
   }
-
-  # TODO: make this a separate module, potentially part of the base module
-  file {'/etc/ssh/sshd_config':
-    ensure => file,
-    source => 'puppet:///modules/ldap/sshd_config',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
-    notify => Service['ssh']
-  }
-
 }

@@ -2,6 +2,7 @@
 classes:
   - nfs
   - ldap
+  - ssh
   - mail
   - pam
 

@@ -260,15 +260,5 @@ class apache2 {
       require => Nfs::Client::Mount['www-hcs.harvard.edu-ssl']
     }
 
-    # in order for helios to run, the web servers should have
-    # a slightly different ssh config
-    file { '/ssh/sshd_config':
-      ensure => link,
-      target => '/etc/ssh/sshd_config',
-      force  => true,
-      owner  => 'root',
-      group  => 'root',
-      notify => Service['ssh']
-    }
  }
 }

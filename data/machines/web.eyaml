@@ -3,6 +3,7 @@ classes:
   - apache2
   - nfs
   - web
+  - ssh
   - ldap
 
 nfs::nfs_home_directory: 'true'
