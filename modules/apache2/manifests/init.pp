@@ -17,11 +17,6 @@ class apache2 {
     require => Package['apache2']
   }
 
-  service { 'ssh':
-    ensure => running,
-    enable => true
-  }
-
   # FILES
 
   # This is the main apache configuratio file. It sets high level directives
