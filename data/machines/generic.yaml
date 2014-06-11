@@ -2,7 +2,7 @@
 classes:
   - nfs
   - ldap
-  - ssh
+  - sshd
   # we want a null client setup
   - mail
 
