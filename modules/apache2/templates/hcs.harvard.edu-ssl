@@ -15,7 +15,7 @@ NameVirtualHost *:443
 
   ServerSignature On
 
-  WSGIScriptAlias /secure /var/www/hcs.harvard.edu-ssl/helios/helios.wsgi
+  wsgiscriptalias /secure /var/www/hcs.harvard.edu-ssl/helios/helios.wsgi
 
   <Directory />
     Options FollowSymLinks
@@ -24,7 +24,7 @@ NameVirtualHost *:443
 
   # Base website is the same for ssl as for non-ssl
   # Access to pages is controlled within drupal
-  <Directory "/local/home/hcs/helios">
+  <Directory "/var/www/hcs.harvard.edu-ssl/helios">
     AuthType Shibboleth
     ShibRequireSession On
     require valid-user
