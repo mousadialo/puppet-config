@@ -69,10 +69,10 @@ class apache2 {
     }
 
     # Following 2 packages needed for drupal
-    package { 'php-gd':
+    package { 'php5-gd':
       ensure => installed
     }
-    package { 'php-mysql':
+    package { 'php5-mysql':
       ensure => installed
     }
     # Configurations shipped with Apache. We minimally edit these files.
