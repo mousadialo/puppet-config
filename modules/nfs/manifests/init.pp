@@ -41,6 +41,16 @@ class nfs ($nfs_home_directory = 'false' ) {
   # Filer should not mount nfs
   if $::machine_type != 'file' {
 
+    package { 'idmapd':
+      ensure  => installed,
+    }
+
+    service { 'idmapd':
+      ensure => running,
+      enable => true,
+      require => Package['idmapd']
+    }
+
     $mount_dir = hiera('nfs-mount-dir')
 
     class { 'nfs::client':
