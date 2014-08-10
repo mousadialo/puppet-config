@@ -15,7 +15,7 @@ class sshd {
       mode   => '0644',
       notify => Service['ssh']
     }
-  } else if $::machine_type == 'file' {
+  } elsif $::machine_type == 'file' {
     # Web config is a little different in order to make helios work
     file {'/etc/ssh/sshd_config':
       ensure => file,
