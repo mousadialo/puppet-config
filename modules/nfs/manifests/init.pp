@@ -146,15 +146,15 @@ class nfs ($nfs_home_directory = 'false' ) {
     }
   }
 
-
-  package { 'idmapd':
-    ensure  => installed,
-  }
+# FIXME idmapd is not a package, @salvatore what is needed here
+#  package { 'idmapd':
+#    ensure  => installed,
+#  }
 
   service { 'idmapd':
     ensure => running,
     enable => true,
-    require => Package['idmapd']
+#    require => Package['idmapd']
   }
 
 
