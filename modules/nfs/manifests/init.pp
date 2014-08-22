@@ -147,14 +147,14 @@ class nfs ($nfs_home_directory = 'false' ) {
   }
 
 
-  package { 'idmapd':
-    ensure  => installed,
-  }
+  #package { 'idmapd':
+  #  ensure  => installed,
+  #}
 
   service { 'idmapd':
     ensure => running,
     enable => true,
-    require => Package['idmapd']
+    #  require => Package['idmapd']
   }
 
 
