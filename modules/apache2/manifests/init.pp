@@ -123,6 +123,7 @@ class apache2 {
 
     # HCS configurations for non-secure pages
     apache2::config_file { 'hcs-nonsecure-conf.d/redirects.conf': }
+    apache2::config_file { 'hcs-nonsecure-conf.d/phpmyadmin.conf': }
 
     # HCS configurations for secure pages
     apache2::config_file { 'hcs-ssl-conf.d/phpmyadmin.conf': }
