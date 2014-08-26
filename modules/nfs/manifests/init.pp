@@ -154,9 +154,8 @@ class nfs ($nfs_home_directory = 'false' ) {
   service { 'idmapd':
     ensure => running,
     enable => true,
-#    require => Package['idmapd']
   }
-
+#    require => Package['idmapd']
 
   # This file is used for mapping user ids and group ids between filer and
   # clients. It should be identical on clients and server
