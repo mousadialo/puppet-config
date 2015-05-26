@@ -10,9 +10,6 @@ class base::timezone {
     user        => root,
     group       => root,
     refreshonly => true
-  } ->
-  notify { 'timezone-changed':
-    message => 'Timezone was updated to America/New_York.',
   }
 
 }
