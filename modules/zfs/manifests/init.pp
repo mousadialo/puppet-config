@@ -10,12 +10,22 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     ensure => latest,
   }
   ->
+  # Enable automatic sharing
+  file {'/etc/default/zfs':
+    ensure => file,
+    path   => '/etc/default/zfs',
+    source => 'puppet:///modules/zfs/zfs',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
+  ->
   # Correct permissions, owner, and group
   file {'/tank':
     ensure => directory,
     owner  => 'root',
     group  => 'root',
-    mode   => '0644',
+    mode   => '0755',
   }
   ->
   # Our EBS instances already contain all the necsesary user data.
@@ -28,5 +38,16 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
     timeout   => 0, # this will take a while
     # Do not create the zpool if it already exists
     unless    => "/sbin/zpool list | /bin/grep ${zpool_name} 2> /dev/null"
+  }
+  ->
+  exec { 'share-all':
+    command   => "zfs share -a",
+    cwd       => '/',
+    logoutput => true,
+    user      => root,
+    path      => ['/sbin'],
+    timeout   => 0, # this will take a while as well
+    # Do not share if export list is already populated
+    unless    => "/sbin/showmount -e | /bin/grep ${zpool_name} 2> /dev/null"
   }
 }

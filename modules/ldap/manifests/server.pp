@@ -19,13 +19,14 @@ class ldap::server {
 
   file {'/etc/ldap.conf':
     ensure  => file,
-    source  => 'puppet:///modules/ldap/ldap.conf',
+    source  => 'puppet:///modules/ldap/ldap-server.conf',
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
     notify  => Service['dirsrv'],
     require => Package['389-ds-base']
   }
+  
   file {'/etc/dirsrv/schema/00core.ldif':
     ensure  => file,
     source  => 'puppet:///modules/ldap/00core.ldif',

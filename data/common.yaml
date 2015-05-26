@@ -1,7 +1,8 @@
 ---
 fqdn: 'hcs.so'
+puppet-server: '10.0.13.235'
 nfs-server: '10.0.12.250'
-ldap-server: 'ldap://54.85.64.52'
+ldap-server: '10.0.14.216'
 nfs-mount-dir: '/mnt/tank/home'
 zfs::zpool_name: 'tank'
 zfs::dataset_name: 'home'

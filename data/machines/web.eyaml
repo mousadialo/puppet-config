@@ -1,10 +1,10 @@
 ---
 classes:
-  - apache2
   - nfs
   - web
-  - sshd
   - ldap
+  - apache2
+  - sshd
   # null client config
   - mail
 

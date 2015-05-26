@@ -16,7 +16,6 @@ class sshd {
       notify => Service['ssh']
     }
   } elsif $::machine_type == 'file' {
-    # Web config is a little different in order to make helios work
     file {'/etc/ssh/sshd_config':
       ensure => file,
       source => 'puppet:///modules/sshd/sshd_config.file',

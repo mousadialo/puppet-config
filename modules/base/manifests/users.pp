@@ -11,7 +11,7 @@ class base::users {
     password => '$6$0uaOzhoY$UpDttMyo/X40L0bhxsQ6v.tQAIiBSs0e4vi8zsPRfu8Ga6wZOoZJL1TfCSxfN5b4r0B8CHla4HaYH/M3AbyV/.',
     groups   => ['adm', /*'admin-lite',*/ 'admin']
     #TODO remove admin, make admin-lite the gid,
-    # and add it to to sudoers like on cato
+    # and add it to sudoers like on cato
   } ->
 
   file { '/local':

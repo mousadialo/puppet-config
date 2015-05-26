@@ -17,30 +17,26 @@ class nfs ($nfs_home_directory = 'false' ) {
       ensure => 'installed'
     }
   }
+  else {
+    if $::machine_type == 'web' {
 
-  if $::machine_type == 'web' {
+      # Mount our web directories
+      nfs::client::mount {'www-hcs.harvard.edu':
+          server  => $nfs_server,
+          share   => "/${zpool_name}/services/www-hcs.harvard.edu",
+          mount   => '/mnt/tank/www-hcs.harvard.edu',
+          options => 'rw,relatime,nosuid,nodev',
+          atboot  => true
+      }
 
-    # Mount our web directories
-    nfs::client::mount {'www-hcs.harvard.edu':
-        server => $nfs_server,
-        share  => "/${zpool_name}/services/www-hcs.harvard.edu",
-        mount  => '/mnt/tank/www-hcs.harvard.edu',
-        options => 'vers=3,defaults',
-        atboot => true
+      nfs::client::mount {'www-hcs.harvard.edu-ssl':
+          server  => $nfs_server,
+          share   => "/${zpool_name}/services/www-hcs.harvard.edu-ssl",
+          mount   => '/mnt/tank/www-hcs.harvard.edu-ssl',
+          options => 'rw,relatime,nosuid,nodev',
+          atboot  => true
+      }
     }
-
-    nfs::client::mount {'www-hcs.harvard.edu-ssl':
-        server => $nfs_server,
-        share  => "/${zpool_name}/services/www-hcs.harvard.edu-ssl",
-        mount  => '/mnt/tank/www-hcs.harvard.edu-ssl',
-        options => 'vers=3,defaults',
-        atboot => true
-    }
-  }
-
-  # Filer should not mount nfs
-  if $::machine_type != 'file' {
-
 
     $mount_dir = hiera('nfs-mount-dir')
 
@@ -49,11 +45,11 @@ class nfs ($nfs_home_directory = 'false' ) {
       nfs_v4_mount_root => '/nfs'
     } ->
     nfs::client::mount {'nfs':
-        server => $nfs_server,
-        share  => "/${zpool_name}/home",
-        mount  => $mount_dir,
-        options => 'vers=3,defaults',
-        atboot => true
+        server  => $nfs_server,
+        share   => "/${zpool_name}/home",
+        mount   => $mount_dir,
+        options => 'rw,relatime,nosuid,nodev',
+        atboot  => true
     }
 
     if str2bool($nfs_home_directory) {
@@ -88,8 +84,8 @@ class nfs ($nfs_home_directory = 'false' ) {
       require => Nfs::Client::Mount['nfs']
     }
     service { 'autofs':
-      ensure => running,
-      enable => true,
+      ensure  => running,
+      enable  => true,
       require => Package['autofs']
     }
 
@@ -148,7 +144,7 @@ class nfs ($nfs_home_directory = 'false' ) {
 
 # FIXME idmapd is not a package, @salvatore what is needed here
 #  package { 'idmapd':
-#    ensure  => installed,
+#    ensure => installed,
 #  }
 
   service { 'idmapd':
