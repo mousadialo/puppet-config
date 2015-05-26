@@ -15,6 +15,17 @@ class nfs ($nfs_home_directory = 'false' ) {
   if $::machine_type == 'file' {
     package { 'nfs-kernel-server':
       ensure => 'installed'
+    } ->
+    file { '/etc/init.d/nfs-kernel-server':
+      ensure  => file,
+      source  => "puppet:///modules/nfs/nfs-kernel-server",
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755'
+    } ->
+    service { 'nfs-kernel-server':
+      ensure => running,
+      enable => true
     }
   }
   else {
