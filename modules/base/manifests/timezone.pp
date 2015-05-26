@@ -6,9 +6,10 @@ class base::timezone {
     content => "America/New_York\n",
   } ~>
   exec { 'reconfigure-tzdata':
-    user    => root,
-    group   => root,
-    command => '/usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata',
+    command     => '/usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata',
+    user        => root,
+    group       => root,
+    refreshonly => true
   } ->
   notify { 'timezone-changed':
     message => 'Timezone was updated to America/New_York.',
