@@ -5,10 +5,8 @@ class pam {
     ensure => present,
     source => 'puppet:///modules/pam/sshd',
     owner  => 'root',
-    group  => 'root',
-    notify => Notify['pam-sshd-changed']
-  }
-
+    group  => 'root'
+  } ~>
   notify { 'pam-sshd-changed':
     message => 'PAM sshd was updated.
     You need to log in again before changes apply'
