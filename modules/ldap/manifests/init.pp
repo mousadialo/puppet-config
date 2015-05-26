@@ -3,8 +3,9 @@
 class ldap {
 
   host { 'ldap.hcs.so':
-    ensure => present,
-    ip     => hiera('ldap-server')
+    ensure  => present,
+    ip      => hiera('ldap-server'),
+    comment => 'LDAP IP Address'
   }
 
   if $::machine_type == 'ldap' {

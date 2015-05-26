@@ -22,7 +22,7 @@ class ldap::client {
   
   file {'/etc/ldap.conf':
     ensure  => file,
-    content => 'puppet:///modules/ldap/ldap-server.conf',
+    source  => 'puppet:///modules/ldap/ldap-server.conf',
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
@@ -33,7 +33,7 @@ class ldap::client {
   # Don't mix the previous ldap.conf and this one!
   file {'/etc/ldap/ldap.conf':
     ensure  => file,
-    content => 'puppet:///modules/ldap/ldap.conf',
+    source  => 'puppet:///modules/ldap/ldap.conf',
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
