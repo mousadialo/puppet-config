@@ -15,10 +15,4 @@ class base::timezone {
     message => 'Timezone was updated to America/New_York.',
   }
 
-  # ensure ordering
-  File['/etc/timezone'] ->
-  Exec['reconfigure-tzdata'] ->
-  Notify['timezone-changed']
-
-
 }
