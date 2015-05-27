@@ -16,6 +16,8 @@ class nfs ($nfs_home_directory = 'false' ) {
     package { 'nfs-kernel-server':
       ensure => 'installed'
     } ->
+    # Use a modified start script which doesn't check whether /etc/exports
+    # is empty before starting.
     file { '/etc/init.d/nfs-kernel-server':
       ensure  => file,
       source  => "puppet:///modules/nfs/nfs-kernel-server",

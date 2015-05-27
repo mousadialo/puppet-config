@@ -1,4 +1,8 @@
 ---
+puppetmaster:
+  parameters:
+    machine_type: puppetmaster
+  environment: production
 login:
   parameters:
     machine_type: login
