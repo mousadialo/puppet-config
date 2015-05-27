@@ -16,7 +16,8 @@ class nfs::client::debian::install {
       package { 'portmap':
         ensure => installed,
       }
-    } default: {
+    }
+    default: {
       package { 'rpcbind':
         ensure => installed,
       }
@@ -54,11 +55,22 @@ class nfs::client::debian::service {
     require => Class['nfs::client::debian::configure']
   }
 
-    service { "portmap":
-      ensure    => running,
-      enable    => true,
-      hasstatus => false,
-    } 
+  case $::lsbdistcodename {
+    'lucid': {
+      service { 'portmap':
+        ensure    => running,
+        enable    => true,
+        hasstatus => false,
+      } 
+    }
+    default: {
+      service { 'rpcbind':
+        ensure    => running,
+        enable    => true,
+        hasstatus => false,
+      } 
+    }
+  }
 
   if $nfs::client::debian::nfs_v4 {
     service {
