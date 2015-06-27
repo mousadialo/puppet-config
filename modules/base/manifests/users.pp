@@ -12,7 +12,7 @@ class base::users {
   
   user { 'hcs':
     ensure         => present,
-    uid            => 500
+    uid            => 500,
     gid            => 'root',
     home           => '/local/home/hcs',
     managehome     => true,
@@ -34,5 +34,15 @@ class base::users {
     user => 'hcs',
     type => 'ssh-rsa',
     key  => hiera('HCS-public-key'),
+  }
+  
+  file { '/etc/sudoers.d/90-cloud-init-users':
+    ensure => absent,
+  }
+  if $::machine_type == 'puppetmaster' {
+    file { '/etc/sudoers.d/hcs':
+      ensure => file,
+      content => "hcs ALL=(ALL) NOPASSWD:ALL\n",
+    }
   }
 }
