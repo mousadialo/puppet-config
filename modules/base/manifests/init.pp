@@ -2,7 +2,6 @@
 class base {
   include base::timezone
   include base::users
-  include base::alpine
   include base::motd
 
 /*

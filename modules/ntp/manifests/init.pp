@@ -13,7 +13,7 @@ class ntp {
   }
 
   file { '/etc/ntp.conf':
-    ensure  => present,
+    ensure  => file,
     source  => 'puppet:///modules/ntp/ntp.conf',
     notify  => Service['ntpd'],
     require => Package['ntp']

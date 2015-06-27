@@ -9,7 +9,7 @@ class base::timezone {
     command     => '/usr/sbin/dpkg-reconfigure --frontend noninteractive tzdata',
     user        => root,
     group       => root,
-    refreshonly => true
+    refreshonly => true,
   }
 
 }
