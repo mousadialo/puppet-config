@@ -18,5 +18,5 @@
   :datadir: /etc/puppet/data
 
   # Location of keys
-  :pkcs7_private_key: /home/ubuntu/keys/private_key.pkcs7.pem
-  :pkcs7_public_key:  /home/ubuntu/keys/public_key.pkcs7.pem
+  :pkcs7_private_key: /etc/puppet/secure/keys/private_key.pkcs7.pem
+  :pkcs7_public_key:  /etc/puppet/secure/keys/public_key.pkcs7.pem
