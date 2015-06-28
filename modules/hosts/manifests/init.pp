@@ -37,13 +37,15 @@ class hosts {
     ip     => 'ff02::3',
   }
   
-  host { $::hostname:
+  host { "${::hostname}-local":
+    name   => $::hostname,
     ensure => present,
     ip     => '127.0.0.1',
   }
   
   # Export host entry. More on exported resources: https://docs.puppetlabs.com/puppet/latest/reference/lang_exported.html
-  @@host { $::hostname:
+  @@host { "${::hostname}-export":
+    name   => $::hostname,
     ensure => present,
     ip     => $::ipaddress,
   }
