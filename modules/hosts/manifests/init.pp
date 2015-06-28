@@ -13,7 +13,7 @@ class hosts {
   # The following hosts are desirable for IPv6 capable hosts
   host { 'ip6-localhost':
     ensure       => present,
-    host-aliases => 'ip6-loopback',
+    host_aliases => 'ip6-loopback',
     ip           => '::1',
   }
   host { 'ip6-localnet':
