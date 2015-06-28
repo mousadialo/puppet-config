@@ -8,21 +8,32 @@ class base::motd {
 
   # Remove Ubuntu advertisement
   file { '/etc/update-motd.d/51-cloudguest':
-    mode => '0644'
+    ensure => absent,
+  }
+  
+  file { '/etc/update-motd.d/99-footer':
+    ensure => file,
+    source => 'puppet:///modules/base/motd/99-footer'
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0755',
+  }
+  
+  file { '/etc/motd.tail':
+    ensure => file,
+    source => template('base/motd/motd.tail.erb')
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
   }
 
   # Remove Landscape advertisement
   file { '/etc/landscape/client.conf':
     ensure => file,
-    source => 'puppet:///modules/base/landscape/client.conf',
+    source => 'puppet:///modules/base/motd/client.conf',
     owner  => 'landscape',
     group  => 'root',
     mode   => '0600',
-  }
-  
-  #TODO Add HCS Banner
-  if $::machine_type == 'login' {
-  
   }
   
 }

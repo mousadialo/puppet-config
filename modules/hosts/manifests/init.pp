@@ -44,7 +44,7 @@ class hosts {
   
   # Workaround to delay puppet from evaluating the actual host resource.
   # More info here: https://groups.google.com/forum/#!topic/puppet-users/Ux28jzVpteU
-  define exported_host ($ensure, $ip) {
+  define exported_host($ensure, $ip) {
     host { $title:
       ensure => $ensure,
       ip     => $ip,
