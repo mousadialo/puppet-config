@@ -1,5 +1,4 @@
 class hosts {
-  require puppetdb
 
   # Remove ALL unmanaged host resources.
   resources { 'host':
@@ -7,9 +6,8 @@ class hosts {
   }
 
   host { 'localhost':
-    ensure       => present,
-    host_aliases => $::fqdn,
-    ip           => '127.0.0.1',
+    ensure => present,
+    ip     => '127.0.0.1',
   }
   
   # The following hosts are desirable for IPv6 capable hosts
@@ -37,6 +35,11 @@ class hosts {
   host { 'ip6-allhosts':
     ensure => present,
     ip     => 'ff02::3',
+  }
+  
+  host { $::fqdn":
+    ensure => present,
+    ip     => '127.0.0.1',
   }
   
 }
