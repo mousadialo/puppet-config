@@ -20,11 +20,11 @@ class base::motd {
   }
   
   file { '/etc/motd.tail':
-    ensure => file,
-    source => template('base/motd/motd.tail.erb'),
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    ensure  => file,
+    content => template('base/motd/motd.tail.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
   }
 
   # Remove Landscape advertisement
