@@ -39,8 +39,8 @@ class hosts {
   
   # Export host entry. More on exported resources: https://docs.puppetlabs.com/puppet/latest/reference/lang_exported.html
   @@host { $::hostname:
-    ensure => present
-    ip     => $::ipaddress
+    ensure => present,
+    ip     => $::ipaddress,
   }
   
   # Collect all host entries, including the one exported by the current machine.
