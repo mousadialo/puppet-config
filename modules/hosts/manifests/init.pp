@@ -37,9 +37,13 @@ class hosts {
     ip     => 'ff02::3',
   }
   
-  host { $::fqdn:
+  # Export host entry. More on exported resources: https://docs.puppetlabs.com/puppet/latest/reference/lang_exported.html
+  @@host { $::fqdn:
     ensure => present,
-    ip     => '127.0.0.1',
+    ip     => $::ipaddress,
   }
+  
+  # Collect all host entries from all machines, including the current machine.
+  Host <<| |>>
   
 }
