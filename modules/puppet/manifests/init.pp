@@ -10,11 +10,11 @@ class puppet {
     }
     
     class { 'puppetdb':
-      listen_address => 'puppetmaster.hcs.so',
     }
     
     class { 'puppetdb::master::config':
-      restart_puppet => false,
+      puppetdb_server => 'localhost',
+      restart_puppet  => false,
     }
   }
   
