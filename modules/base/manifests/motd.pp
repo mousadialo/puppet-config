@@ -3,7 +3,7 @@ class base::motd {
 
   # Remove Ubuntu documentation
   file { '/etc/update-motd.d/10-help-text':
-    mode => '0644'
+    mode => '0644',
   }
 
   # Remove Ubuntu advertisement
@@ -13,7 +13,7 @@ class base::motd {
   
   file { '/etc/update-motd.d/99-footer':
     ensure => file,
-    source => 'puppet:///modules/base/motd/99-footer'
+    source => 'puppet:///modules/base/motd/99-footer',
     owner  => 'root',
     group  => 'root',
     mode   => '0755',
@@ -21,7 +21,7 @@ class base::motd {
   
   file { '/etc/motd.tail':
     ensure => file,
-    source => template('base/motd/motd.tail.erb')
+    source => template('base/motd/motd.tail.erb'),
     owner  => 'root',
     group  => 'root',
     mode   => '0644',
