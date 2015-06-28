@@ -1,4 +1,5 @@
 class hosts {
+  require puppetdb
 
   # Remove ALL unmanaged host resources.
   resources { 'host':
