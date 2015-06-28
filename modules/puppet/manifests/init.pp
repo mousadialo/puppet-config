@@ -14,6 +14,7 @@ class puppet {
     }
     
     class { 'puppetdb::master::config':
+      restart_puppet => false,
     }
   }
   
