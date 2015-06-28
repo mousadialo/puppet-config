@@ -1,5 +1,3 @@
 ---
 classes:
   - puppet
-  - puppetdb
-  - puppetdb::master::config

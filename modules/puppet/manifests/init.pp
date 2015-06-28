@@ -8,6 +8,13 @@ class puppet {
       ensure   => 'installed',
       provider => 'gem',
     }
+    
+    class { 'puppetdb':
+      listen_address => 'puppetmaster.hcs.so',
+    }
+    
+    class { 'puppetdb::master::config':
+    }
   }
   
   # Set up cron to query puppet master every hour.
