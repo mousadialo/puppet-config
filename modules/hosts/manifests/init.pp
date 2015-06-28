@@ -6,8 +6,9 @@ class hosts {
   }
 
   host { 'localhost':
-    ensure => present,
-    ip     => '127.0.0.1',
+    ensure       => present,
+    host_aliases => $::fqdn,
+    ip           => '127.0.0.1',
   }
   
   # The following hosts are desirable for IPv6 capable hosts
@@ -37,15 +38,8 @@ class hosts {
     ip     => 'ff02::3',
   }
   
-  host { "${::fqdn}-local":
-    name   => $::fqdn,
-    ensure => present,
-    ip     => '127.0.0.1',
-  }
-  
   # Export host entry. More on exported resources: https://docs.puppetlabs.com/puppet/latest/reference/lang_exported.html
-  @@host { "${::fqdn}-export":
-    name   => $::fqdn,
+  @@host { $::fqdn:
     ensure => present,
     ip     => $::ipaddress,
   }
