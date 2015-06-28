@@ -37,7 +37,7 @@ class hosts {
     ip     => 'ff02::3',
   }
   
-  host { $::fqdn":
+  host { $::fqdn:
     ensure => present,
     ip     => '127.0.0.1',
   }
