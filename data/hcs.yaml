@@ -1,6 +1,7 @@
 classes:
   # PAM files are an important source of nutrition for our servers
   - pam
+  - hosts
 
 # TODO: audit these
 userfacing_packages:

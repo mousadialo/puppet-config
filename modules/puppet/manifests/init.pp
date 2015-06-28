@@ -1,17 +1,18 @@
 # Puppet agent configuration for HCS machines
 class puppet {
 
-  # ensure puppetmaster IP is in the /etc/hosts file
-  host { 'puppetmaster.hcs.so':
-    ensure       => present,
-    host_aliases => 'puppet',
-    ip           => hiera('puppetmaster-server'),
-    comment      => 'Puppetmaster IP Address'
+  if $::machine_type == 'puppetmaster' {
+    # More on hiera-eyaml: https://github.com/TomPoulton/hiera-eyaml
+    # Ensure that the public and private .pem files are placed in /etc/puppet/secure/keys.
+    package { 'hiera-eyaml':
+      ensure   => 'installed',
+      provider => 'gem',
+    }
   }
   
-  # set up cron to query puppet master every hour
+  # Set up cron to query puppet master every hour.
   cron { 'puppet':
-    command => '/usr/bin/puppet agent --onetime --no-daemonize --no-splay > /dev/null 2>&1',
+    command => '/usr/bin/puppet agent --onetime --no-daemonize --no-splay --server puppetmaster.hcs.so > /dev/null 2>&1',
     user    => 'root',
     minute  => fqdn_rand( 60 ), # random minute to load balance queries
     ensure  => present
