@@ -27,26 +27,25 @@
 #    nfs_v4_mount_root  => "/srv",
 #    nfs_v4_idmap_domain => $::domain,
 #  }
-#
-#
-# === Authors
-#
-# Harald Skoglund <haraldsk@redpill-linpro.com>
-#
-# === Copyright
-#
-# Copyright 2012 Redpill Linpro, unless otherwise noted.
-#
 
 class nfs::client (
-  $nfs_v4              = $nfs::params::nfs_v4,
-  $nfs_v4_mount_root   = $nfs::params::nfs_v4_mount_root,
-  $nfs_v4_idmap_domain = $nfs::params::nfs_v4_idmap_domain
+  $nfs_v4              = $::nfs::params::nfs_v4,
+  $nfs_v4_mount_root   = $::nfs::params::nfs_v4_mount_root,
+  $nfs_v4_idmap_domain = $::nfs::params::nfs_v4_idmap_domain
 ) inherits nfs::params {
 
-  class{ "nfs::client::${osfamily}":
-    nfs_v4              => $nfs_v4,
-    nfs_v4_idmap_domain => $nfs_v4_idmap_domain,
+  # ensure dependencies for mount
+
+  Class["::nfs::client::${::nfs::params::osfamily}::install"] ->
+  Class["::nfs::client::${::nfs::params::osfamily}::configure"] ->
+  Class["::nfs::client::${::nfs::params::osfamily}::service"] ->
+  Class['::nfs::client']
+
+  if !defined( Class["nfs::client::${::nfs::params::osfamily}"]) {
+    class{ "nfs::client::${::nfs::params::osfamily}":
+      nfs_v4              => $nfs_v4,
+      nfs_v4_idmap_domain => $nfs_v4_idmap_domain,
+    }
   }
 
 }

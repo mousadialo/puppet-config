@@ -1,46 +1,22 @@
 class nfs::server::redhat(
-  $nfs_v4 = false,
-  $nfs_v4_idmap_domain = undef
+  $nfs_v4              = false,
+  $nfs_v4_idmap_domain = undef,
+  $mountd_port         = undef,
+  $mountd_threads      = 1
 ) {
 
-  class{ 'nfs::client::redhat':
-    nfs_v4              => $nfs_v4,
-    nfs_v4_idmap_domain => $nfs_v4_idmap_domain,
+  if !defined(Class['nfs::client::redhat']) {
+    class{ 'nfs::client::redhat':
+      nfs_v4              => $nfs_v4,
+      nfs_v4_idmap_domain => $nfs_v4_idmap_domain,
+    }
+  }
+
+  if ($mountd_port != undef){
+    fail('Setting mountd port currently not supported on RedHat')
   }
 
   include nfs::server::redhat::install, nfs::server::redhat::service
 
 
-}
-
-class nfs::server::redhat::install {
-
-  package { 'nfs4-acl-tools':
-    ensure => installed,
-  }
-
-}
-
-
-class nfs::server::redhat::service {
-
-  if nfs::server::redhat::nfs_v4 == true {
-      service {"nfs":
-        ensure     => running,
-        enable     => true,
-        hasrestart => true,
-        hasstatus  => true,
-        require    => Package["nfs-utils"],
-        subscribe  => [ Concat['/etc/exports'], Augeas['/etc/idmapd.conf'] ],
-      }
-    } else {
-      service {"nfs":
-        ensure     => running,
-        enable     => true,
-        hasrestart => true,
-        hasstatus  => true,
-        require    => Package["nfs-utils"],
-        subscribe  => Concat['/etc/exports'],
-     }
-  }
 }

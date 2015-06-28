@@ -27,84 +27,32 @@
 #    nfs_v4_export_root  => "/export",
 #    nfs_v4_idmap_domain => $::domain,
 #  }
-#
-# === Authors
-#
-# Harald Skoglund <haraldsk@redpill-linpro.com>
-#
-# === Copyright
-#
-# Copyright 2012 Redpill Linpro, unless otherwise noted.
-#
 
 class nfs::server (
-  $nfs_v4                       = $nfs::params::nfs_v4,
+  $nfs_v4 = $nfs::params::nfs_v4,
   $nfs_v4_export_root           = $nfs::params::nfs_v4_export_root,
   $nfs_v4_export_root_clients   = $nfs::params::nfs_v4_export_root_clients,
-  $nfs_v4_idmap_domain          = $nfs::params::domain,
+  $nfs_v4_idmap_domain          = $nfs::params::nfs_v4_idmap_domain,
+  #
   $nfs_v4_root_export_ensure    = 'mounted',
   $nfs_v4_root_export_mount     = undef,
   $nfs_v4_root_export_remounts  = false,
   $nfs_v4_root_export_atboot    = false,
   $nfs_v4_root_export_options   = '_netdev',
   $nfs_v4_root_export_bindmount = undef,
-  $nfs_v4_root_export_tag       = undef
+  $nfs_v4_root_export_tag       = undef,
+  #
+  $mountd_port                   = undef,
+  $mountd_threads                = 1
 ) inherits nfs::params {
 
-  class{ "nfs::server::${osfamily}":
+  class { "nfs::server::${::nfs::params::osfamily}":
     nfs_v4              => $nfs_v4,
     nfs_v4_idmap_domain => $nfs_v4_idmap_domain,
+    mountd_port         => $mountd_port,
+    mountd_threads      => $mountd_threads,
   }
 
-  include  nfs::server::configure
+  include nfs::server::configure
+
 }
-
-class nfs::server::configure {
-
-  concat {'/etc/exports':
-    # HCS:
-    # Saagar: we're following the git issue fix from 
-    # https://github.com/haraldsk/puppet-module-nfs/issues/2
-
-    #require => Class["nfs::server::${nfs::server::osfamily}"]
-    require => Package["nfs-kernel-server"]
-  }
-
-
-  concat::fragment{
-    'nfs_exports_header':
-      target  => '/etc/exports',
-      content => "# This file is configured through the nfs::server puppet module\n",
-      order   => 01;
-  }
-
-  if $nfs::server::nfs_v4 == true {
-    include nfs::server::nfs_v4::configure
-  }
-}
-
-class nfs::server::nfs_v4::configure {
-
-  concat::fragment{
-    'nfs_exports_root':
-      target  => '/etc/exports',
-      content => "${nfs::server::nfs_v4_export_root} ${nfs::server::nfs_v4_export_root_clients}\n",
-      order   => 02
-  }
-  file {
-    "${nfs::server::nfs_v4_export_root}":
-      ensure => directory,
-  }
-
-  @@nfs::client::mount::nfs_v4::root {"shared server root by ${::clientcert}":
-    ensure    => $nfs::server::nfs_v4_root_export_ensure,
-    mount     => $nfs::server::nfs_v4_root_export_mount,
-    remounts  => $nfs::server::nfs_v4_root_export_remounts,
-    atboot    => $nfs::server::nfs_v4_root_export_atboot,
-    options   => $nfs::server::nfs_v4_root_export_options,
-    bindmount => $nfs::server::nfs_v4_root_export_bindmount,
-    tag       => $nfs::server::nfs_v4_root_export_tag,
-    server    => "${::clientcert}",
-  }
-}
-

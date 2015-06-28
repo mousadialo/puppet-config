@@ -34,20 +34,20 @@ class nfs ($nfs_home_directory = 'false') {
     if $::machine_type == 'web' {
 
       # Mount our web directories
-      nfs::client::mount {'www-hcs.harvard.edu':
-          server  => $nfs_server,
-          share   => "/${zpool_name}/services/www-hcs.harvard.edu",
-          mount   => '/mnt/tank/www-hcs.harvard.edu',
-          options => 'rw,relatime,nosuid,nodev',
-          atboot  => true
+      nfs::client::mount { 'www-hcs.harvard.edu':
+        server  => $nfs_server,
+        share   => "/${zpool_name}/services/www-hcs.harvard.edu",
+        mount   => '/mnt/tank/www-hcs.harvard.edu',
+        options => 'rw,relatime,nosuid,nodev',
+        atboot  => true
       }
 
-      nfs::client::mount {'www-hcs.harvard.edu-ssl':
-          server  => $nfs_server,
-          share   => "/${zpool_name}/services/www-hcs.harvard.edu-ssl",
-          mount   => '/mnt/tank/www-hcs.harvard.edu-ssl',
-          options => 'rw,relatime,nosuid,nodev',
-          atboot  => true
+      nfs::client::mount { 'www-hcs.harvard.edu-ssl':
+        server  => $nfs_server,
+        share   => "/${zpool_name}/services/www-hcs.harvard.edu-ssl",
+        mount   => '/mnt/tank/www-hcs.harvard.edu-ssl',
+        options => 'rw,relatime,nosuid,nodev',
+        atboot  => true
       }
     }
 
@@ -57,12 +57,12 @@ class nfs ($nfs_home_directory = 'false') {
       nfs_v4            => false,
       nfs_v4_mount_root => '/nfs'
     } ->
-    nfs::client::mount {'nfs':
-        server  => $nfs_server,
-        share   => "/${zpool_name}/home",
-        mount   => $mount_dir,
-        options => 'rw,relatime,nosuid,nodev',
-        atboot  => true
+    nfs::client::mount { 'nfs':
+      server  => $nfs_server,
+      share   => "/${zpool_name}/home",
+      mount   => $mount_dir,
+      options => 'rw,relatime,nosuid,nodev',
+      atboot  => true
     }
 
     if str2bool($nfs_home_directory) {
@@ -74,8 +74,9 @@ class nfs ($nfs_home_directory = 'false') {
         force   => 'true',
         owner   => 'root',
         group   => 'root',
+        # Requirements:
         # 1) Must have mounted nfs
-        # 2) Ubuntu user has a new, local home directory
+        # 2) Ubuntu user is deleted or has a new, local home directory
         require => [Nfs::Client::Mount['nfs'], User['hcs']]
       }
 
