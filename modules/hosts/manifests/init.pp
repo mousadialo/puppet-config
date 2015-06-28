@@ -22,19 +22,24 @@ class hosts {
   }
   host { 'ip6-mcastprefix':
     ensure => present,
-    ip     => 'fe00::0',
+    ip     => 'ff00::0',
   }
   host { 'ip6-allnodes':
     ensure => present,
-    ip     => 'fe02::1',
+    ip     => 'ff02::1',
   }
   host { 'ip6-allrouters':
     ensure => present,
-    ip     => 'fe02::1',
+    ip     => 'ff02::2',
   }
   host { 'ip6-allhosts':
     ensure => present,
-    ip     => 'fe02::1',
+    ip     => 'ff02::3',
+  }
+  
+  host { $::hostname:
+    ensure => present,
+    ip     => '127.0.0.1',
   }
   
   # Export host entry. More on exported resources: https://docs.puppetlabs.com/puppet/latest/reference/lang_exported.html
@@ -43,7 +48,7 @@ class hosts {
     ip     => $::ipaddress,
   }
   
-  # Collect all host entries, including the one exported by the current machine.
-  Host <<| |>>
+  # Collect all host entries from other machines.
+  Host <<| title != $::hostname |>>
   
 }
