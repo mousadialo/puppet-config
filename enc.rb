@@ -3,7 +3,7 @@
 
 require 'yaml'
 
-# I would have done this with Hiera's `heira_include`, but this is more
+# I would have done this with Hiera's `hiera_include`, but this is more
 # flexible, and plus it allows us to pass interesting things to Hiera later.
 
 node = ARGV[0]
