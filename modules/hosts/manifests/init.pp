@@ -39,7 +39,7 @@ class hosts {
   
   host { $::fqdn:
     ensure => present,
-    ip     => '127.0.0.1',
+    ip     => $::ipaddress,
   }
   
   # Workaround to delay puppet from evaluating the actual host resource.
