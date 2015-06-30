@@ -1,0 +1,33 @@
+[General]
+FullMachineName = ldap1.hcs.so
+ServerRoot = /usr/lib/x86_64-linux-gnu/dirsrv
+SuiteSpotGroup = dirsrv
+SuiteSpotUserID = dirsrv
+[slapd]
+AddOrgEntries = Yes
+AddSampleEntries = No
+HashedRootDNPwd = {SSHA}BAJqs1OmgRhIr+oH0LHlc4a3yyXYYWwzrO7BMg==
+InstallLdifFile = suggest
+RootDN = cn=Directory Manager
+RootDNPwd = skinnyarm12
+ServerIdentifier = ldap1
+ServerPort = 389
+Suffix = dc=hcs,dc=harvard,dc=edu
+bak_dir = /var/lib/dirsrv/slapd-ldap1/bak
+bindir = /usr/bin
+cert_dir = /etc/dirsrv/slapd-ldap1
+config_dir = /etc/dirsrv/slapd-ldap1
+datadir = /usr/share
+db_dir = /var/lib/dirsrv/slapd-ldap1/db
+ds_bename = userRoot
+inst_dir = /usr/lib/x86_64-linux-gnu/dirsrv/slapd-ldap1
+ldif_dir = /var/lib/dirsrv/slapd-ldap1/ldif
+localstatedir = /var
+lock_dir = /var/lock/dirsrv/slapd-ldap1
+log_dir = /var/log/dirsrv/slapd-ldap1
+naming_value = hcs
+run_dir = /var/run/dirsrv
+sbindir = /usr/sbin
+schema_dir = /etc/dirsrv/slapd-ldap1/schema
+sysconfdir = /etc
+tmp_dir = /tmp

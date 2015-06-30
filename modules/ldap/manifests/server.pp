@@ -7,10 +7,6 @@ class ldap::server {
     ensure => installed
   }
 
-  package { 'ldap-utils':
-    ensure => installed
-  }
-
   service { 'dirsrv':
     ensure  => running,
     enable  => true,

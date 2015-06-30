@@ -2,12 +2,6 @@
 # includes config for HCS LDAP server and client config for all other servers
 class ldap {
 
-  host { 'ldap.hcs.so':
-    ensure  => present,
-    ip      => hiera('ldap-server'),
-    comment => 'LDAP IP Address'
-  }
-
   if $::machine_type == 'ldap' {
     include ldap::server
   }

@@ -39,10 +39,4 @@ class base::users {
   file { '/etc/sudoers.d/90-cloud-init-users':
     ensure => absent,
   }
-  if $::machine_type == 'puppetmaster' {
-    file { '/etc/sudoers.d/hcs':
-      ensure => file,
-      content => "hcs ALL=(ALL) NOPASSWD:ALL\n",
-    }
-  }
 }
