@@ -4,7 +4,7 @@
 class ldap::server {
 
   package { '389-ds-base':
-    ensure => installed
+    ensure => installed,
   }
   
   file {'/etc/dirsrv/schema/00core.ldif':
@@ -13,7 +13,7 @@ class ldap::server {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['389-ds-base']
+    require => Package['389-ds-base'],
   }
   
   $hashed_root_dn_pwd = hiera('hashed_root_dn_pwd')
@@ -24,13 +24,13 @@ class ldap::server {
     owner   => 'root',
     group   => 'root',
     mode    => '0400',
-    require => Package['389-ds-base']
+    require => Package['389-ds-base'],
   }
   
   exec { 'setup-ds':
     command => '/usr/sbin/setup-ds --silent --file=/etc/dirsrv/config/setup.inf',
-    creates => "/etc/dirsrv/slapd-$::hostname"
-    user    => 'root'
+    creates => "/etc/dirsrv/slapd-$::hostname",
+    user    => 'root',
   }
   
 }
