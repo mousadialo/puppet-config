@@ -1,0 +1,33 @@
+[General]
+FullMachineName = <%= @fqdn %>
+ServerRoot = /usr/lib/x86_64-linux-gnu/dirsrv
+SuiteSpotGroup = dirsrv
+SuiteSpotUserID = dirsrv
+[slapd]
+AddOrgEntries = Yes
+AddSampleEntries = No
+HashedRootDNPwd = {SSHA}<%= @hashed_root_dn_pwd %>
+InstallLdifFile = suggest
+RootDN = cn=Directory Manager
+RootDNPwd = <%= @root_dn_pwd %>
+ServerIdentifier = <%= @hostname %>
+ServerPort = 389
+Suffix = dc=hcs,dc=harvard,dc=edu
+bak_dir = /var/lib/dirsrv/slapd-<%= @hostname %>/bak
+bindir = /usr/bin
+cert_dir = /etc/dirsrv/slapd-<%= @hostname %>
+config_dir = /etc/dirsrv/slapd-<%= @hostname %>
+datadir = /usr/share
+db_dir = /var/lib/dirsrv/slapd-<%= @hostname %>/db
+ds_bename = userRoot
+inst_dir = /usr/lib/x86_64-linux-gnu/dirsrv/slapd-<%= @hostname %>
+ldif_dir = /var/lib/dirsrv/slapd-<%= @hostname %>/ldif
+localstatedir = /var
+lock_dir = /var/lock/dirsrv/slapd-<%= @hostname %>
+log_dir = /var/log/dirsrv/slapd-<%= @hostname %>
+naming_value = hcs
+run_dir = /var/run/dirsrv
+sbindir = /usr/sbin
+schema_dir = /etc/dirsrv/slapd-<%= @hostname %>/schema
+sysconfdir = /etc
+tmp_dir = /tmp

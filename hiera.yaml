@@ -4,7 +4,6 @@
   - yaml
 
 :hierarchy:
-  - "machines/web.eyaml"
   - "machines/%{::machine_type}"
   - hcs
   - "%{::operatingsystem}"

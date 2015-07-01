@@ -6,22 +6,6 @@ class ldap::server {
   package { '389-ds-base':
     ensure => installed
   }
-
-  service { 'dirsrv':
-    ensure  => running,
-    enable  => true,
-    require => Package['389-ds-base']
-  }
-
-  file {'/etc/ldap.conf':
-    ensure  => file,
-    source  => 'puppet:///modules/ldap/ldap-server.conf',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    notify  => Service['dirsrv'],
-    require => Package['389-ds-base']
-  }
   
   file {'/etc/dirsrv/schema/00core.ldif':
     ensure  => file,
@@ -29,8 +13,19 @@ class ldap::server {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    notify  => Service['dirsrv'],
     require => Package['389-ds-base']
   }
-
+  
+  $hashed_root_dn_pwd = hiera('hashed_root_dn_pwd')
+  $root_dn_pwd = hiera('root_dn_pwd')
+  file {'/etc/dirsrv/config/setup.inf':
+    ensure  => file,
+    content => template('ldap/setup.inf'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0400',
+    require => Package['389-ds-base']
+  }
+  
+  
 }
