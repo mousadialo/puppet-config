@@ -28,8 +28,9 @@ class ldap::server {
   }
   
   exec { 'setup-ds':
-    command => 'sudo setup-ds --silent --file=/etc/dirsrv/config/setup.inf',
+    command => '/usr/sbin/setup-ds --silent --file=/etc/dirsrv/config/setup.inf',
     creates => "/etc/dirsrv/slapd-$::hostname"
+    user    => 'root'
   }
   
 }
