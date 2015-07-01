@@ -20,12 +20,16 @@ class ldap::server {
   $root_dn_pwd = hiera('root_dn_pwd')
   file {'/etc/dirsrv/config/setup.inf':
     ensure  => file,
-    content => template('ldap/setup.inf.erb'),
+    content => template('ldap/setup.inf'),
     owner   => 'root',
     group   => 'root',
     mode    => '0400',
     require => Package['389-ds-base']
   }
   
+  exec { 'setup-ds':
+    command => 'sudo setup-ds --silent --file=/etc/dirsrv/config/setup.inf',
+    creates => "/etc/dirsrv/slapd-$::hostname"
+  }
   
 }
