@@ -9,10 +9,11 @@ class ldap {
   }
 
   concat { $ldap_conf:
-    ensure  => file,
+    ensure  => present,
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
+    warn    => true,
     require => Package['ldap-utils'],
   }
   
