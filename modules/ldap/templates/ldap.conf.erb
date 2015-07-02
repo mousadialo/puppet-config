@@ -6,7 +6,7 @@
 # This file should be world readable but not world writable.
 
 BASE	dc=hcs,dc=harvard,dc=edu
-URI		<%= [*@ldap_servers].join(" ") %>
+URI		<%= @ldap_servers.join(" ") %>
 
 #SIZELIMIT	12
 #TIMELIMIT	15

@@ -17,7 +17,7 @@ class ldap {
     include ldap::client    
   }
   
-  $ldap_servers = get_exported_var('', 'ldap_server', "ldap://${::fqdn}")
+  $ldap_servers = get_exported_var('', 'ldap_server', ["test"])
   
   file { '/etc/ldap/ldap.conf':
     ensure  => file,
