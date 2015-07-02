@@ -2,8 +2,6 @@
 class puppet {
 
   if $::machine_type == 'puppetmaster' {
-    include exported_vars
-  
     # More on hiera-eyaml: https://github.com/TomPoulton/hiera-eyaml
     # Ensure that the public and private .pem files are placed in /etc/puppet/secure/keys.
     package { 'hiera-eyaml':
