@@ -26,7 +26,7 @@ class ldap {
   if $::machine_type == 'ldap' {
     include ldap::server
     
-    @@concat::fragment { 'ldap_conf_${::hostname}':
+    @@concat::fragment { "ldap_conf_${::hostname}":
       target  => $ldap_conf,
       content => "ldap://${::fqdn}\t",
       order   => '2',
