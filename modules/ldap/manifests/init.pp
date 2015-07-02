@@ -27,9 +27,9 @@ class ldap {
     include ldap::server
     
     @@concat::fragment { 'ldap_conf_${::hostname}':
-      target => $ldap_conf,
-      source => "ldap://${::fqdn}\t",
-      order  => '2',
+      target  => $ldap_conf,
+      content => "ldap://${::fqdn}\t",
+      order   => '2',
     }
   }
   else {
