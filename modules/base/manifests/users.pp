@@ -1,15 +1,18 @@
 ## HCS users for all servers
 class base::users {
-
-  file { [ '/local', '/local/home' ]:
-    ensure => directory
-  } ->
   
   user { 'ubuntu':
     ensure     => absent,
     managehome => true,
-  } ->
+  }
   
+  file { '/etc/sudoers.d/90-cloud-init-users':
+    ensure => absent,
+  }
+  
+  file { [ '/local', '/local/home' ]:
+    ensure => directory
+  } ->
   user { 'hcs':
     ensure         => present,
     uid            => 500,
@@ -36,7 +39,4 @@ class base::users {
     key  => hiera('HCS-public-key'),
   }
   
-  file { '/etc/sudoers.d/90-cloud-init-users':
-    ensure => absent,
-  }
 }
