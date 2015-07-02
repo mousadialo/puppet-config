@@ -34,4 +34,9 @@ class ldap::server {
     require => File['/etc/dirsrv/config/setup.inf'],
   }
   
+  service { 'dirsrv':
+    ensure  => running,
+    enable  => true,
+    require => Exec['setup-ds'],
+  }
 }
