@@ -7,7 +7,7 @@ class ldap::server {
     ensure => installed,
   }
   
-  file {'/etc/dirsrv/schema/00core.ldif':
+  file { '/etc/dirsrv/schema/00core.ldif':
     ensure  => file,
     source  => 'puppet:///modules/ldap/00core.ldif',
     owner   => 'root',
@@ -18,7 +18,7 @@ class ldap::server {
   
   $hashed_root_dn_pwd = hiera('hashed_root_dn_pwd')
   $root_dn_pwd = hiera('root_dn_pwd')
-  file {'/etc/dirsrv/config/setup.inf':
+  file { '/etc/dirsrv/config/setup.inf':
     ensure  => file,
     content => template('ldap/setup.inf.erb'),
     owner   => 'root',
@@ -31,6 +31,7 @@ class ldap::server {
     command => '/usr/sbin/setup-ds --silent --file=/etc/dirsrv/config/setup.inf',
     creates => "/etc/dirsrv/slapd-$::hostname",
     user    => 'root',
+    require => File['/etc/dirsrv/config/setup.inf'],
   }
   
 }

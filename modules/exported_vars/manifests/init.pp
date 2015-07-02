@@ -12,6 +12,8 @@ class exported_vars {
     owner   => 'puppet',
     group   => 'puppet',
     mode    => '0755',
+    recurse => true
+    purge   => true, 
   }
 
   File <<| tag == 'exported_var' |>>
