@@ -39,4 +39,11 @@ class ldap::server {
     enable  => true,
     require => Exec['setup-ds'],
   }
+  
+  @@concat::fragment { "ldap_conf_${::hostname}":
+    target  => $ldap_conf,
+    content => "ldap://${::fqdn}\t",
+    order   => '2',
+  }
+  
 }
