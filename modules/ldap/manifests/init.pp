@@ -10,7 +10,6 @@ class ldap {
 
   concat { $ldap_conf:
     ensure  => file,
-    content => template('ldap/ldap.conf.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
