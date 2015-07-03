@@ -26,20 +26,20 @@ LogLevel INFO
 # Authentication:
 LoginGraceTime 120
 PermitRootLogin no
-StrictModes no
+StrictModes yes
 
 RSAAuthentication yes
 PubkeyAuthentication yes
-AuthorizedKeysFile  %h/.ssh/authorized_keys /etc/ssh/keys/%u/authorized_keys
+#AuthorizedKeysFile	%h/.ssh/authorized_keys
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
-IgnoreRhosts yes
+IgnoreRhosts no
 # For this to work you will also need host keys in /etc/ssh_known_hosts
 RhostsRSAAuthentication no
 # similar for protocol version 2
-HostbasedAuthentication no
+HostbasedAuthentication yes
 # Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
-#IgnoreUserKnownHosts yes
+IgnoreUserKnownHosts yes
 
 # To enable empty passwords, change to yes (NOT RECOMMENDED)
 PermitEmptyPasswords no
@@ -49,7 +49,7 @@ PermitEmptyPasswords no
 ChallengeResponseAuthentication no
 
 # Change to no to disable tunnelled clear text passwords
-PasswordAuthentication no
+PasswordAuthentication yes
 
 # Kerberos options
 #KerberosAuthentication no
@@ -58,8 +58,9 @@ PasswordAuthentication no
 #KerberosTicketCleanup yes
 
 # GSSAPI options
-#GSSAPIAuthentication no
-#GSSAPICleanupCredentials yes
+GSSAPIAuthentication yes
+GSSAPICleanupCredentials yes
+GSSAPIStrictAcceptorCheck no
 
 X11Forwarding yes
 X11DisplayOffset 10

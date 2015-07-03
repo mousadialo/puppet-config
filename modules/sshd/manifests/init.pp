@@ -6,7 +6,7 @@ class sshd {
   }
 
   if $::machine_type == 'web' {
-    # Web config is a little different in order to make helios work
+    # Web config is a little different in order to make helios work.
     file {'/etc/ssh/sshd_config':
       ensure => file,
       source => 'puppet:///modules/sshd/sshd_config.web',
@@ -15,10 +15,11 @@ class sshd {
       mode   => '0644',
       notify => Service['ssh']
     }
-  } elsif $::machine_type == 'file' {
+  } elsif $::machine_type == 'login' {
+    # Login config is a little different in order to make Kerberos work.
     file {'/etc/ssh/sshd_config':
       ensure => file,
-      source => 'puppet:///modules/sshd/sshd_config.file',
+      source => 'puppet:///modules/sshd/sshd_config.login',
       owner  => 'root',
       group  => 'root',
       mode   => '0644',
