@@ -1,7 +1,7 @@
 ---
 domain: 'hcs.so'
 puppetmaster-server: '10.0.12.5'
-nfs-server: '10.0.12.251'
+nfs-server: '10.0.12.30'
 ldap-server: '10.0.14.216'
 nfs-mount-dir: '/mnt/tank/home'
 zfs::zpool_name: 'tank'
