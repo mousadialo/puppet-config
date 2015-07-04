@@ -1,10 +1,8 @@
 ---
 classes:
-  - puppet
   - nfs
   - ldap
-  - sshd
-  # we want a null client setup
+  # null client config
   - mail
 
 nfs::nfs_home_directory: 'true'

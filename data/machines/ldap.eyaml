@@ -1,6 +1,5 @@
 ---
 classes:
-  - puppet
   - ldap
 
 hashed_root_dn_pwd: >

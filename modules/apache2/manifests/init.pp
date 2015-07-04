@@ -274,6 +274,7 @@ class apache2 {
       # Must have mounted www-hcs.harvard.edu-ssl
       require => Nfs::Client::Mount['www-hcs.harvard.edu-ssl']
     }
-
- }
+  
+  }
+  
 }

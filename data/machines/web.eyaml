@@ -1,11 +1,9 @@
 ---
 classes:
-  - puppet
   - nfs
   - web
   - ldap
   - apache2
-  - sshd
   # null client config
   - mail
 

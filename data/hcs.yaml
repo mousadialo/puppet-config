@@ -1,6 +1,7 @@
 classes:
-  # PAM files are an important source of nutrition for our servers
+  - sshd
   - pam
+  - puppet
   - hosts
 
 # TODO: audit these

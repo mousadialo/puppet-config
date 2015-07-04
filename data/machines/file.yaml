@@ -1,7 +1,5 @@
 ---
 classes:
-  - puppet
   - nfs
   - zfs
-  - sshd
   - ldap
