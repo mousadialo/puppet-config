@@ -15,7 +15,7 @@ class kerberos {
     mode    => '0644',
   }
 
-  package { 'libkadm55':
+  package { 'libpam-krb5':
     ensure => installed,
   }
 
