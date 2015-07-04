@@ -1,5 +1,5 @@
 ---
-fqdn: 'hcs.so'
+domain: 'hcs.so'
 puppetmaster-server: '10.0.12.5'
 nfs-server: '10.0.12.251'
 ldap-server: '10.0.14.216'

@@ -1,7 +1,7 @@
 NameVirtualHost *:443
 <VirtualHost *:443>
-  Servername <%=@fqdn%>
-  ServerAlias *.<%=@fqdn%>
+  Servername <%= @domain %>
+  ServerAlias *.<%= @domain %>
   UseCanonicalName On
   DocumentRoot /var/www/hcs.harvard.edu/htdocs
   ServerAdmin webmaster@hcs

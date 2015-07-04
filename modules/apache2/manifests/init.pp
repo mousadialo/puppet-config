@@ -4,7 +4,7 @@
 class apache2 {
 
   require nfs
-  $fqdn = hiera('fqdn')
+  $domain = hiera('domain')
 
   # These should be applied to all machines
   package { 'apache2':

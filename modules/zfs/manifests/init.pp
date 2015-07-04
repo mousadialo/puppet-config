@@ -11,17 +11,15 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   }
   ->
   # Enable automatic sharing
-  file {'/etc/default/zfs':
-    ensure => file,
-    path   => '/etc/default/zfs',
-    source => 'puppet:///modules/zfs/zfs',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+  shellvar { 'ZFS_SHARE':
+    ensure   => present,
+    target   => '/etc/default/zfs',
+    value    => 'yes',
+    quoted   => 'single',
   }
   ->
   # Correct permissions, owner, and group
-  file {'/tank':
+  file { '/tank':
     ensure => directory,
     owner  => 'root',
     group  => 'root',
