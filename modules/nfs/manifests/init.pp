@@ -29,23 +29,6 @@ class nfs ($nfs_home_directory = 'false') {
       ensure => running,
       enable => true,
     }
-      
-    service { 'idmapd':
-      ensure => running,
-      enable => true,
-    }
-      
-    # This file is used for mapping user ids and group ids between filer and
-    # clients. It should be identical on clients and server
-    file { '/etc/idmapd.conf':
-      ensure  => file,
-      content => template('nfs/idmapd.conf.erb'),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      require => File['/etc/nsswitch.conf'],
-      notify  => Service['idmapd'],
-    }
   }
   else {
     if $::machine_type == 'web' {
@@ -71,9 +54,7 @@ class nfs ($nfs_home_directory = 'false') {
     $mount_dir = hiera('nfs-mount-dir')
 
     class { 'nfs::client':
-      nfs_v4              => true,
       nfs_v4_mount_root   => '/nfs',
-      nfs_v4_idmap_domain => $domain,
     } ->
     nfs::client::mount { 'nfs':
       server  => $nfs_server,
@@ -172,6 +153,23 @@ class nfs ($nfs_home_directory = 'false') {
       notify  => Service['autofs'],
       require => [Package['autofs'], File['/etc/autofs']],
     }
+  }
+      
+  service { 'idmapd':
+    ensure => running,
+    enable => true,
+  }
+    
+  # This file is used for mapping user ids and group ids between filer and
+  # clients. It should be identical on clients and server
+  file { '/etc/idmapd.conf':
+    ensure  => file,
+    content => template('nfs/idmapd.conf.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => File['/etc/nsswitch.conf'],
+    notify  => Service['idmapd'],
   }
 
 }

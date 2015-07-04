@@ -9,13 +9,14 @@ class nfs::client::debian::service {
     hasstatus => false,
   }
 
-  if $nfs::client::debian::nfs_v4 {
-    service { 'idmapd':
-      ensure    => running,
-      enable    => true,
-      subscribe => Augeas['/etc/idmapd.conf', '/etc/default/nfs-common'],
-    }
-  } else {
-    service { 'idmapd': ensure => stopped, }
-  }
+  # Commented out as this doesn't work on Ubuntu 14.04
+  #if $nfs::client::debian::nfs_v4 {
+  #  service { 'idmapd':
+  #    ensure    => running,
+  #    name      => 'nfs-common',
+  #    subscribe => Augeas['/etc/idmapd.conf', '/etc/default/nfs-common'],
+  #  }
+  #} else {
+  #  service { 'idmapd': ensure => stopped, }
+  #}
 }
