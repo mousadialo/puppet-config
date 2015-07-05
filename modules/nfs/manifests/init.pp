@@ -1,8 +1,6 @@
 # HCS NFS configuration, used for ZFS setup
-class nfs ($nfs_home_directory = 'false') {
-  /*
-   * nfs_home_directory If true, the /home directory is mounted from the filer.
-   */
+class nfs (Boolean $nfs_home_directory = false) {
+  # nfs_home_directory If true, the /home directory is mounted from the filer.
 
   include base
   include ldap
@@ -19,11 +17,11 @@ class nfs ($nfs_home_directory = 'false') {
     # Use a modified start script which doesn't check whether /etc/exports
     # is empty before starting.
     file { '/etc/init.d/nfs-kernel-server':
-      ensure  => file,
-      source  => "puppet:///modules/nfs/nfs-kernel-server",
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0755',
+      ensure => file,
+      source => 'puppet:///modules/nfs/nfs-kernel-server',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
     } ->
     service { 'nfs-kernel-server':
       ensure => running,
@@ -64,13 +62,13 @@ class nfs ($nfs_home_directory = 'false') {
       atboot  => true,
     }
 
-    if str2bool($nfs_home_directory) {
+    if $nfs_home_directory {
       # We want to symlink our home directory to nfs
       file { 'home':
         ensure  => link,
         path    => '/home',
         target  => $mount_dir,
-        force   => 'true',
+        force   => true,
         owner   => 'root',
         group   => 'root',
         # Requirements:
@@ -85,10 +83,10 @@ class nfs ($nfs_home_directory = 'false') {
       # file is going here because if we symlink the home directory it means
       # that ldap users are going to be logging in.
       file { '/etc/apt/apt.conf.d/00restartnscd':
-        ensure  => file,
-        source  => "puppet:///modules/nfs/nscd-restart",
-        owner   => 'root',
-        group   => 'root',
+        ensure => file,
+        source => 'puppet:///modules/nfs/nscd-restart',
+        owner  => 'root',
+        group  => 'root',
       }
     }
 
@@ -108,16 +106,16 @@ class nfs ($nfs_home_directory = 'false') {
       group  => 'root',
     }
 
-    file {"/etc/auto.master":
+    file { '/etc/auto.master':
       ensure  => file,
-      source  => "puppet:///modules/nfs/autofs/auto.master",
+      source  => 'puppet:///modules/nfs/autofs/auto.master',
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
       require => Package['autofs'],
     }
 
-    file {"/etc/autofs/nfs.people":
+    file { '/etc/autofs/nfs.people':
       ensure  => file,
       content => template('nfs/autofs/nfs.people'),
       owner   => 'root',
@@ -127,7 +125,7 @@ class nfs ($nfs_home_directory = 'false') {
 
     }
 
-    file {"/etc/autofs/nfs.groups":
+    file { '/etc/autofs/nfs.groups':
       ensure  => file,
       content => template('nfs/autofs/nfs.groups'),
       owner   => 'root',
@@ -136,7 +134,7 @@ class nfs ($nfs_home_directory = 'false') {
       require => [Package['autofs'], File['/etc/autofs']],
     }
 
-    file {"/etc/autofs/nfs.general":
+    file { '/etc/autofs/nfs.general':
       ensure  => file,
       content => template('nfs/autofs/nfs.general'),
       owner   => 'root',
@@ -145,7 +143,7 @@ class nfs ($nfs_home_directory = 'false') {
       require => [Package['autofs'], File['/etc/autofs']],
     }
 
-    file {"/etc/autofs/nfs.hcs":
+    file { '/etc/autofs/nfs.hcs':
       ensure  => file,
       content => template('nfs/autofs/nfs.general'),
       owner   => 'root',

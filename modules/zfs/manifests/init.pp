@@ -12,10 +12,10 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   ->
   # Enable automatic sharing
   shellvar { 'ZFS_SHARE':
-    ensure   => present,
-    target   => '/etc/default/zfs',
-    value    => 'yes',
-    quoted   => 'single',
+    ensure => present,
+    target => '/etc/default/zfs',
+    value  => 'yes',
+    quoted => 'single',
   }
   ->
   # Correct permissions, owner, and group
@@ -39,7 +39,7 @@ class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
   }
   ->
   exec { 'share-all':
-    command   => "zfs share -a",
+    command   => 'zfs share -a',
     cwd       => '/',
     logoutput => true,
     user      => root,

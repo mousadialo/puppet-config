@@ -11,8 +11,8 @@ class apache2 {
     ensure => installed,
   } ->
   service { 'apache2':
-    ensure  => running,
-    enable  => true,
+    ensure => running,
+    enable => true,
   }
 
   # FILES
@@ -35,10 +35,10 @@ class apache2 {
     } ->
     # HUIT IDP metadata
     file { '/etc/shibboleth/huit-idp-metadata.xml':
-      ensure  => file,
-      source  => 'puppet:///modules/apache2/shibboleth/huit-idp-metadata.xml',
-      owner   => 'root',
-      group   => 'root'
+      ensure => file,
+      source => 'puppet:///modules/apache2/shibboleth/huit-idp-metadata.xml',
+      owner  => 'root',
+      group  => 'root'
     } ->
     # Main shibboleth configuration file
     file { '/etc/shibboleth/shibboleth2.xml':
@@ -67,10 +67,10 @@ class apache2 {
 
     # HCS enabled virtual hosts.
     apache2::vhost{ 'default': }
-    apache2::vhost{ 'hcs.harvard.edu': 
+    apache2::vhost{ 'hcs.harvard.edu':
       template => true,
     }
-    apache2::vhost{ 'hcs.harvard.edu-ssl': 
+    apache2::vhost{ 'hcs.harvard.edu-ssl':
       template => true,
     }
     apache2::vhost{ 'mail.hcs.harvard.edu': }

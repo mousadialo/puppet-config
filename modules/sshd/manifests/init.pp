@@ -1,8 +1,8 @@
 class sshd {
 
   service { 'ssh':
-    ensure    => running,
-    enable    => true,
+    ensure => running,
+    enable => true,
   }
   
   file {'/etc/ssh/sshd_config':

@@ -33,7 +33,7 @@ class ldap {
     }
   }
   else {
-    include ldap::client    
+    include ldap::client
   }
   
   Concat::Fragment <<| target == $ldap_conf |>>

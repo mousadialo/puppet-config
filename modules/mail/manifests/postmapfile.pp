@@ -16,9 +16,9 @@ define mail::postmapfile ($name, $map=false) {
     }
 
     exec { "postmap${name}":
-      command     => "/usr/sbin/postmap /etc/postfix/${name}",
-      require     => [Package['postfix'], File["/etc/postfix/${name}"]],
-      notify      => Service['postfix']
+      command => "/usr/sbin/postmap /etc/postfix/${name}",
+      require => [Package['postfix'], File["/etc/postfix/${name}"]],
+      notify  => Service['postfix']
     }
 
   } else {
