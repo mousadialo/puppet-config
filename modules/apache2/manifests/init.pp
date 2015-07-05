@@ -8,18 +8,16 @@ class apache2 {
 
   # These should be applied to all machines
   package { 'apache2':
-    ensure => installed
-  }
-
+    ensure => installed,
+  } ->
   service { 'apache2':
     ensure  => running,
     enable  => true,
-    require => Package['apache2']
   }
 
   # FILES
 
-  # This is the main apache configuratio file. It sets high level directives
+  # This is the main apache configuration file. It sets high level directives
   # and includes sites-enabled and conf.d
   apache2::config_file { 'apache2.conf': }
 
@@ -32,19 +30,7 @@ class apache2 {
   if $::machine_type == 'web' {
 
     # Shibboleth packages
-    package { 'shibboleth-sp2-schemas':
-      ensure => installed
-    } ->
-    package { 'libshibsp-dev':
-      ensure => installed
-    } ->
-    package { 'libshibsp-doc':
-      ensure => installed
-    } ->
     package { 'libapache2-mod-shib2':
-      ensure => installed
-    } ->
-    package { 'opensaml2-tools':
       ensure => installed
     } ->
     # HUIT IDP metadata
@@ -69,12 +55,10 @@ class apache2 {
     }
 
     # Following 2 packages needed for drupal
-    package { 'php5-gd':
+    package { ['php5-gd', 'php5-mysql']:
       ensure => installed
     }
-    package { 'php5-mysql':
-      ensure => installed
-    }
+    
     # Configurations shipped with Apache. We minimally edit these files.
     apache2::config_file { 'conf.d/charset': }
     apache2::config_file { 'conf.d/localized-error-pages': }
@@ -83,27 +67,15 @@ class apache2 {
 
     # HCS enabled virtual hosts.
     apache2::vhost{ 'default': }
-    apache2::vhost{ 'hcs.harvard.edu': }
+    apache2::vhost{ 'hcs.harvard.edu': 
+      template => true,
+    }
+    apache2::vhost{ 'hcs.harvard.edu-ssl': 
+      template => true,
+    }
     apache2::vhost{ 'mail.hcs.harvard.edu': }
     apache2::vhost{ 'secure.hcs.harvard.edu': }
     apache2::vhost{ 'user-vhosts': }
-
-
-    file { '/etc/apache2/sites-available/hcs.harvard.edu-ssl':
-      ensure  => file,
-      content => template('apache2/hcs.harvard.edu-ssl'),
-      owner   => 'root',
-      group   => 'root',
-      notify  => Service['apache2'],
-      require => Package['apache2']
-    } ->
-    file { '/etc/apache2/sites-enabled/hcs.harvard.edu-ssl':
-      ensure  => link,
-      target  => '/etc/apache2/sites-available/hcs.harvard.edu-ssl',
-      owner   => 'root',
-      group   => 'root',
-      require => Package['apache2']
-    }
 
     # create the hcs conf directories
     file{ [ '/etc/apache2/hcs-conf.d',
@@ -212,7 +184,7 @@ class apache2 {
     # Restart apache2 every time we make changes to this .ini file
     file {'/etc/php5/cgi/php.ini':
       ensure  => file,
-      source  => 'puppet:///modules/apache2/php/php.ini',
+      source  => 'puppet:///modules/apache2/php/cgi/php.ini',
       owner   => root,
       group   => root,
       notify  => Service['apache2'],
@@ -229,17 +201,17 @@ class apache2 {
     }
 
     # Certificates
-    file {'/etc/ssl/certs/star.hcs.harvard.edu.crt':
+    file {'/etc/ssl/certs/hcs_harvard_edu_cert.cer':
       ensure => file,
-      source => 'puppet:///modules/apache2/apache2/star.hcs.harvard.edu.crt',
+      source => 'puppet:///modules/apache2/apache2/hcs_harvard_edu_cert.cer',
       owner  => root,
       group  => root,
       mode   => '0644'
     }
 
-    file {'/etc/ssl/certs/gd_bundle.crt':
+    file {'/etc/ssl/certs/hcs_harvard_edu_interm.cer':
       ensure => file,
-      source => 'puppet:///modules/apache2/apache2/gd_bundle.crt',
+      source => 'puppet:///modules/apache2/apache2/hcs_harvard_edu_interm.cer',
       owner  => root,
       group  => root,
       mode   => '0644'
@@ -251,7 +223,7 @@ class apache2 {
       content => hiera('star.hcs.harvard.edu.key'),
       owner   => root,
       group   => root,
-      mode    => '0600'
+      mode    => '0400'
     }
 
     # Symlink our web files to appropriate location

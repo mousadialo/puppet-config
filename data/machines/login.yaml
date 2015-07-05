@@ -2,7 +2,6 @@
 classes:
   - nfs
   - ldap
-  - kerberos
   # null client config
   - mail
 

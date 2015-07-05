@@ -21,7 +21,7 @@
 
             <md:AssertionConsumerService index="1"
                 Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
-                Location="https://<%=fqdn%>/Shibboleth.sso/SAML2/POST"  />
+                Location="https://<%= domain %>/Shibboleth.sso/SAML2/POST"  />
 
             <!-- Handlers allow you to interact with the SP and gather more information.  Try them out!
                 Attribute values received by the SP through SAML will be visible at:
@@ -57,7 +57,7 @@
         <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
 
         <!-- Your SP generated these credentials.  They're used to talk to IdP's. -->
-    <CredentialResolver type="File" key="/etc/ssl/private/star.hcs.harvard.edu.key" certificate="/etc/ssl/certs/star.hcs.harvard.edu.crt"/>
+    <CredentialResolver type="File" key="/etc/ssl/private/star.hcs.harvard.edu.key" certificate="/etc/ssl/certs/hcs_harvard_edu_cert.cer"/>
 
     </ApplicationDefaults>
 
