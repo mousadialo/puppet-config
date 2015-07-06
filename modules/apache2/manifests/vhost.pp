@@ -1,5 +1,5 @@
 # function to drop apache mod files
-define apache2::vhost(Boolean template = false) {
+define apache2::vhost(Boolean $template = false) {
   include apache2
 
   if $template {
