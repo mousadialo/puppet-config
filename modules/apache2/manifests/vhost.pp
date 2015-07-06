@@ -6,7 +6,7 @@ define apache2::vhost($template = false) {
     file {"${title}-site-available":
       ensure  => file,
       path    => "/etc/apache2/sites-available/${title}",
-      source  => template("apache2/sites/${title}")
+      content  => template("apache2/sites/${title}"),
       owner   => 'root',
       group   => 'root',
       notify  => Service['apache2'],
