@@ -105,10 +105,10 @@ class apache2 {
     require => Package['apache2']
   }
 
-  # Following 2 packages needed for drupal
-  package { ['php5-gd', 'php5-mysql']:
-    ensure => installed
-  }
+  # PHP5 modules
+  apache2::php5_mod { 'mcrypt': }
+  apache2::php5_mod { 'gd': }
+  apache2::php5_mod { 'mysql': }
 
   # APACHE CONFIGURATION
 
@@ -182,6 +182,7 @@ class apache2 {
   apache2::mod { 'proxy_http': }
   apache2::mod { 'rewrite': }
   apache2::mod { 'shib2': }
+  apache2::mod { 'slotmem_shm': }
   apache2::mod { 'socache_shmcb': }
   apache2::mod { 'ssl':
     with_conf => true

@@ -10,7 +10,7 @@ define apache2::mod($ensure = 'enabled', $with_conf = false) {
     file { "${title}-mod-load":
       ensure  => link,
       path    => "/etc/apache2/mods-enabled/${title}.load",
-      target  => "/etc/apache2/mods-available/${title}.load",
+      target  => "../mods-available/${title}.load",
       owner   => 'root',
       group   => 'root',
       notify  => Service['apache2'],
@@ -21,7 +21,7 @@ define apache2::mod($ensure = 'enabled', $with_conf = false) {
       file { "${title}-mod-conf":
         ensure  => link,
         path    => "/etc/apache2/mods-enabled/${title}.conf",
-        target  => "/etc/apache2/mods-available/${title}.conf",
+        target  => "../mods-available/${title}.conf",
         owner   => 'root',
         group   => 'root',
         notify  => Service['apache2'],
