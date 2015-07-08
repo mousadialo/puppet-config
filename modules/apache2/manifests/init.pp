@@ -155,16 +155,16 @@ class apache2 {
   #apache2::vhost{ 'secure.hcs.harvard.edu': }
   apache2::vhost{ 'user-vhosts': }
 
-  # Mods enabled
+  # Mods enabled and disabled
   apache2::mod { 'actions': }
   apache2::mod { 'authnz_ldap': }
   apache2::mod { 'cgi': }
   apache2::mod { 'dav': }
   apache2::mod { 'dav_fs':
-    with_conf => true
+    with_conf => true,
   }
   apache2::mod { 'fcgid':
-    with_conf => true
+    with_conf => true,
   }
   apache2::mod { 'headers': }
   apache2::mod { 'include': }
@@ -175,7 +175,7 @@ class apache2 {
   }
   apache2::mod { 'python': }
   apache2::mod { 'proxy':
-    with_conf => true
+    with_conf => true,
   }
   apache2::mod { 'proxy_ajp': }
   apache2::mod { 'proxy_balancer': }
@@ -185,16 +185,18 @@ class apache2 {
   apache2::mod { 'slotmem_shm': }
   apache2::mod { 'socache_shmcb': }
   apache2::mod { 'ssl':
-    with_conf => true
+    with_conf => true,
   }
   apache2::mod { 'suexec': }
   apache2::mod { 'suphp':
-    with_conf => true
+    with_conf => true,
   }
   apache2::config_file { 'mods-available/userdir.conf': }
-  apache2::mod { 'userdir': }
+  apache2::mod { 'userdir':
+    with_conf => true,
+  }
   apache2::mod { 'wsgi':
-    with_conf => true
+    with_conf => true,
   }
 
   # Certificates
