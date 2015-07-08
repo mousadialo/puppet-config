@@ -35,14 +35,6 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-  Servername admin.harvarddiscuss.com
-  ServerAdmin harvarddiscuss@hcs.harvard.edu
-  DocumentRoot /home/groups/harvarddiscuss/administrator
-  SuexecUserGroup harvarddiscuss basic
-  Include /etc/apache2/hcs-conf/directories.conf
-</VirtualHost>
-
-<VirtualHost *:80>
   Servername advisemeharvard.com
   ServerAlias www.advisemeharvard.com
   ServerAdmin advisemeharvard@hcs.harvard.edu
@@ -91,14 +83,6 @@
   ServerAdmin vidnovic@hcs.harvard.edu
   DocumentRoot /home/people/vidnovic/web/wedding
   SuexecUserGroup vidnovic people
-  Include /etc/apache2/hcs-conf/directories.conf
-</VirtualHost>
-
-<VirtualHost *:80>
-  Servername api.prooflog.com
-  ServerAdmin prooflogger@hcs.harvard.edu
-  DocumentRoot /home/groups/prooflogger/v2/api
-  SuexecUserGroup prooflogger basic
   Include /etc/apache2/hcs-conf/directories.conf
 </VirtualHost>
 
@@ -157,15 +141,6 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-  Servername beta.commonplaceinitiative.com
-  ServerAlias beta.commonplace.in
-  ServerAdmin commonplace@hcs.harvard.edu
-  DocumentRoot /home/groups/commonplace/web/beta
-  SuexecUserGroup commonplace basic
-  Include /etc/apache2/hcs-conf/directories.conf
-</VirtualHost>
-
-<VirtualHost *:80>
   Servername birdseedjewelry.com
   ServerAlias www.birdseedjewelry.com
   ServerAdmin birdseed@hcs.harvard.edu
@@ -193,29 +168,11 @@
 </VirtualHost>
 
 <VirtualHost *:80>
-  Servername board.harvardsaa.org
-  ServerAlias board.harvardsaa.org
-  ServerAdmin saa@hcs.harvard.edu
-  DocumentRoot /home/groups/saa/web/board
-  SuexecUserGroup saa basic
-  Include /etc/apache2/hcs-conf/directories.conf
-</VirtualHost>
-
-<VirtualHost *:80>
   Servername bowden.mobi
   ServerAlias www.bowden.mobi
   ServerAdmin ourharvard@hcs.harvard.edu
   DocumentRoot /home/groups/ourharvard/web/molly
   SuexecUserGroup ourharvard basic
-  Include /etc/apache2/hcs-conf/directories.conf
-</VirtualHost>
-
-<VirtualHost *:80>
-  Servername broletariat.com
-  ServerAlias www.broletariat.com
-  ServerAdmin broletariat@hcs.harvard.edu
-  DocumentRoot /home/groups/broletariat/web/index.php
-  SuexecUserGroup broletariat basic
   Include /etc/apache2/hcs-conf/directories.conf
 </VirtualHost>
 
@@ -269,15 +226,6 @@
   ServerAdmin rait@hcs.harvard.edu
   DocumentRoot /home/people/rait/chiasmus
   SuexecUserGroup rait people
-  Include /etc/apache2/hcs-conf/directories.conf
-</VirtualHost>
-
-<VirtualHost *:80>
-  Servername chriskelvinlee.com
-  ServerAlias www.chriskelvinlee.com
-  ServerAdmin admiralty@hcs.harvard.edu
-  DocumentRoot /home/groups/admiralty/cklee
-  SuexecUserGroup admiralty basic
   Include /etc/apache2/hcs-conf/directories.conf
 </VirtualHost>
 
@@ -341,14 +289,6 @@
   ServerAdmin crimsonlist@hcs.harvard.edu
   DocumentRoot /home/groups/crimsonlist/web
   SuexecUserGroup crimsonlist basic
-  Include /etc/apache2/hcs-conf/directories.conf
-</VirtualHost>
-
-<VirtualHost *:80>
-  Servername cs50organizations.com
-  ServerAdmin cs50-groups@hcs.harvard.edu
-  DocumentRoot /home/groups/cs50-groups/web
-  SuexecUserGroup cs50-groups basic
   Include /etc/apache2/hcs-conf/directories.conf
 </VirtualHost>
 

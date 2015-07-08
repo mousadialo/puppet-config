@@ -18,6 +18,8 @@ class apache2 {
   }
 
   # Apache modules
+  package { 'apache2-suexec-custom': }
+  
   package { 'libapache2-mod-php5': }
   # Custom PHP configs. Changes include:
   # - Higher file upload size
