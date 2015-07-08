@@ -52,7 +52,7 @@ class nfs ($nfs_home_directory = false) {
       nfs::client::mount { 'sessions':
         server  => $nfs_server,
         share   => "/${zpool_name}/services/sessions",
-        mount   => '/mnt/tank/session',
+        mount   => '/mnt/tank/sessions',
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
       }
