@@ -1,0 +1,37 @@
+NameVirtualHost *:80
+<VirtualHost *:80>
+  ServerName  hcs.harvard.edu
+  ServerAlias *.hcs.harvard.edu <%= @domain %> *.<%= @domain %>
+  
+  RewriteEngine  on
+  RewriteOptions inherit
+
+  # If host is hcs.harvard.edu, canonicalize host to www.hcs.harvard.edu
+  # TODO(fwidjaja): Also redirect hcs.so and www.hcs.so
+  RewriteCond %{HTTP_HOST} ^hcs\.harvard\.edu$ [NC]  # [NC]: case-insensitive
+  RewriteRule ^/(.*) http://www.hcs.harvard.edu/$1 [R=301,L]
+
+  ServerAdmin webmaster@hcs
+  DocumentRoot /var/www/hcs.harvard.edu/htdocs
+
+  <Directory "/var/www/hcs.harvard.edu/htdocs">
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Require all granted
+  </Directory>
+
+  # Non-secure web pages should use the files in hcs-nonsecure-conf
+  # as well as the general configuration files in hcs-conf
+  Include /etc/apache2/hcs-conf/[^.#]*
+  Include /etc/apache2/hcs-nonsecure-conf/[^.#]*
+
+#  TODO: port the old logs code to new debianized world.  Then update
+#  our tools for log analysis.
+#  <Directory "/var/www/hcs.harvard.edu/logs">
+#    Options -Indexes
+#    Order deny,allow
+#    Deny from all
+#    Allow from 140.247.
+#  </Directory>
+#  Alias /logs /var/www/hcs.harvard.edu/logs
+</VirtualHost>

@@ -47,6 +47,15 @@ class nfs ($nfs_home_directory = false) {
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
       }
+      
+      # Mount php sessions directory
+      nfs::client::mount { 'sessions':
+        server  => $nfs_server,
+        share   => "/${zpool_name}/services/sessions",
+        mount   => '/mnt/tank/session',
+        options => 'rw,relatime,nosuid,nodev',
+        atboot  => true,
+      }
     }
 
     $mount_dir = hiera('nfs-mount-dir')

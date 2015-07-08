@@ -2,7 +2,7 @@
 define apache2::config_file () {
   include apache2
 
-  file {$title:
+  file { $title:
     ensure  => file,
     path    => "/etc/apache2/${title}",
     source  => "puppet:///modules/apache2/apache2/${title}",

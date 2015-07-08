@@ -2,7 +2,7 @@
 classes:
   - nfs
   - ldap
-  # null client config
-  - mail
+  - mail # null client config
+  - alpine
 
-nfs::nfs_home_directory: 'true'
+nfs::nfs_home_directory: true

@@ -21,7 +21,7 @@ class base::users {
     managehome     => true,
     comment        => 'HCS Root User',
     shell          => '/bin/bash',
-    password       => '$6$0uaOzhoY$UpDttMyo/X40L0bhxsQ6v.tQAIiBSs0e4vi8zsPRfu8Ga6wZOoZJL1TfCSxfN5b4r0B8CHla4HaYH/M3AbyV/.',
+    password       => hiera('HCS-password-hash'),
     groups         => ['adm', 'sudo'],
     purge_ssh_keys => true,
   } ->

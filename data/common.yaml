@@ -1,9 +1,8 @@
 ---
 domain: 'hcs.so'
-puppetmaster-server: '10.0.12.5'
 nfs-server: '10.0.12.30'
-ldap-server: '10.0.14.216'
 nfs-mount-dir: '/mnt/tank/home'
 zfs::zpool_name: 'tank'
 zfs::dataset_name: 'home'
+HCS-password-hash: '$6$0uaOzhoY$UpDttMyo/X40L0bhxsQ6v.tQAIiBSs0e4vi8zsPRfu8Ga6wZOoZJL1TfCSxfN5b4r0B8CHla4HaYH/M3AbyV/.'
 HCS-public-key: 'AAAAB3NzaC1yc2EAAAADAQABAAABAQDecDosh9f7BSCqEBfo43YQAMmReeJ7b7SJ9pADcqXtmzRN4fCwIcG8iYm2crpwOwPcnA5RrETTMgo4j/3Bnn0nb1v3/W68a+LPYS81bxLiVLc9vIWKpLXavHQAZJC7FWWT4iX+4EtoCHG7dYkAHMe3884HaQA//2+QJDY4u33CgwGwhGnInXeuvg/q8wQbys5yVs3p9uz7bMf23uSJzLs14C1a/TKIn1u/10Gx3dZVzlwNrgxnAej/H/ulFi4WNBXtaee/oraG/S28zCn97RsUC02wzlqqksJ2wi1olmwSiv/1lTiYhA5qL1DKetPPbOa+802spxbu5eKH/eSthxPr'

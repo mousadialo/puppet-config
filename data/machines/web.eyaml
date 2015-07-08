@@ -1,13 +1,11 @@
 ---
 classes:
   - nfs
-  - web
   - ldap
+  - mail # null client config
   - apache2
-  # null client config
-  - mail
 
-nfs::nfs_home_directory: 'true'
+nfs::nfs_home_directory: true
 
 star.hcs.harvard.edu.key: >
     ENC[PKCS7,MIIH/QYJKoZIhvcNAQcDoIIH7jCCB+oCAQAxggEhMIIBHQIBADAFMAACAQEw

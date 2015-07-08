@@ -5,4 +5,4 @@ classes:
   # null client config
   - mail
 
-nfs::nfs_home_directory: 'true'
+nfs::nfs_home_directory: true
