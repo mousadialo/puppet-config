@@ -180,6 +180,7 @@ class apache2 {
   apache2::mod { 'proxy_http': }
   apache2::mod { 'rewrite': }
   apache2::mod { 'shib2': }
+  apache2::mod { 'socache_shmcb': }
   apache2::mod { 'ssl':
     with_conf => true
   }
