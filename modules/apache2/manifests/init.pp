@@ -111,11 +111,11 @@ class apache2 {
   # APACHE CONFIGURATION
 
   # This is the main apache configuration file. It sets high level directives
-  # and includes sites-enabled and conf.d
+  # and includes sites-enabled and conf-enabled
   apache2::config_file { 'apache2.conf': }
     
   # Security configurations to limit exposing ServerTokens and ServerSignature.
-  apache2::config_file { 'conf-available/security': }
+  apache2::config_file { 'conf-available/security.conf': }
 
   # create the hcs conf directories
   file{ [ '/etc/apache2/hcs-conf',
