@@ -18,7 +18,7 @@ define apache2::php5_mod($ensure = 'enabled') {
   }
   else {
     exec { "/usr/sbin/php5dismod ${title}" :
-      unless => "! /bin/readlink -e /etc/php5/apache2/conf.d/20-${title}.ini 1> /dev/null",
+      onlyif => "/bin/readlink -e /etc/php5/apache2/conf.d/20-${title}.ini 1> /dev/null",
       notify => Service[apache2],
     }
   }

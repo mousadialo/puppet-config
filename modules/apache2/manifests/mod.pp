@@ -14,7 +14,7 @@ define apache2::mod($ensure = 'enabled') {
   }
   else {
     exec { "/usr/sbin/a2dismod ${title}" :
-      unless => "! /bin/readlink -e /etc/apache2/mods-enabled/${title}.load 1> /dev/null",
+      onlyif => "/bin/readlink -e /etc/apache2/mods-enabled/${title}.load 1> /dev/null",
       notify => Service[apache2],
     }
   }
