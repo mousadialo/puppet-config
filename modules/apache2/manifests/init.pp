@@ -160,44 +160,23 @@ class apache2 {
   apache2::mod { 'authnz_ldap': }
   apache2::mod { 'cgi': }
   apache2::mod { 'dav': }
-  apache2::mod { 'dav_fs':
-    with_conf => true,
-  }
-  apache2::mod { 'fcgid':
-    with_conf => true,
-  }
+  apache2::mod { 'dav_fs': }
+  apache2::mod { 'fcgid': }
   apache2::mod { 'headers': }
   apache2::mod { 'include': }
   apache2::mod { 'ldap': }
   apache2::mod { 'php5':
-    ensure    => disabled,
-    with_conf => true,
+    ensure => disabled,
   }
   apache2::mod { 'python': }
-  apache2::mod { 'proxy':
-    with_conf => true,
-  }
-  apache2::mod { 'proxy_ajp': }
-  apache2::mod { 'proxy_balancer': }
-  apache2::mod { 'proxy_http': }
   apache2::mod { 'rewrite': }
   apache2::mod { 'shib2': }
-  apache2::mod { 'slotmem_shm': }
-  apache2::mod { 'socache_shmcb': }
-  apache2::mod { 'ssl':
-    with_conf => true,
-  }
+  apache2::mod { 'ssl': }
   apache2::mod { 'suexec': }
-  apache2::mod { 'suphp':
-    with_conf => true,
-  }
+  apache2::mod { 'suphp': }
   apache2::config_file { 'mods-available/userdir.conf': }
-  apache2::mod { 'userdir':
-    with_conf => true,
-  }
-  apache2::mod { 'wsgi':
-    with_conf => true,
-  }
+  apache2::mod { 'userdir': }
+  apache2::mod { 'wsgi': }
 
   # Certificates
   file {'/etc/ssl/certs/hcs_harvard_edu_cert.cer':
