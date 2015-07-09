@@ -31,7 +31,7 @@ class apache2 {
     owner   => root,
     group   => root,
     notify  => Service['apache2'],
-    require => Package['libapache2-mod-php5']
+    require => Package['libapache2-mod-php5'],
   }
   file {'/etc/php5/apache2/php.ini':
     ensure  => file,
@@ -39,7 +39,7 @@ class apache2 {
     owner   => root,
     group   => root,
     notify  => Service['apache2'],
-    require => Package['libapache2-mod-php5']
+    require => Package['libapache2-mod-php5'],
   }
   
   package { 'libapache2-mod-suphp': }
@@ -144,7 +144,8 @@ class apache2 {
   
   # Remove default vhost
   file { '/etc/apache2/sites-enabled/000-default.conf':
-    ensure => absent
+    ensure  => absent,
+    require => Package['apache2'],
   }
 
   # HCS enabled virtual hosts.
@@ -161,22 +162,33 @@ class apache2 {
   apache2::mod { 'cgi': }
   apache2::mod { 'dav': }
   apache2::mod { 'dav_fs': }
-  apache2::mod { 'fcgid': }
+  apache2::mod { 'fcgid':
+    require => Package['libapache2-mod-fcgid'],
+  }
   apache2::mod { 'headers': }
   apache2::mod { 'include': }
   apache2::mod { 'ldap': }
   apache2::mod { 'php5':
-    ensure => disabled,
+    ensure  => disabled,
+    require => Package['libapache2-mod-php5'],
   }
-  apache2::mod { 'python': }
+  apache2::mod { 'python':
+    require => Package['libapache2-mod-python'],
+  }
   apache2::mod { 'rewrite': }
-  apache2::mod { 'shib2': }
+  apache2::mod { 'shib2':
+    require => Package['libapache2-mod-shib2'],
+  }
   apache2::mod { 'ssl': }
   apache2::mod { 'suexec': }
-  apache2::mod { 'suphp': }
+  apache2::mod { 'suphp':
+    require => Package['libapache2-mod-suphp'],
+  }
   apache2::config_file { 'mods-available/userdir.conf': }
   apache2::mod { 'userdir': }
-  apache2::mod { 'wsgi': }
+  apache2::mod { 'wsgi':
+    require => Package['libapache2-mod-wsgi'],
+  }
 
   # Certificates
   file {'/etc/ssl/certs/hcs_harvard_edu_cert.cer':
@@ -212,7 +224,7 @@ class apache2 {
     owner   => 'root',
     group   => 'root',
     # Must have mounted www-hcs.harvard.edu
-    require => Nfs::Client::Mount['www-hcs.harvard.edu'],
+    require => [Nfs::Client::Mount['www-hcs.harvard.edu'], Package['apache2']],
   }
 
   file { '/var/www/hcs.harvard.edu-ssl':
@@ -222,7 +234,7 @@ class apache2 {
     owner   => 'root',
     group   => 'root',
     # Must have mounted www-hcs.harvard.edu-ssl
-    require => Nfs::Client::Mount['www-hcs.harvard.edu-ssl'],
+    require => [Nfs::Client::Mount['www-hcs.harvard.edu-ssl'], Package['apache2']],
   }
   
 }

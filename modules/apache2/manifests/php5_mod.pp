@@ -9,17 +9,20 @@ define apache2::php5_mod($ensure = 'enabled') {
   if $ensure == 'enabled' {
     package { "php5-${title}":
       ensure => installed,
-      notify => Service[apache2],
-    } ->
+      notify => Service['apache2'],
+    }
+    
     exec { "/usr/sbin/php5enmod ${title}" :
-      unless => "/bin/readlink -e /etc/php5/apache2/conf.d/20-${title}.ini 1> /dev/null",
-      notify => Service[apache2],
+      unless  => "/bin/readlink -e /etc/php5/apache2/conf.d/20-${title}.ini 1> /dev/null",
+      notify  => Service['apache2'],
+      require => [Package['libapache2-mod-php5'], Package["php5-${title}"]],
     }
   }
   else {
     exec { "/usr/sbin/php5dismod ${title}" :
-      onlyif => "/bin/readlink -e /etc/php5/apache2/conf.d/20-${title}.ini 1> /dev/null",
-      notify => Service[apache2],
+      onlyif  => "/bin/readlink -e /etc/php5/apache2/conf.d/20-${title}.ini 1> /dev/null",
+      notify  => Service['apache2'],
+      require => Package['libapache2-mod-php5'],
     }
   }
   
