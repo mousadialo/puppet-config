@@ -10,7 +10,7 @@ define apache2::php5_mod() {
           "/etc/php5/cgi/conf.d/20-${title}.ini",
           "/etc/php5/cli/conf.d/20-${title}.ini"]:
     ensure  => link,
-    target  => '../../mods-available/${title}.ini',
+    target  => "../../mods-available/${title}.ini",
     owner   => 'root',
     group   => 'root',
     notify  => Service['apache2'],
