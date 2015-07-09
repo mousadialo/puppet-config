@@ -1,10 +1,18 @@
 <VirtualHost *:443>
-  Servername  hcs.harvard.edu
-  ServerAlias *.hcs.harvard.edu <%= @domain %> *.<%= @domain %>
+  Servername  www.hcs.harvard.edu
+  ServerAlias hcs.harvard.edu www.<%= @domain %> <%= @domain %>
   
-  UseCanonicalName On
-  DocumentRoot     /var/www/hcs.harvard.edu/htdocs
-  ServerAdmin      webmaster@hcs
+  RewriteEngine  on
+  RewriteOptions inherit
+  
+  # If host is hcs.harvard.edu, canonicalize host to www.hcs.harvard.edu
+  # TODO(fwidjaja): Also redirect hcs.so and www.hcs.so
+  RewriteCond %{HTTP_HOST} ^hcs\.harvard\.edu$ [NC]  # [NC]: case-insensitive
+  RewriteRule ^/(.*) https://www.hcs.harvard.edu/$1 [R=301,L]
+  #UseCanonicalName On
+  
+  DocumentRoot /var/www/hcs.harvard.edu/htdocs
+  ServerAdmin  webmaster@hcs
   
   SSLEngine               on
   SSLCertificateFile      /etc/ssl/certs/hcs_harvard_edu_cert.cer
@@ -21,13 +29,6 @@
     AllowOverride All
     Require all granted
   </Directory>
-
-  # Turn on mod_php because many of our services use it instead
-  # of suPHP because of permissions, docroot issues (they are
-  # installed via Debian packages)
-  <IfModule !mod_php5.c>
-    LoadModule php5_module /usr/lib/apache2/modules/libphp5.so
-  </IfModule>
 
   # Use both secure and generic confs
   Include /etc/apache2/hcs-conf/[^.#]*
