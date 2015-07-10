@@ -5,7 +5,7 @@ define apache2::vhost() {
   file { "${title}-site-available":
     ensure  => file,
     path    => "/etc/apache2/sites-available/${title}.conf",
-    content => template("apache2/sites/${title}.conf.erb"),
+    content => template("apache2/vhosts/${title}.conf.erb"),
     owner   => 'root',
     group   => 'root',
     notify  => Service['apache2'],

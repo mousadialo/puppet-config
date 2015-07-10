@@ -94,7 +94,7 @@ class apache2 {
   # Main shibboleth configuration file
   file { '/etc/shibboleth/shibboleth2.xml':
     ensure  => file,
-    content => template('apache2/shibboleth/shibboleth2.xml.erb'),
+    source => 'puppet:///modules/apache2/shibboleth/shibboleth2.xml',
     owner   => 'root',
     group   => 'root',
     notify  => [Service['shibd'], Service['apache2']],
@@ -132,6 +132,7 @@ class apache2 {
   # secure and non-secure pages.
   apache2::config_file { 'hcs-conf/directories.conf': }
   apache2::config_file { 'hcs-conf/redirects.conf': }
+  apache2::config_file { 'hcs-conf/shibboleth.conf': }
   apache2::config_file { 'hcs-conf/tilde-rewrites.conf': }
 
   # HCS configurations for non-secure pages
