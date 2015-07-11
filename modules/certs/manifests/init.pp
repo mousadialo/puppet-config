@@ -17,19 +17,19 @@ class certs {
   }
   concat::fragment { $certificate:
     target => $chain,
-    source => 'puppet:///modules/web/certs/hcs_harvard_edu_cert.cer',
+    source => 'puppet:///modules/certs/hcs_harvard_edu_cert.cer',
     order  => '1',
   }
   concat::fragment { $intermediates:
     target => $chain,
-    source => 'puppet:///modules/web/certs/hcs_harvard_edu_interm.cer',
+    source => 'puppet:///modules/certs/hcs_harvard_edu_interm.cer',
     order  => '2',
   }
 
   # X509 Certificate only, Base64 encoded
   file { $certificate:
     ensure => file,
-    source => 'puppet:///modules/web/certs/hcs_harvard_edu_cert.cer',
+    source => 'puppet:///modules/certs/hcs_harvard_edu_cert.cer',
     owner  => 'root',
     group  => 'root',
     mode   => '0444',
@@ -38,7 +38,7 @@ class certs {
   # X509 Intermediates/root only Reverse, Base64 encoded
   file { $intermediates:
     ensure => file,
-    source => 'puppet:///modules/web/certs/hcs_harvard_edu_interm.cer',
+    source => 'puppet:///modules/certs/hcs_harvard_edu_interm.cer',
     owner  => 'root',
     group  => 'root',
     mode   => '0444',
