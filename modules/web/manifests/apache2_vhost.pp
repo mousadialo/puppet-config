@@ -3,7 +3,7 @@ define web::apache2_vhost() {
 
   file { "/etc/apache2/sites-available/${title}.conf":
     ensure  => file,
-    content => template("apache2/vhosts/${title}.conf.erb"),
+    content => template("web/vhosts/${title}.conf.erb"),
     owner   => 'root',
     group   => 'root',
     notify  => Service['apache2'],
