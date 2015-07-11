@@ -1,5 +1,5 @@
-# function to drop apache mod files
-define web::apache2_vhost() {
+# resource to drop apache vhost files
+define web::apache2::vhost () {
 
   file { "/etc/apache2/sites-available/${title}.conf":
     ensure  => file,

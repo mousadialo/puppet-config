@@ -1,5 +1,5 @@
 # function to drop generic apache2 configuration files
-define web::apache2_config () {
+define web::apache2::config () {
 
   file { $title:
     ensure  => file,

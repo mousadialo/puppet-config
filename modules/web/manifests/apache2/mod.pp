@@ -1,5 +1,5 @@
-# With conf specifies whether conf file should be linked as well.
-define web::apache2_mod($ensure = 'enabled') {
+# resource to enable or disable apache2 mods
+define web::apache2::mod ($ensure = 'enabled') {
   
   validate_re($ensure, '^(enabled|disabled)$',
     "${ensure} is not supported for ensure.

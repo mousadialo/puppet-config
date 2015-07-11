@@ -105,18 +105,18 @@ class web {
   }
 
   # PHP5 modules
-  web::php5_mod { 'mcrypt': }
-  web::php5_mod { 'gd': }
-  web::php5_mod { 'mysql': }
+  web::php5::mod { 'mcrypt': }
+  web::php5::mod { 'gd': }
+  web::php5::mod { 'mysql': }
 
   # APACHE CONFIGURATION
 
   # This is the main apache configuration file. It sets high level directives
   # and includes sites-enabled and conf-enabled
-  web::apache2_config { 'apache2.conf': }
+  web::apache2::config { 'apache2.conf': }
     
   # Security configurations to limit exposing ServerTokens and ServerSignature.
-  web::apache2_config { 'conf-available/security.conf': }
+  web::apache2::config { 'conf-available/security.conf': }
 
   # create the hcs conf directories
   file{ [ '/etc/apache2/hcs-conf',
@@ -129,18 +129,18 @@ class web {
   # These do spiffy HCS specific things like redirects for special people,
   # hosting from user directories and removing the tilde. These are applied to
   # secure and non-secure pages.
-  web::apache2_config { 'hcs-conf/directories.conf': }
-  web::apache2_config { 'hcs-conf/redirects.conf': }
-  web::apache2_config { 'hcs-conf/shibboleth.conf': }
-  web::apache2_config { 'hcs-conf/tilde-rewrites.conf': }
+  web::apache2::config { 'hcs-conf/directories.conf': }
+  web::apache2::config { 'hcs-conf/redirects.conf': }
+  web::apache2::config { 'hcs-conf/shibboleth.conf': }
+  web::apache2::config { 'hcs-conf/tilde-rewrites.conf': }
 
   # HCS configurations for non-secure pages
-  web::apache2_config { 'hcs-nonsecure-conf/redirects.conf': }
+  web::apache2::config { 'hcs-nonsecure-conf/redirects.conf': }
 
   # HCS configurations for secure pages
-  web::apache2_config { 'hcs-ssl-conf/helios.conf': }
-  web::apache2_config { 'hcs-ssl-conf/phpmyadmin.conf': }
-  web::apache2_config { 'hcs-ssl-conf/rt.conf': }
+  web::apache2::config { 'hcs-ssl-conf/helios.conf': }
+  web::apache2::config { 'hcs-ssl-conf/phpmyadmin.conf': }
+  web::apache2::config { 'hcs-ssl-conf/rt.conf': }
   
   # Remove default vhost
   file { '/etc/apache2/sites-enabled/000-default.conf':
@@ -149,44 +149,44 @@ class web {
   }
 
   # HCS enabled virtual hosts.
-  #web::apache2_vhost{ 'default': }
-  web::apache2_vhost{ 'hcs.harvard.edu': }
-  web::apache2_vhost{ 'hcs.harvard.edu-ssl': }
-  #web::apache2_vhost{ 'mail.hcs.harvard.edu': }
-  #web::apache2_vhost{ 'secure.hcs.harvard.edu': }
-  web::apache2_vhost{ 'user-vhosts': }
+  #web::apache2::vhost{ 'default': }
+  web::apache2::vhost{ 'hcs.harvard.edu': }
+  web::apache2::vhost{ 'hcs.harvard.edu-ssl': }
+  #web::apache2::vhost{ 'mail.hcs.harvard.edu': }
+  #web::apache2::vhost{ 'secure.hcs.harvard.edu': }
+  web::apache2::vhost{ 'user-vhosts': }
 
   # Mods enabled and disabled
-  web::apache2_mod { 'actions': }
-  web::apache2_mod { 'authnz_ldap': }
-  web::apache2_mod { 'cgi': }
-  web::apache2_mod { 'dav': }
-  web::apache2_mod { 'dav_fs': }
-  web::apache2_mod { 'fcgid':
+  web::apache2::mod { 'actions': }
+  web::apache2::mod { 'authnz_ldap': }
+  web::apache2::mod { 'cgi': }
+  web::apache2::mod { 'dav': }
+  web::apache2::mod { 'dav_fs': }
+  web::apache2::mod { 'fcgid':
     require => Package['libapache2-mod-fcgid'],
   }
-  web::apache2_mod { 'headers': }
-  web::apache2_mod { 'include': }
-  web::apache2_mod { 'ldap': }
-  web::apache2_mod { 'php5':
+  web::apache2::mod { 'headers': }
+  web::apache2::mod { 'include': }
+  web::apache2::mod { 'ldap': }
+  web::apache2::mod { 'php5':
     ensure  => disabled,
     require => Package['libapache2-mod-php5'],
   }
-  web::apache2_mod { 'python':
+  web::apache2::mod { 'python':
     require => Package['libapache2-mod-python'],
   }
-  web::apache2_mod { 'rewrite': }
-  web::apache2_mod { 'shib2':
+  web::apache2::mod { 'rewrite': }
+  web::apache2::mod { 'shib2':
     require => Package['libapache2-mod-shib2'],
   }
-  web::apache2_mod { 'ssl': }
-  web::apache2_mod { 'suexec': }
-  web::apache2_mod { 'suphp':
+  web::apache2::mod { 'ssl': }
+  web::apache2::mod { 'suexec': }
+  web::apache2::mod { 'suphp':
     require => Package['libapache2-mod-suphp'],
   }
-  web::apache2_config { 'mods-available/userdir.conf': }
-  web::apache2_mod { 'userdir': }
-  web::apache2_mod { 'wsgi':
+  web::apache2::config { 'mods-available/userdir.conf': }
+  web::apache2::mod { 'userdir': }
+  web::apache2::mod { 'wsgi':
     require => Package['libapache2-mod-wsgi'],
   }
 
