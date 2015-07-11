@@ -1,7 +1,0 @@
----
-classes:
-  - nfs
-  - ldap
-  - mail
-
-nfs::nfs_home_directory: true

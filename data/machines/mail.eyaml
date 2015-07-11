@@ -3,8 +3,7 @@ classes:
   - nfs
   - ldap
   - certs
-  - web
-  - mail # null client config
+  - mail
 
 nfs::nfs_home_directory: true
 

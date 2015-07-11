@@ -53,7 +53,7 @@
         <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
 
         <!-- Your SP generated these credentials.  They're used to talk to IdP's. -->
-    <CredentialResolver type="File" key="/etc/ssl/private/star.hcs.harvard.edu.key" certificate="/etc/ssl/certs/hcs_harvard_edu_cert.cer"/>
+    <CredentialResolver type="File" key="/etc/ssl/private/hcs_harvard_edu.key" certificate="/etc/ssl/certs/hcs_harvard_edu_cert.cer"/>
 
     </ApplicationDefaults>
 

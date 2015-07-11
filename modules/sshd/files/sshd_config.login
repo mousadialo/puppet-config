@@ -33,13 +33,13 @@ PubkeyAuthentication yes
 #AuthorizedKeysFile	%h/.ssh/authorized_keys
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
-IgnoreRhosts no
+IgnoreRhosts yes
 # For this to work you will also need host keys in /etc/ssh_known_hosts
 RhostsRSAAuthentication no
 # similar for protocol version 2
-HostbasedAuthentication yes
+HostbasedAuthentication no
 # Uncomment if you don't trust ~/.ssh/known_hosts for RhostsRSAAuthentication
-IgnoreUserKnownHosts yes
+#IgnoreUserKnownHosts yes
 
 # To enable empty passwords, change to yes (NOT RECOMMENDED)
 PermitEmptyPasswords no
@@ -49,7 +49,7 @@ PermitEmptyPasswords no
 ChallengeResponseAuthentication no
 
 # Change to no to disable tunnelled clear text passwords
-PasswordAuthentication yes
+PasswordAuthentication no
 
 # Kerberos options
 #KerberosAuthentication no
@@ -58,12 +58,12 @@ PasswordAuthentication yes
 #KerberosTicketCleanup yes
 
 # GSSAPI options
-GSSAPIAuthentication yes
-GSSAPICleanupCredentials yes
-GSSAPIStrictAcceptorCheck no
+#GSSAPIAuthentication no
+#GSSAPICleanupCredentials yes
 
-X11Forwarding yes
-X11DisplayOffset 10
+X11Forwarding no
+AllowTcpForwarding no
+
 PrintMotd no
 PrintLastLog yes
 TCPKeepAlive yes

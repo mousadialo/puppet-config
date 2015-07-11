@@ -3,6 +3,8 @@
 class web {
 
   require nfs
+  require certs
+  
   $domain = hiera('domain')
 
   # PACKAGES
@@ -188,32 +190,6 @@ class web {
   web::apache2::mod { 'userdir': }
   web::apache2::mod { 'wsgi':
     require => Package['libapache2-mod-wsgi'],
-  }
-
-  # Certificates
-  file {'/etc/ssl/certs/hcs_harvard_edu_cert.cer':
-    ensure => file,
-    source => 'puppet:///modules/web/certs/hcs_harvard_edu_cert.cer',
-    owner  => root,
-    group  => root,
-    mode   => '0644'
-  }
-
-  file {'/etc/ssl/certs/hcs_harvard_edu_interm.cer':
-    ensure => file,
-    source => 'puppet:///modules/web/certs/hcs_harvard_edu_interm.cer',
-    owner  => root,
-    group  => root,
-    mode   => '0644'
-  }
-
-  # HCS super private key
-  file {'/etc/ssl/private/star.hcs.harvard.edu.key':
-    ensure  => file,
-    content => hiera('star.hcs.harvard.edu.key'),
-    owner   => root,
-    group   => root,
-    mode    => '0400',
   }
 
   # Symlink our web files to appropriate location
