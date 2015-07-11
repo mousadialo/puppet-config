@@ -1,6 +1,5 @@
 # With conf specifies whether conf file should be linked as well.
-define apache2::mod($ensure = 'enabled') {
-  include apache2
+define web::apache2_mod($ensure = 'enabled') {
   
   validate_re($ensure, '^(enabled|disabled)$',
     "${ensure} is not supported for ensure.
@@ -20,5 +19,6 @@ define apache2::mod($ensure = 'enabled') {
       require => Package['apache2'],
     }
   }
+  
 }
 

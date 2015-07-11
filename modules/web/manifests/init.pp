@@ -1,7 +1,6 @@
-# apache2 configuration
-# will install and configure apache2
-# web servers will get more specific configuration
-class apache2 {
+# web configuration
+# will install and configure apache2 and other software required to run web servers
+class web {
 
   require nfs
   $domain = hiera('domain')
@@ -27,7 +26,7 @@ class apache2 {
   # - Enable php5 mcrypt mod
   file {'/etc/php5/cgi/php.ini':
     ensure  => file,
-    source  => 'puppet:///modules/apache2/php5/cgi/php.ini',
+    source  => 'puppet:///modules/web/php5/cgi/php.ini',
     owner   => root,
     group   => root,
     notify  => Service['apache2'],
@@ -35,7 +34,7 @@ class apache2 {
   }
   file {'/etc/php5/apache2/php.ini':
     ensure  => file,
-    source  => 'puppet:///modules/apache2/php5/apache2/php.ini',
+    source  => 'puppet:///modules/web/php5/apache2/php.ini',
     owner   => root,
     group   => root,
     notify  => Service['apache2'],
@@ -48,7 +47,7 @@ class apache2 {
   # /mnt/tank/hcs.harvard.edu
   file { '/etc/suphp/suphp.conf':
     ensure  => file,
-    source  => 'puppet:///modules/apache2/suphp/suphp.conf',
+    source  => 'puppet:///modules/web/suphp/suphp.conf',
     owner   => root,
     group   => root,
     notify  => Service['apache2'],
@@ -87,14 +86,14 @@ class apache2 {
   # HUIT IDP metadata
   file { '/etc/shibboleth/huit-idp-metadata.xml':
     ensure => file,
-    source => 'puppet:///modules/apache2/shibboleth/huit-idp-metadata.xml',
+    source => 'puppet:///modules/web/shibboleth/huit-idp-metadata.xml',
     owner  => 'root',
     group  => 'root'
   } ->
   # Main shibboleth configuration file
   file { '/etc/shibboleth/shibboleth2.xml':
     ensure  => file,
-    source => 'puppet:///modules/apache2/shibboleth/shibboleth2.xml',
+    source => 'puppet:///modules/web/shibboleth/shibboleth2.xml',
     owner   => 'root',
     group   => 'root',
     notify  => [Service['shibd'], Service['apache2']],
@@ -106,23 +105,23 @@ class apache2 {
   }
 
   # PHP5 modules
-  apache2::php5_mod { 'mcrypt': }
-  apache2::php5_mod { 'gd': }
-  apache2::php5_mod { 'mysql': }
+  web::php5_mod { 'mcrypt': }
+  web::php5_mod { 'gd': }
+  web::php5_mod { 'mysql': }
 
   # APACHE CONFIGURATION
 
   # This is the main apache configuration file. It sets high level directives
   # and includes sites-enabled and conf-enabled
-  apache2::config_file { 'apache2.conf': }
+  web::apache2_config { 'apache2.conf': }
     
   # Security configurations to limit exposing ServerTokens and ServerSignature.
-  apache2::config_file { 'conf-available/security.conf': }
+  web::apache2_config { 'conf-available/security.conf': }
 
   # create the hcs conf directories
   file{ [ '/etc/apache2/hcs-conf',
-      '/etc/apache2/hcs-nonsecure-conf',
-      '/etc/apache2/hcs-ssl-conf' ]:
+          '/etc/apache2/hcs-nonsecure-conf',
+          '/etc/apache2/hcs-ssl-conf' ]:
     ensure  => directory,
     require => Package['apache2'],
   }
@@ -130,18 +129,18 @@ class apache2 {
   # These do spiffy HCS specific things like redirects for special people,
   # hosting from user directories and removing the tilde. These are applied to
   # secure and non-secure pages.
-  apache2::config_file { 'hcs-conf/directories.conf': }
-  apache2::config_file { 'hcs-conf/redirects.conf': }
-  apache2::config_file { 'hcs-conf/shibboleth.conf': }
-  apache2::config_file { 'hcs-conf/tilde-rewrites.conf': }
+  web::apache2_config { 'hcs-conf/directories.conf': }
+  web::apache2_config { 'hcs-conf/redirects.conf': }
+  web::apache2_config { 'hcs-conf/shibboleth.conf': }
+  web::apache2_config { 'hcs-conf/tilde-rewrites.conf': }
 
   # HCS configurations for non-secure pages
-  apache2::config_file { 'hcs-nonsecure-conf/redirects.conf': }
+  web::apache2_config { 'hcs-nonsecure-conf/redirects.conf': }
 
   # HCS configurations for secure pages
-  apache2::config_file { 'hcs-ssl-conf/helios.conf': }
-  apache2::config_file { 'hcs-ssl-conf/phpmyadmin.conf': }
-  apache2::config_file { 'hcs-ssl-conf/rt.conf': }
+  web::apache2_config { 'hcs-ssl-conf/helios.conf': }
+  web::apache2_config { 'hcs-ssl-conf/phpmyadmin.conf': }
+  web::apache2_config { 'hcs-ssl-conf/rt.conf': }
   
   # Remove default vhost
   file { '/etc/apache2/sites-enabled/000-default.conf':
@@ -150,51 +149,51 @@ class apache2 {
   }
 
   # HCS enabled virtual hosts.
-  #apache2::vhost{ 'default': }
-  apache2::vhost{ 'hcs.harvard.edu': }
-  apache2::vhost{ 'hcs.harvard.edu-ssl': }
-  #apache2::vhost{ 'mail.hcs.harvard.edu': }
-  #apache2::vhost{ 'secure.hcs.harvard.edu': }
-  apache2::vhost{ 'user-vhosts': }
+  #web::apache2_vhost{ 'default': }
+  web::apache2_vhost{ 'hcs.harvard.edu': }
+  web::apache2_vhost{ 'hcs.harvard.edu-ssl': }
+  #web::apache2_vhost{ 'mail.hcs.harvard.edu': }
+  #web::apache2_vhost{ 'secure.hcs.harvard.edu': }
+  web::apache2_vhost{ 'user-vhosts': }
 
   # Mods enabled and disabled
-  apache2::mod { 'actions': }
-  apache2::mod { 'authnz_ldap': }
-  apache2::mod { 'cgi': }
-  apache2::mod { 'dav': }
-  apache2::mod { 'dav_fs': }
-  apache2::mod { 'fcgid':
+  web::apache2_mod { 'actions': }
+  web::apache2_mod { 'authnz_ldap': }
+  web::apache2_mod { 'cgi': }
+  web::apache2_mod { 'dav': }
+  web::apache2_mod { 'dav_fs': }
+  web::apache2_mod { 'fcgid':
     require => Package['libapache2-mod-fcgid'],
   }
-  apache2::mod { 'headers': }
-  apache2::mod { 'include': }
-  apache2::mod { 'ldap': }
-  apache2::mod { 'php5':
+  web::apache2_mod { 'headers': }
+  web::apache2_mod { 'include': }
+  web::apache2_mod { 'ldap': }
+  web::apache2_mod { 'php5':
     ensure  => disabled,
     require => Package['libapache2-mod-php5'],
   }
-  apache2::mod { 'python':
+  web::apache2_mod { 'python':
     require => Package['libapache2-mod-python'],
   }
-  apache2::mod { 'rewrite': }
-  apache2::mod { 'shib2':
+  web::apache2_mod { 'rewrite': }
+  web::apache2_mod { 'shib2':
     require => Package['libapache2-mod-shib2'],
   }
-  apache2::mod { 'ssl': }
-  apache2::mod { 'suexec': }
-  apache2::mod { 'suphp':
+  web::apache2_mod { 'ssl': }
+  web::apache2_mod { 'suexec': }
+  web::apache2_mod { 'suphp':
     require => Package['libapache2-mod-suphp'],
   }
-  apache2::config_file { 'mods-available/userdir.conf': }
-  apache2::mod { 'userdir': }
-  apache2::mod { 'wsgi':
+  web::apache2_config { 'mods-available/userdir.conf': }
+  web::apache2_mod { 'userdir': }
+  web::apache2_mod { 'wsgi':
     require => Package['libapache2-mod-wsgi'],
   }
 
   # Certificates
   file {'/etc/ssl/certs/hcs_harvard_edu_cert.cer':
     ensure => file,
-    source => 'puppet:///modules/apache2/certs/hcs_harvard_edu_cert.cer',
+    source => 'puppet:///modules/web/certs/hcs_harvard_edu_cert.cer',
     owner  => root,
     group  => root,
     mode   => '0644'
@@ -202,7 +201,7 @@ class apache2 {
 
   file {'/etc/ssl/certs/hcs_harvard_edu_interm.cer':
     ensure => file,
-    source => 'puppet:///modules/apache2/certs/hcs_harvard_edu_interm.cer',
+    source => 'puppet:///modules/web/certs/hcs_harvard_edu_interm.cer',
     owner  => root,
     group  => root,
     mode   => '0644'

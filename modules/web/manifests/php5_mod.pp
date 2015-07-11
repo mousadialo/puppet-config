@@ -1,6 +1,5 @@
 # Installs and enables php5 modules.
-define apache2::php5_mod($ensure = 'enabled') {
-  include apache2
+define web::php5_mod($ensure = 'enabled') {
   
   validate_re($ensure, '^(enabled|disabled)$',
     "${ensure} is not supported for ensure.
