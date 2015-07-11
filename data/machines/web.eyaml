@@ -2,8 +2,8 @@
 classes:
   - nfs
   - ldap
+  - web
   - mail # null client config
-  - apache2
 
 nfs::nfs_home_directory: true
 
