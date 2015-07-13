@@ -39,15 +39,6 @@ class mail::amavis {
     require => [Apt::Source['ubuntu_archive_multiverse'], Apt::Source['ubuntu_archive_updates_multiverse']],
   }
   
-  service { 'amavis':
-    ensure  => running,
-    enable  => true,
-    require => Package['amavisd-new'],
-  }
-  
-  mail::amavis::config { '15-content_filter_mode': }
-  mail::amavis::config { '50-user': }
-  
   user { 'amavis':
     groups  => ['amavis', 'clamav'],
     require => [Package['amavisd-new'], Package['clamav-daemon']],
@@ -57,6 +48,21 @@ class mail::amavis {
     groups  => ['amavis', 'clamav'],
     require => [Package['amavisd-new'], Package['clamav-daemon']],
   }
+  
+  service { 'clamav-daemon':
+    ensure  => running,
+    enable  => true,
+    require => Package['clamav-daemon'],
+  }
+  
+  service { 'amavis':
+    ensure  => running,
+    enable  => true,
+    require => Package['amavisd-new'],
+  }
+  
+  mail::amavis::config { '15-content_filter_mode': }
+  mail::amavis::config { '50-user': }
   
   package { 'razor':
     ensure => installed,
