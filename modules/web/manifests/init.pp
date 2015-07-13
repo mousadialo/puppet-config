@@ -69,42 +69,66 @@ class web {
 
   # RT
   package { 'request-tracker4':
-    require => Package['apache2']
+    require => Package['apache2'],
   }
   package { 'rt4-apache2':
-    require => Package['request-tracker4']
+    require => Package['request-tracker4'],
   }
   package { 'rt4-clients':
-    require => Package['request-tracker4']
+    require => Package['request-tracker4'],
   }
   package { 'libnet-ldap-perl':
-    require => Package['request-tracker4']
+    require => Package['request-tracker4'],
+  }
+  exec { '/usr/bin/cpan -i RT::Authen::ExternalAuth':
+    environment => 'PERL_MM_USE_DEFAULT=1',
+    creates     => '/usr/local/share/request-tracker4/plugins/RT-Authen-ExternalAuth',
+    require     => Package['request-tracker4'],
   }
 
   # Shibboleth packages
   package { 'libapache2-mod-shib2':
     ensure => installed
-  } ->
-  # HUIT IDP metadata
-  file { '/etc/shibboleth/huit-idp-metadata.xml':
-    ensure => file,
-    source => 'puppet:///modules/web/shibboleth/huit-idp-metadata.xml',
-    owner  => 'root',
-    group  => 'root'
-  } ->
+  }
+  
   # Main shibboleth configuration file
   file { '/etc/shibboleth/shibboleth2.xml':
     ensure  => file,
-    source => 'puppet:///modules/web/shibboleth/shibboleth2.xml',
+    source  => 'puppet:///modules/web/shibboleth/shibboleth2.xml',
     owner   => 'root',
     group   => 'root',
-    notify  => [Service['shibd'], Service['apache2']],
-  } ->
+    require => Package['libapache2-mod-shib2'],
+    notify  => Service['shibd'],
+  }
+  
+  # HUIT IDP metadata
+  file { '/etc/shibboleth/huit-idp-metadata.xml':
+    ensure  => file,
+    source  => 'puppet:///modules/web/shibboleth/huit-idp-metadata.xml',
+    owner   => 'root',
+    group   => 'root'
+    require => Package['libapache2-mod-shib2'],
+    notify  => Service['shibd'],
+  }
+  
+  # Attribute Map for HUIT IDP
+  file { '/etc/shibboleth/attribute-map.xml':
+    ensure  => file,
+    source  => 'puppet:///modules/web/shibboleth/attribute-map.xml',
+    owner   => 'root',
+    group   => 'root'
+    require => Package['libapache2-mod-shib2'],
+    notify  => Service['shibd'],
+  }
+  
   service { 'shibd':
     ensure  => running,
     enable  => true,
-    require => Package['apache2']
+    require => Package['libapache2-mod-shib2'],
   }
+  
+  # Packages needed by helios
+  package { 'python-flask': }
 
   # PHP5 modules
   web::php5::mod { 'mcrypt': }

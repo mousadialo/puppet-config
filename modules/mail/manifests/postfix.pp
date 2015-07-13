@@ -20,7 +20,9 @@ class mail::postfix {
   
     # main.cf configuration
     mail::postfix::config { 'main.cf': }
-    mail::postfix::config { 'master.cf': }
+    mail::postfix::config { 'master.cf':
+      template => true,
+    }
     mail::postfix::config { 'mynetworks': }
 
     # we want to ensure the following files are postmapped if modified

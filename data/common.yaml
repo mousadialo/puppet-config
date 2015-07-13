@@ -1,6 +1,6 @@
 ---
 domain: 'hcs.so'
-nfs-server: '10.0.12.30'
+nfs-server: 'file0.hcs.so'
 nfs-mount-dir: '/mnt/tank/home'
 zfs::zpool_name: 'tank'
 zfs::dataset_name: 'home'
