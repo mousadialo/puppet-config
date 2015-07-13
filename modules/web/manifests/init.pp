@@ -83,7 +83,7 @@ class web {
   exec { '/usr/bin/cpan -i RT::Authen::ExternalAuth':
     environment => 'PERL_MM_USE_DEFAULT=1',
     creates     => '/usr/local/share/request-tracker4/plugins/RT-Authen-ExternalAuth',
-    require     => Package['request-tracker4'],
+    require     => [Package['build-essential'], Package['request-tracker4']],
   }
 
   # Shibboleth packages

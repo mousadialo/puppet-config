@@ -21,7 +21,7 @@ class ldap::client {
     require => Package['ldap-auth-client']
   }
 
-  file {'/etc/nsswitch.conf':
+  file { '/etc/nsswitch.conf':
     ensure  => file,
     source  => 'puppet:///modules/ldap/nsswitch.conf',
     owner   => 'root',
