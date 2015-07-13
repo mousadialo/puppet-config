@@ -13,7 +13,7 @@ use strict;
 $max_servers = 20;
 
 # Do not add spam subject tag.
-$sa_spam_subject_tag = '';
+$sa_spam_subject_tag = undef;
 
 # Always add spam info headers.
 $sa_tag_level_deflt = undef;
