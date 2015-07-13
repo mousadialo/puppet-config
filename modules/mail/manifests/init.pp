@@ -5,7 +5,6 @@ class mail {
   include mail::postfix
 
   if $::machine_type == 'mail' {
-    include mail::amavis
     include mail::dovecot
     
     package { 'procmail':

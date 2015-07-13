@@ -1,6 +1,24 @@
 # AMaViS configuration
 class mail::amavis {
 
+  package { ['amavisd-new',
+             'spamassassin',
+             'libnet-dns-perl',
+             'libmail-spf-perl']:
+    ensure => installed,
+  }
+  
+  package { 'clamav-daemon':
+    ensure => installed,
+  } ~>
+  exec { '/usr/bin/freshclam':
+    refreshonly => true,
+  } ->
+  service { 'clamav-daemon':
+    ensure  => running,
+    enable  => true,
+  }
+
   apt::source { 'ubuntu_archive_multiverse':
     location => 'http://us-east-1.ec2.archive.ubuntu.com/ubuntu/',
     release  => $lsbdistcodename,
@@ -11,14 +29,6 @@ class mail::amavis {
     location => 'http://us-east-1.ec2.archive.ubuntu.com/ubuntu/',
     release  => "${lsbdistcodename}-updates",
     repos    => 'multiverse',
-  }
-
-  package { ['amavisd-new',
-             'spamassassin',
-             'clamav-daemon',
-             'libnet-dns-perl',
-             'libmail-spf-perl']:
-    ensure => installed,
   }
   
   package { ['arj',
@@ -49,12 +59,6 @@ class mail::amavis {
     require => [Package['amavisd-new'], Package['clamav-daemon']],
   }
   
-  service { 'clamav-daemon':
-    ensure  => running,
-    enable  => true,
-    require => Package['clamav-daemon'],
-  }
-  
   service { 'amavis':
     ensure  => running,
     enable  => true,
@@ -65,25 +69,27 @@ class mail::amavis {
   mail::amavis::config { '50-user': }
   
   package { 'razor':
-    ensure => installed,
+    ensure  => installed,
+    require => Package['amavisd-new'],
   } ~>
-  exec { '/usr/bin/razor-admin -create':
+  exec { '/usr/bin/razor-admin -home=/var/lib/amavis/.razor -create':
     refreshonly => true,
     user        => 'amavis',
   } ~>
-  exec { '/usr/bin/razor-admin -register':
+  exec { '/usr/bin/razor-admin -home=/var/lib/amavis/.razor -register':
     refreshonly => true,
     user        => 'amavis',
   } ~>
-  exec { '/usr/bin/razor-admin -discover':
+  exec { '/usr/bin/razor-admin -home=/var/lib/amavis/.razor -discover':
     refreshonly => true,
     user        => 'amavis',
   }
   
   package { 'pyzor':
-    ensure => installed,
+    ensure  => installed,
+    require => Package['amavisd-new'],
   } ~>
-  exec { '/usr/bin/pyzor discover':
+  exec { '/usr/bin/pyzor --homedir /var/lib/amavis/.pyzor discover':
     refreshonly => true,
     user        => 'amavis',
   }
