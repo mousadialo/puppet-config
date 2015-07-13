@@ -128,6 +128,7 @@ class web {
   }
   
   # Packages needed by helios
+  package { 'python-ldap': }
   package { 'python-flask': }
 
   # PHP5 modules
