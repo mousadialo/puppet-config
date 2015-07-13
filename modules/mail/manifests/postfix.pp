@@ -16,6 +16,8 @@ class mail::postfix {
   }
 
   if $::machine_type == 'mail' {
+    require nfs
+  
     # main.cf configuration
     mail::postfix::config { 'main.cf': }
     mail::postfix::config { 'master.cf': }
