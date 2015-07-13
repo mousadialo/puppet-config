@@ -8,6 +8,8 @@ class mail {
     include mail::amavis
     include mail::dovecot
     
+    Class['mail::postfix'] -> Class['mail::amavis'] -> Class['mail::dovecot']
+    
     package { 'procmail':
       ensure => installed,
     }
