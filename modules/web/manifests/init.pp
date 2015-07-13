@@ -106,7 +106,7 @@ class web {
     ensure  => file,
     source  => 'puppet:///modules/web/shibboleth/huit-idp-metadata.xml',
     owner   => 'root',
-    group   => 'root'
+    group   => 'root',
     require => Package['libapache2-mod-shib2'],
     notify  => Service['shibd'],
   }
