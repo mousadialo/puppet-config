@@ -1,8 +1,0 @@
-
-
-#SIZELIMIT	12
-#TIMELIMIT	15
-#DEREF		never
-
-# TLS certificates (needed for GnuTLS)
-TLS_CACERT	/etc/ssl/certs/ca-certificates.crt
