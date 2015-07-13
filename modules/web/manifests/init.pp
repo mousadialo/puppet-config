@@ -116,7 +116,7 @@ class web {
     ensure  => file,
     source  => 'puppet:///modules/web/shibboleth/attribute-map.xml',
     owner   => 'root',
-    group   => 'root'
+    group   => 'root',
     require => Package['libapache2-mod-shib2'],
     notify  => Service['shibd'],
   }
