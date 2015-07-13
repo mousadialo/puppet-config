@@ -1,0 +1,2 @@
+# Change the default mailbox location.
+DEFAULT=$HOME/.inbox

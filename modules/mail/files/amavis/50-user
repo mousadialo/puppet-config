@@ -8,13 +8,24 @@ use strict;
 # the directives you can use in this file
 #
 
-# Number of processes that amavisd-new uses. Make sure that /etc/postfix/master.cf
-# also reflects this value.
+# Number of processes that amavisd-new uses. Make sure that
+# /etc/postfix/master.cf also reflects this value.
 $max_servers = 20;
+
+# Do not add spam subject tag.
+$sa_spam_subject_tag = '';
+
+# Always add spam info headers.
+$sa_tag_level_deflt = undef;
+
+# Always pass on spam. Let the user decide what to do with it.
+$final_spam_destiny = D_PASS;
+
+# Don't quarantine viruses, spam is passed on always with modified headers.
+$QUARANTINEDIR = undef;
 
 $mydomain = "hcs.so";
 @local_domains_acl = ( ".hcs.harvard.edu", ".$mydomain" );
-@whitelist_sender_acl = ( ".harvard.edu" );
 
 #------------ Do not modify anything below this line -------------
 1;  # ensure a defined return

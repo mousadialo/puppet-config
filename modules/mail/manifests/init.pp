@@ -13,17 +13,18 @@ class mail {
     
     package { 'procmail':
       ensure => installed,
+    } ->
+    file { '/etc/procmailrc':
+      ensure => file,
+      source => 'puppet:///modules/mail/procmail/procmailrc',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
     }
     
     package { 'postgrey':
       ensure => installed,
     } ->
-    shellvar { 'POSTGREY_OPTS':
-      ensure => present,
-      target => '/etc/default/postgrey',
-      value  => '--inet=10023 --delay=60',
-      quoted => 'double',
-    } ~>
     service { 'postgrey':
       ensure => running,
       enable => true,
