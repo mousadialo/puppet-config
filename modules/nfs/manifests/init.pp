@@ -30,12 +30,11 @@ class nfs ($nfs_home_directory = false) {
   }
   else {
     if $::machine_type == 'web' {
-
       # Mount our web directories
       nfs::client::mount { 'www-hcs.harvard.edu':
         server  => $nfs_server,
         share   => "/${zpool_name}/services/www-hcs.harvard.edu",
-        mount   => '/mnt/tank/www-hcs.harvard.edu',
+        mount   => "/mnt/${zpool_name}/www-hcs.harvard.edu",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
       }
@@ -43,16 +42,26 @@ class nfs ($nfs_home_directory = false) {
       nfs::client::mount { 'www-hcs.harvard.edu-ssl':
         server  => $nfs_server,
         share   => "/${zpool_name}/services/www-hcs.harvard.edu-ssl",
-        mount   => '/mnt/tank/www-hcs.harvard.edu-ssl',
+        mount   => "/mnt/${zpool_name}/www-hcs.harvard.edu-ssl",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
       }
       
-      # Mount php sessions directory
+      # Mount PHP sessions directory
       nfs::client::mount { 'sessions':
         server  => $nfs_server,
         share   => "/${zpool_name}/services/sessions",
-        mount   => '/mnt/tank/sessions',
+        mount   => "/mnt/${zpool_name}/sessions",
+        options => 'rw,relatime,nosuid,nodev',
+        atboot  => true,
+      }
+    }
+    elsif $::machine_type == 'mail' {
+      # Mount transport directory
+      nfs::client::mount { 'www-hcs.harvard.edu':
+        server  => $nfs_server,
+        share   => "/${zpool_name}/services/transport",
+        mount   => "/mnt/${zpool_name}/transport",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
       }
@@ -60,9 +69,7 @@ class nfs ($nfs_home_directory = false) {
 
     $mount_dir = hiera('nfs-mount-dir')
 
-    class { 'nfs::client':
-      nfs_v4_mount_root   => '/nfs',
-    } ->
+    class { 'nfs::client': } ->
     nfs::client::mount { 'nfs':
       server  => $nfs_server,
       share   => "/${zpool_name}/home",
@@ -82,8 +89,8 @@ class nfs ($nfs_home_directory = false) {
         group   => 'root',
         # Requirements:
         # 1) Must have mounted nfs
-        # 2) Ubuntu user is deleted or has a new, local home directory
-        require => [Nfs::Client::Mount['nfs'], User['hcs']],
+        # 2) Ubuntu user is deleted or has a new local home directory
+        require => [Nfs::Client::Mount['nfs'], User['ubuntu']],
       }
 
       # HACK nscd caches all of the users groups from ldap. Whenever a sudo

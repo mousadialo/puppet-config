@@ -1,0 +1,44 @@
+#rt-mailgate adds tickets to its database automatically
+DEFAULT=/dev/null
+
+#Blacklist SUBJECT AND FROM
+# No hyphens in email addresses in the blacklists...make them a dot instead
+# No empty lines in blacklist EOF
+BLACKLIST_SUBJ=/etc/request-tracker4/procmail/blacklist_subj
+BLACKLIST_FROM=/etc/request-tracker4/procmail/blacklist_from
+FORMAIL=/usr/bin/formail
+GREP=/bin/grep
+SUBJ=`$FORMAIL -x"Subject: "`
+FROM=`$FORMAIL -x"From" -x"From:" -x"Reply-To:" -x"Received:" -x"Return-Path:"`
+:0:
+* ? (echo "$SUBJ" | $GREP -i -f $BLACKLIST_SUBJ)
+| formail -t -A "X-No-Create-Ticket: true"
+
+:0:
+* ? (echo "$FROM" | $GREP -i -f $BLACKLIST_FROM)
+| formail -t -A "X-No-Create-Ticket: true"
+
+
+#All mails bigger than 300000 characters go through to the specified address (unlikely to be spam)
+:0 fwbh
+* > 300000
+| /usr/bin/rt-mailgate --queue general --action correspond --url https://www.hcs.harvard.edu/rt
+
+:0 fhw
+* ^X-Spam-Flag: YES
+| formail -t -A "X-No-Create-Ticket: true"
+
+:0 fhw
+* ^Subject: Your new HCS account 
+| formail -t -A "X-No-Create-Ticket: true"
+
+:0 fhw
+* ^Subject: HCS-groups unsubscribe notification
+| formail -t -A "X-No-Create-Ticket: true"
+
+:0:
+* ^X-No-Create-Ticket: true
+!acctserv-notickets@hcs.harvard.edu
+
+:0 fwbh
+| /usr/bin/rt-mailgate --queue general --action correspond --url https://www.hcs.harvard.edu/rt

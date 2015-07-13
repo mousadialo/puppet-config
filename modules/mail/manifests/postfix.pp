@@ -10,11 +10,9 @@ class mail::postfix {
   }
 
   service { 'postfix':
-    ensure    => running,
-    enable    => true,
-    restart   => true,
-    require   => Package['postfix'],
-    subscribe => File['/etc/postfix/main.cf'],
+    ensure  => running,
+    enable  => true,
+    require => Package['postfix'],
   }
 
   if $::machine_type == 'mail' {
@@ -22,7 +20,6 @@ class mail::postfix {
     mail::postfix::config { 'main.cf': }
     mail::postfix::config { 'master.cf': }
     mail::postfix::config { 'mynetworks': }
-    mail::postfix::config { 'nobl_cidr': }
 
     # we want to ensure the following files are postmapped if modified
     # this means that we will refresh the postmap dbs automatically
@@ -40,8 +37,9 @@ class mail::postfix {
       require => Package['postfix'],
     } ~>
     # we want to ensure that we postalias the aliases files
-    exec { '/usr/sbin/postalias /etc/aliases':
+    exec { '/usr/sbin/postalias cdb:/etc/aliases':
       refreshonly => true,
+      require     => [Package['postfix'], Package['postfix-cdb']],
       notify      => Service['postfix'],
     }
   }

@@ -1,0 +1,22 @@
+#rt-mailgate adds tickets to its database automatically
+DEFAULT=/dev/null
+
+#All mails bigger than 300000 characters go through to the specified address (unlikely to be spam)
+:0 fwbh
+* > 300000
+| /usr/bin/rt-mailgate --queue security --action correspond --url https://www.hcs.harvard.edu/rt
+
+:0 fhw
+* ^X-Spam-Flag: YES
+| formail -t -A "X-No-Create-Ticket: true"
+
+:0 fhw
+* ^Subject: Your new HCS account 
+| formail -t -A "X-No-Create-Ticket: true"
+
+:0:
+* ^X-No-Create-Ticket: true
+!acctserv-notickets@hcs.harvard.edu
+
+:0 fwbh
+| /usr/bin/rt-mailgate --queue security --action correspond --url https://www.hcs.harvard.edu/rt

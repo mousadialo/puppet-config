@@ -1,26 +1,27 @@
 # # # HCS Internal
 
 # Board aliases.  These and the project directors (below) are the only hardcoded aliases which need to be periodically updated.
-prez: saagar,wxiao
-bizman: wanga
-communications: akandola,rzou,anson
-newmembers: hgulati
-project:
+prez: wxiao,rzou
+bizman: wanga,keskici
+communications: anson,fwidjaja
+newmembers: jcuanm,keskici,anna,jsoyinka,lcheng,grayputnam,jgoodman,nls
+project: hgulati
+sys-board: wxiao,rzou,fwidjaja,wanga,anson,jgoodman,hgulati
 
 # Project directors. (changed all to board April 2013)
 acctserv-director: board
-dinners-director: board 
+dinners-director: board
 seminars-director: board
-systems-director: board 
+systems-director: board
 
 # General redirections for pseudo accounts
 abuse: systems
 acct-outgoing: as-outgoing
 acctmonarch: acctserv-director
-admin: hcsa,abrody,joe,vsant,jhoon,danz,jscushman,carl,ebensing,chandras,saagar,salvatore
+admin: hcsa,abrody,joe,vsant,jhoon,danz,jscushman,carl,ebensing,chandras,saagar,salvatore,rzou,fwidjaja
 advertising: business,prez,hcsa
 alumni: board
-as-outgoing: hcsa,danz,joe,keito,abrody,jhoon,jscushman,chandras,leigh,michaelchen,powerpak,ebensing,vsant,salvatore,sdeshpan,kennyyu,jpalay,rttest,rzou,wxiao,wanga,abowman,heli,hirshjain,pkraft,lingyachao,hgulati,fwidjaja,nishkakar,anyway,shai,mavo,jonahk,akandola,erin,klim,louis,pantela,grayputnam,ankitgupta
+as-outgoing: hcsa,danz,joe,keito,abrody,jhoon,jscushman,chandras,leigh,michaelchen,powerpak,ebensing,vsant,salvatore,kennyyu,jpalay,rttest,gparrish,rzou,wxiao,wanga,abowman,heli,hirshjain,pkraft,lingyachao,hgulati,fwidjaja,nishkakar,anyway,shai,jsani,mavo,jonahk,akandola,erin,pantela,grayputnam,ankitgupta
 bin: systems
 bind: systems
 board: hcsa,prez,secretary,bizman,communications,project,newmembers
@@ -32,6 +33,8 @@ daemon: systems
 datamatch: datamtch
 dinners: systems
 dos: systems-director
+# email registered with hcs.so
+domain: fwidjaja
 elections: systems
 events: systems
 feedback: board
@@ -42,7 +45,6 @@ games: systems
 # We have a Google account for calendars and such (keito)
 google: board
 gopher: online-svcs,prez
-# Omg, are you even serious, get this nonsense out of here
 help: acctserv
 hcs: info
 # Dynamically expands into the hvirt group.
@@ -79,7 +81,7 @@ sshd: systems
 sys: systems
 system: systems
 # Systems dynamically expands to be everyone in the systems group.
-systems: hcsa, joe,vsant,zhang9,tdimiduk,danz,jkroll,gdasher,ml2,keito,abrody,kevin,carl,jhoon,nishihara,jscushman,leigh,michaelchen,chandras,efarber,ebensing,salvatore,sdeshpan,board,grayputnam
+systems: hcsa, joe,vsant,zhang9,tdimiduk,danz,jkroll,gdasher,ml2,keito,abrody,kevin,carl,jhoon,nishihara,jscushman,leigh,michaelchen,chandras,efarber,ebensing,salvatore,sdeshpan,sys-board,grayputnam
 toor: systems
 tty: systems
 usenet: prez
@@ -186,6 +188,7 @@ epstein: mike
 eva: eholtz
 fire: eden
 freshports: philz
+fw: fwidjaja,widjaja.frederick@gmail.com
 groz: zeilberg
 gusmo: pgusmor
 holland7: dholland
@@ -227,10 +230,10 @@ wkj-manager: wkj+manager@eecs.harvard.edu
 # AcctServ
 # The acctserv account is spam filtered, so you need to modify
 # the procmail recipe if you need to update settings.
-acctserv: "|/usr/bin/procmail -m /etc/request-tracker3.6/procmail/general"
+acctserv: "|/usr/bin/procmail -m /etc/request-tracker4/procmail/general"
 acctserv-comment: "|/usr/bin/rt-mailgate --queue general --action comment --url https://www.hcs.harvard.edu/rt"
 acctserv-notickets: systems
-security-tix: "|/usr/bin/procmail -m /etc/request-tracker3.6/procmail/security"
+security-tix: "|/usr/bin/procmail -m /etc/request-tracker4/procmail/security"
 security-tix-comment: "|/usr/bin/rt-mailgate --queue security --action comment --url https://www.hcs.harvard.edu/rt"
 
 # # # System-required

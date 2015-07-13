@@ -7,6 +7,7 @@ define mail::postfix::config () {
     owner   => 'root',
     group   => 'root',
     require => Package['postfix'],
+    notify  => Service['postfix'],
   }
   
 }

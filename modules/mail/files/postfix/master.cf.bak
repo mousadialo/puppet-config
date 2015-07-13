@@ -1,7 +1,6 @@
 #
 # Postfix master process configuration file.  For details on the format
-# of the file, see the master(5) manual page (command: "man 5 master" or
-# on-line: http://www.postfix.org/master.5.html).
+# of the file, see the master(5) manual page (command: "man 5 master").
 #
 # Do not forget to execute "postfix reload" after editing this file.
 #
@@ -18,33 +17,19 @@ smtp      inet  n       -       -       -       -       smtpd
 #  -o syslog_name=postfix/submission
 #  -o smtpd_tls_security_level=encrypt
 #  -o smtpd_sasl_auth_enable=yes
-#  -o smtpd_reject_unlisted_recipient=no
-#  -o smtpd_client_restrictions=$mua_client_restrictions
-#  -o smtpd_helo_restrictions=$mua_helo_restrictions
-#  -o smtpd_sender_restrictions=$mua_sender_restrictions
-#  -o smtpd_recipient_restrictions=
-#  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+#  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
 #  -o milter_macro_daemon_name=ORIGINATING
 #smtps     inet  n       -       -       -       -       smtpd
 #  -o syslog_name=postfix/smtps
 #  -o smtpd_tls_wrappermode=yes
 #  -o smtpd_sasl_auth_enable=yes
-#  -o smtpd_reject_unlisted_recipient=no
-#  -o smtpd_client_restrictions=$mua_client_restrictions
-#  -o smtpd_helo_restrictions=$mua_helo_restrictions
-#  -o smtpd_sender_restrictions=$mua_sender_restrictions
-#  -o smtpd_recipient_restrictions=
-#  -o smtpd_relay_restrictions=permit_sasl_authenticated,reject
+#  -o smtpd_client_restrictions=permit_sasl_authenticated,reject
 #  -o milter_macro_daemon_name=ORIGINATING
 #628       inet  n       -       -       -       -       qmqpd
-# HCS: The two lines of options below prevent messages that are generated to
-# report on spam from being classified as spam.
-pickup    unix  n       -       -       60      1       pickup
-        -o content_filter=
-        -o receive_override_options=no_header_body_checks
+pickup    fifo  n       -       -       60      1       pickup
 cleanup   unix  n       -       -       -       0       cleanup
-qmgr      unix  n       -       n       300     1       qmgr
-#qmgr     unix  n       -       n       300     1       oqmgr
+qmgr      fifo  n       -       n       300     1       qmgr
+#qmgr     fifo  n       -       n       300     1       oqmgr
 tlsmgr    unix  -       -       -       1000?   1       tlsmgr
 rewrite   unix  -       -       -       -       -       trivial-rewrite
 bounce    unix  -       -       -       -       0       bounce
@@ -66,38 +51,6 @@ virtual   unix  -       n       n       -       -       virtual
 lmtp      unix  -       -       -       -       -       lmtp
 anvil     unix  -       -       -       -       1       anvil
 scache    unix  -       -       -       -       1       scache
-# HCS: Service for sending mail into amavisd-new, a virus scanner
-# and spam detector. Make sure that the maxproc field matches the
-# max_servers value in /etc/amavis/conf.d/50-user.
-smtp-amavis     unix    -       -       -       -       20      smtp
-        -o smtp_data_done_timeout=1200
-        -o smtp_send_xforward_command=yes
-        -o disable_dns_lookups=yes
-        -o max_use=20
-# HCS: For mail reinjection after amavis is finished.
-127.0.0.1:10025 inet    n       -       -       -       -       smtpd
-        -o content_filter=
-        -o local_recipient_maps=
-        -o relay_recipient_maps=
-        -o smtpd_restriction_classes=
-        -o smtpd_delay_reject=no
-        -o smtpd_client_restrictions=permit_mynetworks,reject
-        -o smtpd_helo_restrictions=
-        -o smtpd_sender_restrictions=
-        -o smtpd_recipient_restrictions=permit_mynetworks,reject
-        -o smtpd_data_restrictions=reject_unauth_pipelining
-        -o smtpd_end_of_data_restrictions=
-        -o mynetworks=127.0.0.0/8
-        -o smtpd_error_sleep_time=0
-        -o smtpd_soft_error_limit=1001
-        -o smtpd_hard_error_limit=1000
-        -o smtpd_client_connection_count_limit=0
-        -o smtpd_client_connection_rate_limit=0
-        -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks
-# HCS: VRFY for makelist
-#10.245.65.15:10025 inet n  - y - - smtpd
-#        -o content_filter=
-#        -o disable_vrfy_command=no
 #
 # ====================================================================
 # Interfaces to non-Postfix software. Be sure to examine the manual
