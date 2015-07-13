@@ -12,7 +12,7 @@ class mail {
       ensure => installed,
     }
     
-    packge { 'postgrey':
+    package { 'postgrey':
       ensure => installed,
     } ->
     shellvar { 'POSTGREY_OPTS':
