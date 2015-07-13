@@ -4,7 +4,7 @@ define mail::postfix::config ($template = false) {
   if $template {
     file { "/etc/postfix/${title}":
       ensure  => file,
-      content => template("mail/postfix/${title}"),
+      content => template("mail/postfix/${title}.erb"),
       owner   => 'root',
       group   => 'root',
       require => Package['postfix'],
