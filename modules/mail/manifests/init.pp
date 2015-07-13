@@ -5,10 +5,11 @@ class mail {
   include mail::postfix
 
   if $::machine_type == 'mail' {
-    include mail::amavis
     include mail::dovecot
+    include mail::amavis
     
-    Class['mail::postfix'] -> Class['mail::amavis'] -> Class['mail::dovecot']
+    # This is needed because groups will get messed up otherwise for some reason.
+    Class['mail::dovecot'] -> Class['mail::amavis']
     
     package { 'procmail':
       ensure => installed,
