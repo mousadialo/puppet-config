@@ -9,10 +9,13 @@ require 'yaml'
 node = ARGV[0]
 raise "No host provided" if node.nil?
 
+machine_types = Dir.entries(File.join(File.dirname(__FILE__), 'data', 'machines')).map { |file| File.basename(file, File.extname(file)) }
+
 hosts = YAML.load_file(File.join(File.dirname(__FILE__), 'data', 'hosts.yaml'))
 
 # For our purposes, use regex to pull out the server type from the hostname
 node = node[/^[a-z][a-z]*/,0]
-raise "Unable to determine server type" if node.nil?
+# Default to generic if machine type is not found
+node = "generic" if not machine_types.include?(node)
 
 print YAML.dump(hosts.fetch(node))

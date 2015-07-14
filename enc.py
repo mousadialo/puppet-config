@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import yaml
+import os
 import sys
 import re
 
@@ -15,14 +16,17 @@ if node is None:
     print "No host provided!"
     sys.exit(0)
 
-try:
-    template_type = re.search('^[a-z][a-z]*', node).group(0)
-except AttributeError:
-    print "Couldn't extract a server type from hostname!"
-    sys.exit(1)
+machine_types = [os.path.splitext(m)[0] for m in os.listdir(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "machines"))]
 
 try:
-    hosts = open("data/hosts.yaml")
+    template_type = re.search('^[a-z][a-z]*', node).group(0)
+    if template_type not in machine_types:
+        template_type = "generic"
+except AttributeError:
+    template_type = "generic"
+
+try:
+    hosts = open(os.path.join(os.path.dirname(os.path.realpath(__file__)), "data", "hosts.yaml"))
     data = yaml.load(hosts)
     print yaml.dump(data[template_type], explicit_start=True, default_flow_style=False).rstrip()
 except:
