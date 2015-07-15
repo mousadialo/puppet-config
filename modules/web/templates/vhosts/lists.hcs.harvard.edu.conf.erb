@@ -9,12 +9,13 @@
 <VirtualHost *:80>
   ServerName lists.hcs.harvard.edu
   ServerAlias lists.<%= @domain %>
-  
-  DocumentRoot /var/www/
-  ServerAdmin webmaster@localhost
 
   # Redirect to use HTTPS instead.
   RewriteEngine On
   RewriteCond %{HTTPS} off
   RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+  
+  DocumentRoot /var/www/
+  ServerAdmin  webmaster@hcs
 </VirtualHost>
+

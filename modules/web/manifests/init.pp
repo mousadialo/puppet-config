@@ -185,6 +185,7 @@ class web {
 
     # Mods enabled and disabled
     web::apache2::mod { 'actions': }
+    web::apache2::mod { 'alias': }
     web::apache2::mod { 'authnz_ldap': }
     web::apache2::mod { 'cgi': }
     web::apache2::mod { 'dav': }
@@ -241,7 +242,9 @@ class web {
   elsif $::machine_type == 'lists' {
     require certs
     
+    web::apache2::mod { 'alias': }
     web::apache2::mod { 'cgi': }
+    web::apache2::mod { 'rewrite': }
     web::apache2::mod { 'ssl': }
     
     # Remove default vhost
