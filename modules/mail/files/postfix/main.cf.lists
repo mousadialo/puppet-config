@@ -1,0 +1,30 @@
+# See /usr/share/postfix/main.cf.dist for a commented, more complete version
+
+
+mydestination = localhost, localhost.localdomain, $myhostname, $mydomain, lists.$mydomain,
+  hcs.harvard.edu, lists.hcs.harvard.edu
+
+# List server should pipe all outgoing messages to mail servers
+relayhost = [192.168.1.11]
+#relayhost = [mail.hcs.harvard.edu]
+
+alias_maps = hash:/var/lib/mailman/data/aliases
+
+# Only allow connections from local network
+mynetworks = $config_directory/mynetworks
+
+# B/c this must have @hcs as a destination for alias expansion of lists and
+# those lists might have @hcs email, we need to relay that back to
+# the main hcs mail infrastructure
+local_recipient_maps =
+fallback_transport = smtp:[192.168.1.11]
+#fallback_transport = smtp:[mail.hcs.harvard.edu]
+
+# Reject mail not from mynetworks
+smtpd_client_restrictions = permit_mynetworks, reject
+
+smtpd_banner = ESMTP
+biff = no
+
+# appending .domain is the MUA's job.
+append_dot_mydomain = no

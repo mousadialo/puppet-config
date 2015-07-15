@@ -1,0 +1,76 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<!-- $Revision: 5865 $ -->
+<html>
+<head>
+<title><MM-List-Name> Info</title>
+</head>
+<body>
+  <MM-HCS-HEADER>
+  <div>
+    <br/>
+    <h1 class=title style="display:inline;"><MM-List-Name></h1>
+    <a href="<MM-admin-link>" class="admin">[admin]</a><br/>
+    <h2 class=desc><MM-List-Description></h2>
+    <h2 class=desc><MM-Num-Members> members</h2>
+    <a href="mailto:<MM-Posting-Addr>"><MM-Posting-Addr></a>
+    <h2 class=heading>About</h2>
+    <MM-List-Info>
+    <h2 class=heading>Archives</h2>
+    Visit the archives <MM-Archive>here</MM-Archive>. <MM-Restricted-List-Message>
+    <h2 class=heading>Subscription</h2>
+  </div>
+  
+  <table id=publiclists border="0" cellspacing=0 cellpadding=4 width=98% align=center>
+    <tr class=first align=center><td width=50%>Subscribe</td><td>Edit membership options</td></tr>
+    <tr class=unshaded>
+      <td><MM-List-Subscription-Msg>
+        <MM-Subscribe-Form-Start>
+        <table border=0 cellspacing=2 cellpadding=2>
+          <tr>
+            <td width=50%>Email:</td>
+            <td width=50%><MM-Subscribe-Box></td>
+          </tr>
+          <tr>
+            <td>Name (optional):</td>
+            <td><mm-fullname-box></td>
+          </tr>
+          <tr>
+            <td colspan=2>You may enter a privacy password 
+            below. <b>Do not use a valuable password</b> as it will be emailed
+            back to you in cleartext. If you don't enter a password, one will be
+            auto-generated and sent to you once you've confirmed your subscription.
+            <MM-Reminder></td>
+          </tr>
+          <tr>
+            <td>Password:</td>
+            <td><MM-New-Password-Box></td>
+          </tr>
+          <tr> 
+            <td>Re-type password:</td>
+            <td><MM-Confirm-Password></td>
+          </tr>
+          <mm-digest-question-start>
+          <tr>
+            <td>Would you like to receive list mail batched in a daily digest?</td>
+            <td><MM-Undigest-Radio-Button>No<MM-Digest-Radio-Button>Yes</td>
+          </tr>
+          <mm-digest-question-end>
+        </table>
+        <center><MM-Subscribe-Button></center>
+        <MM-Form-End>
+      </td>
+      <td><b>View subscriber list</b>
+        <MM-Roster-Form-Start>
+          <MM-Roster-Option>
+        <MM-Form-End>
+        <p>
+        <MM-Options-Form-Start>
+          <MM-Member-Options-Stuff>
+          <!--<MM-Editing-Options>-->
+        <MM-Form-End>  
+      </td>
+    </tr>
+  </table>  
+  <MM-Mailman-Footer>
+</body>
+</html>

@@ -1,0 +1,20 @@
+###############################################################################
+###                   HCS Mailman webserver configuration                   ###
+###############################################################################
+#
+# This file contains all of the access modifications and the vhost for mailman
+#
+
+# This is our lists virtual host.
+<VirtualHost *:80>
+  ServerName lists.hcs.harvard.edu
+  ServerAlias lists.<%= @domain %>
+  
+  DocumentRoot /var/www/
+  ServerAdmin webmaster@localhost
+
+  # Redirect to use HTTPS instead.
+  RewriteEngine On
+  RewriteCond %{HTTPS} off
+  RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+</VirtualHost>

@@ -6,10 +6,10 @@ class nfs ($nfs_home_directory = false) {
   require hosts
   require ldap
 
+  $domain = hiera('domain')
   $nfs_server = hiera('nfs-server')
   $zpool_name = hiera('zfs::zpool_name')
-  $dataset_name = hiera('zfs::dataset_name')
-  $domain = hiera('domain')
+  $mount_dir = hiera('nfs-mount-dir')
 
   if $::machine_type == 'file' {
     package { 'nfs-kernel-server':
@@ -30,12 +30,14 @@ class nfs ($nfs_home_directory = false) {
     }
   }
   else {
+    include nfs::client
+  
     if $::machine_type == 'web' {
       # Mount our web directories
       nfs::client::mount { 'www-hcs.harvard.edu':
         server  => $nfs_server,
         share   => "/${zpool_name}/services/www-hcs.harvard.edu",
-        mount   => "/mnt/${zpool_name}/www-hcs.harvard.edu",
+        mount   => "${mount_dir}/www-hcs.harvard.edu",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
       }
@@ -43,7 +45,7 @@ class nfs ($nfs_home_directory = false) {
       nfs::client::mount { 'www-hcs.harvard.edu-ssl':
         server  => $nfs_server,
         share   => "/${zpool_name}/services/www-hcs.harvard.edu-ssl",
-        mount   => "/mnt/${zpool_name}/www-hcs.harvard.edu-ssl",
+        mount   => "${mount_dir}/www-hcs.harvard.edu-ssl",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
       }
@@ -52,39 +54,47 @@ class nfs ($nfs_home_directory = false) {
       nfs::client::mount { 'sessions':
         server  => $nfs_server,
         share   => "/${zpool_name}/services/sessions",
-        mount   => "/mnt/${zpool_name}/sessions",
+        mount   => "${mount_dir}/sessions",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
       }
     }
-    elsif $::machine_type == 'mail' {
+    elsif $::machine_type == 'mail' or $::machine_type == 'lists' {
       # Mount transport directory
       nfs::client::mount { 'www-hcs.harvard.edu':
         server  => $nfs_server,
         share   => "/${zpool_name}/services/transport",
-        mount   => "/mnt/${zpool_name}/transport",
+        mount   => "${mount_dir}/transport",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
       }
-    }
-
-    $mount_dir = hiera('nfs-mount-dir')
-
-    class { 'nfs::client': } ->
-    nfs::client::mount { 'nfs':
-      server  => $nfs_server,
-      share   => "/${zpool_name}/home",
-      mount   => $mount_dir,
-      options => 'rw,relatime,nosuid,nodev',
-      atboot  => true,
+      
+      if $::machine_type == 'lists' {
+        # Mount mailman directory
+        nfs::client::mount { 'mailman':
+          server  => $nfs_server,
+          share   => "/${zpool_name}/services/mailman",
+          mount   => "${mount_dir}/mailman",
+          options => 'rw,relatime,nosuid,nodev',
+          atboot  => true,
+        }
+      }
     }
 
     if $nfs_home_directory {
+      nfs::client::mount { 'nfs':
+        server  => $nfs_server,
+        share   => "/${zpool_name}/home",
+        mount   => "${mount_dir}/home",
+        options => 'rw,relatime,nosuid,nodev',
+        atboot  => true,
+      }
+    
       # We want to symlink our home directory to nfs
       file { 'home':
         ensure  => link,
         path    => '/home',
-        target  => $mount_dir,
+        target  => "${mount_dir}/home",
         force   => true,
         owner   => 'root',
         group   => 'root',
@@ -105,68 +115,68 @@ class nfs ($nfs_home_directory = false) {
         owner  => 'root',
         group  => 'root',
       }
-    }
+      
+      package { 'autofs':
+        ensure  => installed,
+        require => Nfs::Client::Mount['nfs'],
+      }
+      
+      service { 'autofs':
+        ensure  => running,
+        enable  => true,
+        require => Package['autofs'],
+      }
 
-    package { 'autofs':
-      ensure  => installed,
-      require => Nfs::Client::Mount['nfs'],
-    }
-    service { 'autofs':
-      ensure  => running,
-      enable  => true,
-      require => Package['autofs'],
-    }
+      file { '/etc/auto.master':
+        ensure  => file,
+        source  => 'puppet:///modules/nfs/autofs/auto.master',
+        owner   => 'root',
+        group   => 'root',
+        notify  => Service['autofs'],
+        require => Package['autofs'],
+      }
 
-    file { '/etc/autofs':
-      ensure => directory,
-      owner  => 'root',
-      group  => 'root',
-    }
+      file { '/etc/autofs':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+      }
 
-    file { '/etc/auto.master':
-      ensure  => file,
-      source  => 'puppet:///modules/nfs/autofs/auto.master',
-      owner   => 'root',
-      group   => 'root',
-      notify  => Service['autofs'],
-      require => Package['autofs'],
-    }
+      file { '/etc/autofs/nfs.people':
+        ensure  => file,
+        content => template('nfs/autofs/nfs.people'),
+        owner   => 'root',
+        group   => 'root',
+        notify  => Service['autofs'],
+        require => [Package['autofs'], File['/etc/autofs']],
+      }
 
-    file { '/etc/autofs/nfs.people':
-      ensure  => file,
-      content => template('nfs/autofs/nfs.people'),
-      owner   => 'root',
-      group   => 'root',
-      notify  => Service['autofs'],
-      require => [Package['autofs'], File['/etc/autofs']],
+      file { '/etc/autofs/nfs.groups':
+        ensure  => file,
+        content => template('nfs/autofs/nfs.groups'),
+        owner   => 'root',
+        group   => 'root',
+        notify  => Service['autofs'],
+        require => [Package['autofs'], File['/etc/autofs']],
+      }
 
-    }
+      file { '/etc/autofs/nfs.general':
+        ensure  => file,
+        content => template('nfs/autofs/nfs.general'),
+        owner   => 'root',
+        group   => 'root',
+        notify  => Service['autofs'],
+        require => [Package['autofs'], File['/etc/autofs']],
+      }
 
-    file { '/etc/autofs/nfs.groups':
-      ensure  => file,
-      content => template('nfs/autofs/nfs.groups'),
-      owner   => 'root',
-      group   => 'root',
-      notify  => Service['autofs'],
-      require => [Package['autofs'], File['/etc/autofs']],
-    }
-
-    file { '/etc/autofs/nfs.general':
-      ensure  => file,
-      content => template('nfs/autofs/nfs.general'),
-      owner   => 'root',
-      group   => 'root',
-      notify  => Service['autofs'],
-      require => [Package['autofs'], File['/etc/autofs']],
-    }
-
-    file { '/etc/autofs/nfs.hcs':
-      ensure  => file,
-      content => template('nfs/autofs/nfs.general'),
-      owner   => 'root',
-      group   => 'root',
-      notify  => Service['autofs'],
-      require => [Package['autofs'], File['/etc/autofs']],
+      file { '/etc/autofs/nfs.hcs':
+        ensure  => file,
+        content => template('nfs/autofs/nfs.general'),
+        owner   => 'root',
+        group   => 'root',
+        notify  => Service['autofs'],
+        require => [Package['autofs'], File['/etc/autofs']],
+      }
     }
   }
       

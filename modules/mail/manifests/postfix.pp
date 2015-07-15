@@ -19,7 +19,9 @@ class mail::postfix {
     require nfs
   
     # main.cf configuration
-    mail::postfix::config { 'main.cf': }
+    mail::postfix::config { 'main.cf':
+      suffix => '.mail',
+    }
     mail::postfix::config { 'master.cf':
       template => true,
     }
@@ -47,14 +49,16 @@ class mail::postfix {
       notify      => Service['postfix'],
     }
   }
+  elsif $::machine_type == 'lists' {
+    mail::postfix::config { 'main.cf':
+      suffix => '.lists',
+    }
+    mail::postfix::config { 'mynetworks': }
+  }
   else {
     # servers that aren't mail should use the NULL client configuration
-    file { '/etc/postfix/main.cf':
-      ensure  => file,
-      source  => 'puppet:///modules/mail/postfix/main.cf.client',
-      owner   => 'root',
-      group   => 'root',
-      require => Package['postfix'],
+    mail::postfix::config { 'main.cf':
+      suffix => '.client',
     }
   }
 

@@ -1,0 +1,31 @@
+<html>
+<head>
+    <title>%(realname)s Private Archives Authentication</title>
+    <script>function sf(){document.f.username.focus();}</script>
+    <link rel=stylesheet href=/static/hcs.css>
+</head>
+<body onLoad="sf()">
+<FORM METHOD=POST ACTION="%(action)s" name="f">
+%(HCSHeader)s
+%(message)s
+<center><h2>%(realname)s Private Archives Authentication</h2></center>
+  <TABLE WIDTH="100%%" BORDER="0" CELLSPACING="4" CELLPADDING="5">
+    <tr>
+        <TD><div ALIGN="Right">Email address:</div></TD>
+        <TD><INPUT TYPE="text" NAME="username" SIZE="30"></TD>
+    </tr>
+    <tr>
+      <TD><div ALIGN="Right">Password:</div></TD>
+      <TD><INPUT TYPE="password" NAME="password" SIZE="30"></TD>
+    </tr>
+    <tr>
+      <td colspan=2 align="middle"><button type="submit" name="submit" value="Let me in...">Let me in...</button>
+      </td>
+    </tr>
+  </TABLE>
+      <p><strong><em>Important:</em></strong> From this point on, you
+      must have cookies enabled in your browser, otherwise
+      you will have to re-authenticate with every operation.
+</FORM>
+</body>
+</html>

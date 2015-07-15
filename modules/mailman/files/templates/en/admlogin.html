@@ -1,0 +1,24 @@
+<html>
+<head>
+  <title>%(listname)s %(who)s Authentication</title>
+  <script>function sf(){document.f.adminpw.focus();}</script>
+  <link rel=stylesheet href=/static/hcs.css>
+</head>
+<body onLoad="sf()">
+%(HCSHeader)s
+%(message)s
+<div>
+<center><h1>%(listname)s %(who)s Authentication</h1></center>
+<FORM METHOD=POST ACTION="%(path)s" name="f">
+<center>List %(who)s Password: <INPUT TYPE="password" NAME="adminpw" SIZE="30">
+<button type=submit name=admlogin>Let me in...</button>
+</center></form>
+<center><a href="http://www.hcs.harvard.edu/reset-password">Reset
+administrator password</a></center>
+<br />
+<p><strong><em>Important:</em></strong> From this point on, you
+must have cookies enabled in your browser, otherwise no
+administrative changes will take effect.
+</div>
+</body>
+</html>

@@ -1,6 +1,6 @@
 # ZFS configuration for HCS file machine
 # This configuration currently sets up the file zpool, not the clients
-class zfs ($zpool_name = 'tank', $dataset_name = 'home') {
+class zfs ($zpool_name = 'tank') {
   include apt
   include nfs
 

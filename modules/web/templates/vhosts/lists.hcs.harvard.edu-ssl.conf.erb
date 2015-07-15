@@ -1,0 +1,59 @@
+###############################################################################
+###                   HCS Mailman webserver configuration                   ###
+###############################################################################
+#
+# This file contains all of the access modifications and the vhost for mailman
+#
+
+# This is our lists virtual host.
+<VirtualHost *:443>
+  ServerName lists.hcs.harvard.edu
+  ServerAlias lists.<%= @domain %>
+  
+  DocumentRoot /var/www/
+  ServerAdmin webmaster@hcs.harvard.edu
+
+  SSLEngine               on
+  SSLCertificateFile      /etc/ssl/certs/hcs_harvard_edu_cert.cer
+  SSLCertificateKeyFile   /etc/ssl/private/hcs_harvard_edu.key
+  SSLCertificateChainFile /etc/ssl/certs/hcs_harvard_edu_interm.cer
+  SSLProtocol             all -SSLv2 -SSLv3
+  SSLCipherSuite          ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:DHE-DSS-AES128-GCM-SHA256:kEDH+AESGCM:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-RSA-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA256:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA:DHE-RSA-AES256-SHA:AES128-GCM-SHA256:AES256-GCM-SHA384:AES128-SHA256:AES256-SHA256:AES128-SHA:AES256-SHA:AES:CAMELLIA:DES-CBC3-SHA:!aNULL:!eNULL:!EXPORT:!DES:!RC4:!MD5:!PSK:!aECDH:!EDH-DSS-DES-CBC3-SHA:!EDH-RSA-DES-CBC3-SHA:!KRB5-DES-CBC3-SHA
+  SSLHonorCipherOrder     on
+  
+  ScriptAlias /mailman/ /usr/lib/cgi-bin/mailman/
+  Alias /static/ /var/lib/mailman/static/
+  Alias /pipermail/ /var/lib/mailman/archives/public/
+
+  # This is the directory seen as pipermail, which everyone whould be able to see.
+  # Note that it is actually the stuff down one more directory level that is seen.
+  #
+  <Directory "/var/lib/mailman/archives/public">
+    Options FollowSymlinks
+    AllowOverride all
+    Require all granted
+  </Directory>
+
+  # We want to prevent outside sites from seeing the list of publicly available
+  # lists, as spammers will abuse it if they can see it.
+  #
+  <LocationMatch /mailman/listinfo>
+    Require ip 140.247
+  </LocationMatch>
+  <LocationMatch /mailman/admin>
+    Require ip 140.247
+  </LocationMatch>
+
+  # However, they should still be able to view information about particular
+  # lists, since outside users might want to subscribe, etc.
+  #
+  <LocationMatch /mailman/listinfo.*[a-zA-Z0-9]>
+    Require all granted
+  </LocationMatch>
+  <LocationMatch /mailman/admin.*[a-zA-Z0-9]>
+    Require all granted
+  </LocationMatch>
+</VirtualHost>
+
+# With mailman modifications, misses won't bring down the server
+RedirectMatch ^/(?!pipermail/)(?!mailman/)(?!icons/)(?!static)(?!robots.txt)(?!favicon.ico)(?!index.html)(.+) http://lists.hcs.harvard.edu/mailman/listinfo/$1

@@ -1,10 +1,10 @@
 # postfix config resource
-define mail::postfix::config ($template = false) {
+define mail::postfix::config ($suffix = '', $template = false) {
 
   if $template {
     file { "/etc/postfix/${title}":
       ensure  => file,
-      content => template("mail/postfix/${title}.erb"),
+      content => template("mail/postfix/${title}${suffix}.erb"),
       owner   => 'root',
       group   => 'root',
       require => Package['postfix'],
@@ -14,7 +14,7 @@ define mail::postfix::config ($template = false) {
   else {
     file { "/etc/postfix/${title}":
       ensure  => file,
-      source  => "puppet:///modules/mail/postfix/${title}",
+      source  => "puppet:///modules/mail/postfix/${title}${suffix}",
       owner   => 'root',
       group   => 'root',
       require => Package['postfix'],
