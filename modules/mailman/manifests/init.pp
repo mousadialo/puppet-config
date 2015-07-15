@@ -16,6 +16,13 @@ class mailman {
     cwd         => '/usr/lib/mailman',
     refreshonly => true,
     require     => File['/usr/lib/mailman/mailman-hcs.diff'],
+    notify      => Service['mailman'],
+  }
+  
+  service { 'mailman':
+    ensure  => running,
+    enable  => true,
+    require => Package['mailman'],
   }
   
   file { '/usr/lib/mailman/mailman-hcs.diff':
@@ -43,6 +50,7 @@ class mailman {
     group   => 'root',
     mode    => '0644',
     require => Package['mailman'],
+    notify  => Service['mailman'],
   }
   
 }
