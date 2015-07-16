@@ -114,7 +114,7 @@ class nfs ($nfs_home_directory = false) {
         # Requirements:
         # 1) Must have mounted nfs
         # 2) Ubuntu user is deleted or has a new local home directory
-        require => [Nfs::Client::Mount['nfs'], User['ubuntu']],
+        require => [Nfs::Client::Mount['home'], User['ubuntu']],
       }
 
       # HACK nscd caches all of the users groups from ldap. Whenever a sudo
@@ -131,7 +131,7 @@ class nfs ($nfs_home_directory = false) {
       
       package { 'autofs':
         ensure  => installed,
-        require => Nfs::Client::Mount['nfs'],
+        require => Nfs::Client::Mount['home'],
       }
       
       service { 'autofs':

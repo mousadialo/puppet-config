@@ -24,6 +24,7 @@ class mailman {
   service { 'mailman':
     ensure  => running,
     enable  => true,
+    status  => '/bin/ps auxww | /bin/grep mailmanctl | /bin/grep -v grep 1> /dev/null',
     require => Package['mailman'],
   }
   

@@ -604,7 +604,7 @@ diff -rupN mailman.orig/Mailman/htmlformat.py mailman/Mailman/htmlformat.py
  
 diff -rupN mailman.orig/Mailman/HTMLFormatter.py mailman/Mailman/HTMLFormatter.py
 --- mailman.orig/Mailman/HTMLFormatter.py	2015-04-03 06:03:28.000000000 -0700
-+++ mailman/Mailman/HTMLFormatter.py	2015-07-15 21:27:45.786636700 -0700
++++ mailman/Mailman/HTMLFormatter.py	2015-07-15 22:24:49.648864400 -0700
 @@ -46,19 +46,13 @@ class HTMLFormatter:
          listinfo_link  = Link(self.GetScriptURL('listinfo'), realname).Format()
          owner_link = Link('mailto:' + self.GetOwnerEmail(), ownertext).Format()
@@ -662,7 +662,7 @@ diff -rupN mailman.orig/Mailman/HTMLFormatter.py mailman/Mailman/HTMLFormatter.p
              listlangs = self.GetLangSelectBox(lang).Format()
          d = {
              '<mm-mailman-footer>' : self.GetMailmanFooter(),
-+            '<mm-favicon>' : '//www.hcs.harvard.edu/static/favicon.ico'
++            '<mm-favicon>' : '//www.hcs.harvard.edu/static/favicon.ico',
 +            '<mm-hcs-header>' : HCSHeader(),
              '<mm-list-name>' : self.real_name,
              '<mm-email-user>' : self._internal_name,
@@ -679,7 +679,7 @@ diff -rupN mailman.orig/Mailman/HTMLFormatter.py mailman/Mailman/HTMLFormatter.p
 Files mailman.orig/Mailman/mm_cfg.pyc and mailman/Mailman/mm_cfg.pyc differ
 diff -rupN mailman.orig/Mailman/MTA/Postfix.py mailman/Mailman/MTA/Postfix.py
 --- mailman.orig/Mailman/MTA/Postfix.py	2015-04-03 06:03:28.000000000 -0700
-+++ mailman/Mailman/MTA/Postfix.py	2015-07-15 18:41:03.288146800 -0700
++++ mailman/Mailman/MTA/Postfix.py	2015-07-15 23:24:40.576936300 -0700
 @@ -34,6 +34,7 @@ from Mailman.Logging.Syslog import syslo
  LOCKFILE = os.path.join(mm_cfg.LOCK_DIR, 'creator')
  ALIASFILE = os.path.join(mm_cfg.DATA_DIR, 'aliases')
@@ -760,7 +760,7 @@ diff -rupN mailman.orig/Mailman/MTA/Postfix.py mailman/Mailman/MTA/Postfix.py
 +    if mlist is None or len(mm_cfg.HCS_LIST_DOMAINS) == 0:
 +        return
 +    listname = mlist.internal_name()
-+    fieldsz = len(listname) + len('-unsubscribe') + len(max(mm_cfg.HCS_LIST_DOMAINS, key=len))
++    fieldsz = len(listname) + len('-unsubscribe') + 1 + len(max(mm_cfg.HCS_LIST_DOMAINS, key=len))
 +    # The text file entries get a little extra info
 +    print >> fp, '# STANZA START:', listname
 +    print >> fp, '# CREATED:', time.ctime(time.time())
@@ -769,7 +769,7 @@ diff -rupN mailman.orig/Mailman/MTA/Postfix.py mailman/Mailman/MTA/Postfix.py
 +        for domain in mm_cfg.HCS_LIST_DOMAINS:
 +            fqdnaddr = '%s@%s' % (k, domain)
 +            # Format the text file nicely
-+            print >> fp, fqdnaddr, ((fieldsz - len(fqdnaddr)) * ' '), mm_cfg.HCS_LIST_DESTINATION
++            print >> fp, fqdnaddr, ((fieldsz - len(fqdnaddr)) * ' ') + mm_cfg.HCS_LIST_DESTINATION
 +    # Finish the text file stanza
 +    print >> fp, '# STANZA END:', listname
 +    print >> fp

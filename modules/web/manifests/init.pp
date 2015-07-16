@@ -244,7 +244,7 @@ class web {
     require certs
     
     web::apache2::mod { 'alias': }
-    web::apache2::mod { 'cgi': }
+    web::apache2::mod { 'cgid': }
     web::apache2::mod { 'rewrite': }
     web::apache2::mod { 'ssl': }
     
