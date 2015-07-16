@@ -40,6 +40,8 @@ class nfs ($nfs_home_directory = false) {
         mount   => "${mount_dir}/www-hcs.harvard.edu",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
+        owner   => 'webapps',
+        group   => 'hcs',
       }
 
       nfs::client::mount { 'www-hcs.harvard.edu-ssl':
@@ -48,6 +50,8 @@ class nfs ($nfs_home_directory = false) {
         mount   => "${mount_dir}/www-hcs.harvard.edu-ssl",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
+        owner   => 'webapps',
+        group   => 'hcs',
       }
       
       # Mount PHP sessions directory
@@ -57,18 +61,12 @@ class nfs ($nfs_home_directory = false) {
         mount   => "${mount_dir}/sessions",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
+        owner   => 'root',
+        group   => 'root',
+        perm    => '1733',
       }
     }
     elsif $::machine_type == 'mail' or $::machine_type == 'lists' {
-      # Mount transport directory
-      nfs::client::mount { 'www-hcs.harvard.edu':
-        server  => $nfs_server,
-        share   => "/${zpool_name}/services/transport",
-        mount   => "${mount_dir}/transport",
-        options => 'rw,relatime,nosuid,nodev',
-        atboot  => true,
-      }
-      
       if $::machine_type == 'lists' {
         # Mount mailman directory
         nfs::client::mount { 'mailman':
@@ -77,17 +75,32 @@ class nfs ($nfs_home_directory = false) {
           mount   => "${mount_dir}/mailman",
           options => 'rw,relatime,nosuid,nodev',
           atboot  => true,
+          owner   => 'list',
+          group   => 'list',
         }
+      }
+      
+      # Mount transport directory
+      nfs::client::mount { 'transport':
+        server  => $nfs_server,
+        share   => "/${zpool_name}/services/transport",
+        mount   => "${mount_dir}/transport",
+        options => 'rw,relatime,nosuid,nodev',
+        atboot  => true,
+        owner   => 'list',
+        group   => 'list',
       }
     }
 
     if $nfs_home_directory {
-      nfs::client::mount { 'nfs':
+      nfs::client::mount { 'home':
         server  => $nfs_server,
         share   => "/${zpool_name}/home",
         mount   => "${mount_dir}/home",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
+        owner   => 'root',
+        group   => 'root',
       }
     
       # We want to symlink our home directory to nfs

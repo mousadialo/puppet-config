@@ -1,6 +1,35 @@
+diff -rupN mailman.orig/bin/newlist mailman/bin/newlist
+--- mailman.orig/bin/newlist	2015-04-03 06:03:28.000000000 -0700
++++ mailman/bin/newlist	2015-07-13 23:04:30.353583700 -0700
+@@ -107,6 +107,7 @@ _ = i18n._
+ 
+ PROGRAM = sys.argv[0]
+ 
++ERROR_LIST_EXISTS = 16
+ 
+ 
+ def usage(code, msg=''):
+@@ -167,7 +168,7 @@ def main():
+     web_page_url = mm_cfg.DEFAULT_URL_PATTERN % urlhost
+ 
+     if Utils.list_exists(listname):
+-        usage(1, _('List already exists: %(listname)s'))
++        usage(ERROR_LIST_EXISTS, _('List already exists: %(listname)s'))
+ 
+     if len(args) > 1:
+         owner_mail = args[1]
+@@ -208,7 +209,7 @@ def main():
+                      _(' - owner addresses need to be fully-qualified names'
+                        ' like "owner@example.com", not just "owner".'))
+         except Errors.MMListAlreadyExistsError:
+-            usage(1, _('List already exists: %(listname)s'))
++            usage(ERROR_LIST_EXISTS, _('List already exists: %(listname)s'))
+ 
+         # Assign domain-specific attributes
+         mlist.host_name = host_name
 diff -rupN mailman.orig/Mailman/Archiver/Archiver.py mailman/Mailman/Archiver/Archiver.py
---- mailman.orig/Mailman/Archiver/Archiver.py	Fri Apr  3 06:03:28 2015
-+++ mailman/Mailman/Archiver/Archiver.py	Mon Jul 13 23:19:02 2015
+--- mailman.orig/Mailman/Archiver/Archiver.py	2015-04-03 06:03:28.000000000 -0700
++++ mailman/Mailman/Archiver/Archiver.py	2015-07-13 23:19:02.157071000 -0700
 @@ -35,6 +35,7 @@ from Mailman import Site
  from Mailman.SafeDict import SafeDict
  from Mailman.Logging.Syslog import syslog
@@ -18,8 +47,8 @@ diff -rupN mailman.orig/Mailman/Archiver/Archiver.py mailman/Mailman/Archiver/Ar
              if fp:
                  fp.close()
 diff -rupN mailman.orig/Mailman/Bouncers/BouncerAPI.py mailman/Mailman/Bouncers/BouncerAPI.py
---- mailman.orig/Mailman/Bouncers/BouncerAPI.py	Fri Apr  3 06:03:28 2015
-+++ mailman/Mailman/Bouncers/BouncerAPI.py	Mon Jul 13 23:19:35 2015
+--- mailman.orig/Mailman/Bouncers/BouncerAPI.py	2015-04-03 06:03:28.000000000 -0700
++++ mailman/Mailman/Bouncers/BouncerAPI.py	2015-07-13 23:19:35.194668800 -0700
 @@ -37,6 +37,7 @@ Stop = _Stop()
  
  
@@ -29,8 +58,8 @@ diff -rupN mailman.orig/Mailman/Bouncers/BouncerAPI.py mailman/Mailman/Bouncers/
      'Qmail',
      'Postfix',
 diff -rupN mailman.orig/Mailman/Bouncers/HCS.py mailman/Mailman/Bouncers/HCS.py
---- mailman.orig/Mailman/Bouncers/HCS.py	Wed Dec 31 16:00:00 1969
-+++ mailman/Mailman/Bouncers/HCS.py	Mon Jul 13 17:23:37 2015
+--- mailman.orig/Mailman/Bouncers/HCS.py	1969-12-31 16:00:00.000000000 -0800
++++ mailman/Mailman/Bouncers/HCS.py	2015-07-13 17:23:37.083761300 -0700
 @@ -0,0 +1,31 @@
 +# Copyright (C) 2006 by the Harvard Computer Society
 +#
@@ -63,28 +92,9 @@ diff -rupN mailman.orig/Mailman/Bouncers/HCS.py mailman/Mailman/Bouncers/HCS.py
 +            return Stop
 +        if spam_re2.search(line):
 +            return Stop
-diff -rupN mailman.orig/Mailman/Cgi/Auth.py mailman/Mailman/Cgi/Auth.py
---- mailman.orig/Mailman/Cgi/Auth.py	Fri Apr  3 06:03:28 2015
-+++ mailman/Mailman/Cgi/Auth.py	Tue Jul 14 00:06:49 2015
-@@ -21,7 +21,7 @@ and list moderator interface.
- from Mailman import mm_cfg
- from Mailman import Utils
- from Mailman import Errors
--from Mailman.htmlformat import FontAttr
-+from Mailman.htmlformat import FontAttr, HCSHeader
- from Mailman.i18n import _
- 
- 
-@@ -57,5 +57,6 @@ def loginpage(mlist, scriptname, msg='',
-          'path'    : actionurl,
-          'message' : msg,
-          'who'     : who,
-+         'HCSHeader': HCSHeader(),
-          }, mlist=mlist)
-     print mlist.GetMailmanFooter()
 diff -rupN mailman.orig/Mailman/Cgi/admin.py mailman/Mailman/Cgi/admin.py
---- mailman.orig/Mailman/Cgi/admin.py	Fri Apr  3 06:03:28 2015
-+++ mailman/Mailman/Cgi/admin.py	Tue Jul 14 00:21:20 2015
+--- mailman.orig/Mailman/Cgi/admin.py	2015-04-03 06:03:28.000000000 -0700
++++ mailman/Mailman/Cgi/admin.py	2015-07-14 00:21:20.213786000 -0700
 @@ -39,6 +39,7 @@ from Mailman import i18n
  from Mailman.UserDesc import UserDesc
  from Mailman.htmlformat import *
@@ -259,9 +269,28 @@ diff -rupN mailman.orig/Mailman/Cgi/admin.py mailman/Mailman/Cgi/admin.py
      form.AddItem('<hr>')
      form.AddItem(
          _('''Make your changes in the following section, then submit them
+diff -rupN mailman.orig/Mailman/Cgi/Auth.py mailman/Mailman/Cgi/Auth.py
+--- mailman.orig/Mailman/Cgi/Auth.py	2015-04-03 06:03:28.000000000 -0700
++++ mailman/Mailman/Cgi/Auth.py	2015-07-14 00:06:49.030638900 -0700
+@@ -21,7 +21,7 @@ and list moderator interface.
+ from Mailman import mm_cfg
+ from Mailman import Utils
+ from Mailman import Errors
+-from Mailman.htmlformat import FontAttr
++from Mailman.htmlformat import FontAttr, HCSHeader
+ from Mailman.i18n import _
+ 
+ 
+@@ -57,5 +57,6 @@ def loginpage(mlist, scriptname, msg='',
+          'path'    : actionurl,
+          'message' : msg,
+          'who'     : who,
++         'HCSHeader': HCSHeader(),
+          }, mlist=mlist)
+     print mlist.GetMailmanFooter()
 diff -rupN mailman.orig/Mailman/Cgi/listinfo.py mailman/Mailman/Cgi/listinfo.py
---- mailman.orig/Mailman/Cgi/listinfo.py	Fri Apr  3 06:03:28 2015
-+++ mailman/Mailman/Cgi/listinfo.py	Tue Jul 14 00:29:24 2015
+--- mailman.orig/Mailman/Cgi/listinfo.py	2015-04-03 06:03:28.000000000 -0700
++++ mailman/Mailman/Cgi/listinfo.py	2015-07-15 21:20:00.108970300 -0700
 @@ -74,14 +74,28 @@ def listinfo_overview(msg=''):
      doc = Document()
      doc.set_language(mm_cfg.DEFAULT_SERVER_LANGUAGE)
@@ -438,8 +467,8 @@ diff -rupN mailman.orig/Mailman/Cgi/listinfo.py mailman/Mailman/Cgi/listinfo.py
      # Do the expansion.
      doc.AddItem(mlist.ParseTags('listinfo.html', replacements, lang))
 diff -rupN mailman.orig/Mailman/Cgi/private.py mailman/Mailman/Cgi/private.py
---- mailman.orig/Mailman/Cgi/private.py	Fri Apr  3 06:03:28 2015
-+++ mailman/Mailman/Cgi/private.py	Tue Jul 14 00:37:15 2015
+--- mailman.orig/Mailman/Cgi/private.py	2015-04-03 06:03:28.000000000 -0700
++++ mailman/Mailman/Cgi/private.py	2015-07-14 00:37:14.771437100 -0700
 @@ -181,6 +181,7 @@ def main():
              {'action'  : Utils.websafe(action),
               'realname': mlist.real_name,
@@ -448,9 +477,134 @@ diff -rupN mailman.orig/Mailman/Cgi/private.py mailman/Mailman/Cgi/private.py
               }, mlist=mlist)
          return
  
+diff -rupN mailman.orig/Mailman/htmlformat.py mailman/Mailman/htmlformat.py
+--- mailman.orig/Mailman/htmlformat.py	2015-04-03 06:03:28.000000000 -0700
++++ mailman/Mailman/htmlformat.py	2015-07-15 21:12:22.879107200 -0700
+@@ -36,6 +36,8 @@ from Mailman.i18n import _
+ 
+ from Mailman.CSRFcheck import csrf_token
+ 
++from datetime import date
++
+ SPACE = ' '
+ EMPTYSTRING = ''
+ NL = '\n'
+@@ -300,10 +302,9 @@ class Document(Container):
+ 
+     def Format(self, indent=0, **kws):
+         charset = 'us-ascii'
+-        if self.language and Utils.IsLanguage(self.language):
++        if self.language:
+             charset = Utils.GetCharSet(self.language)
+-        output = ['Content-Type: text/html; charset=%s' % charset]
+-        output.append('Cache-control: no-cache\n')
++        output = ['Content-Type: text/html; charset=%s\n' % charset]
+         if not self.suppress_head:
+             kws.setdefault('bgcolor', self.bgcolor)
+             tab = ' ' * indent
+@@ -311,14 +312,13 @@ class Document(Container):
+                            '<HTML>',
+                            '<HEAD>'
+                            ])
+-            if mm_cfg.IMAGE_LOGOS:
+-                output.append('<LINK REL="SHORTCUT ICON" HREF="%s">' %
+-                              (mm_cfg.IMAGE_LOGOS + mm_cfg.SHORTCUT_ICON))
++            output.append('<LINK REL="SHORTCUT ICON" HREF="//www.hcs.harvard.edu/static/favicon.ico">')
+             # Hit all the bases
+             output.append('<META http-equiv="Content-Type" '
+                           'content="text/html; charset=%s">' % charset)
+             if self.title:
+                 output.append('%s<TITLE>%s</TITLE>' % (tab, self.title))
++            output.append('<LINK REL="stylesheet" HREF="//www.hcs.harvard.edu/static/hcs.css">')
+             output.append('%s</HEAD>' % tab)
+             quals = []
+             # Default link colors
+@@ -334,6 +334,7 @@ class Document(Container):
+             # Language direction
+             direction = Utils.GetDirection(self.language)
+             output.append('dir="%s">' % direction)
++            output.append(HCSHeader())
+         # Always do this...
+         output.append(Container.Format(self, indent))
+         if not self.suppress_head:
+@@ -444,11 +445,14 @@ class InputObj:
+     def Format(self, indent=0):
+         output = ['<INPUT name="%s" type="%s" value="%s"' %
+                   (self.name, self.type, self.value)]
++        if self.type == "SUBMIT":
++            output = ['<button type="submit" name="%s" value="%s">%s</button>' % (self.name, self.value, self.value)]
+         for item in self.kws.items():
+             output.append('%s="%s"' % item)
+         if self.checked:
+             output.append('CHECKED')
+-        output.append('>')
++        if self.type != "SUBMIT":
++            output.append('>')
+         return SPACE.join(output)
+ 
+ 
+@@ -631,34 +635,31 @@ GNU_HEAD = 'gnu-head-tiny.jpg'
+ 
+ 
+ def MailmanLogo():
+-    t = Table(border=0, width='100%')
++    t = "<table width=98% border=0 cellspacing=0 cellpadding=0 align=center><tr>"
++    t += "<td width=33% class=credits align=left>"
++    t += "Powered by <a href=http://www.list.org class=credits>Mailman</a>.</font>"
++    t += "</td><td width=34% class=credits align=center>"
++    t += "Copyright &#169; 2008-%d <a href=http://www.hcs.harvard.edu class=credits>Harvard Computer Society</a>" % date.today().year
++    t += "</td><td width=33% class=credits align=right>"
++    t += "Questions? Contact "
++    t += "<script type=text/javascript><!-- \n"
++    t += "emailaddress=('acctserv@'+'hcs.harvard.edu'); document.write('<a href=mailto:' + emailaddress + ' class=credits>acctserv</a>'); //--></script>"
++    t += ".</td></tr></table>"
++    return t
++
+ 
+-    version = mm_cfg.VERSION
+-    mmlink = _("Delivered by Mailman")
+-    pylink = _("Python Powered")
+-    gnulink = _("GNU's Not Unix")
+-    if mm_cfg.SITE_LINK:
+-        sitelink = mm_cfg.SITE_TEXT
+-
+-    if mm_cfg.IMAGE_LOGOS:
+-        def logo(file, alt, base=mm_cfg.IMAGE_LOGOS):
+-            return '<img src="%s" alt="%s" border="0" />' % \
+-              (base + file, alt)
+-        mmlink = logo(DELIVERED_BY, mmlink)
+-        pylink = logo(PYTHON_POWERED, pylink)
+-        gnulink = logo(GNU_HEAD, gnulink)
+-        if mm_cfg.SITE_LINK:
+-            sitelink = logo(mm_cfg.SITE_LOGO, sitelink, "")
+-
+-    mmlink = Link(MAILMAN_URL, mmlink + _('<br>version %(version)s'))
+-    pylink = Link(PYTHON_URL, pylink)
+-    gnulink = Link(GNU_URL, gnulink)
+-    links = [mmlink, pylink, gnulink]
+-    if mm_cfg.SITE_LINK:
+-        if mm_cfg.SITE_URL:
+-            sitelink = Link(mm_cfg.SITE_URL, sitelink)
+-        links.append(sitelink)
+-    t.AddRow(links)
++def HCSHeader():
++    t = "<table width=100% border=0 cellspacing=0 cellpadding=0>"
++    t += "<tr height=3 bgcolor=660000><td></td><td></td><td></td></tr>"
++    t += "<tr height=27 align=left>"
++    t += "<td width=8 bgcolor=660000></td>"
++    t += "<td width=42 rowspan=3 valign=bottom background=//www.hcs.harvard.edu/static/hcs.png></td>"
++    t += "<td valign=middle bgcolor=660000>"
++    t += "&nbsp;<a href=/mailman/listinfo class=title>HCS MAILING LISTS</a>"
++    t += "</td></tr>"
++    t += "<tr height=6 bgcolor=990000><td></td><td></td><td></td></tr>"
++    t += "<tr height=15 bgcolor=white><td></td><td></td><td></td></tr>"
++    t += "</table>"
+     return t
+ 
+ 
 diff -rupN mailman.orig/Mailman/HTMLFormatter.py mailman/Mailman/HTMLFormatter.py
---- mailman.orig/Mailman/HTMLFormatter.py	Fri Apr  3 06:03:28 2015
-+++ mailman/Mailman/HTMLFormatter.py	Tue Jul 14 01:33:07 2015
+--- mailman.orig/Mailman/HTMLFormatter.py	2015-04-03 06:03:28.000000000 -0700
++++ mailman/Mailman/HTMLFormatter.py	2015-07-15 21:27:45.786636700 -0700
 @@ -46,19 +46,13 @@ class HTMLFormatter:
          listinfo_link  = Link(self.GetScriptURL('listinfo'), realname).Format()
          owner_link = Link('mailto:' + self.GetOwnerEmail(), ownertext).Format()
@@ -504,17 +658,28 @@ diff -rupN mailman.orig/Mailman/HTMLFormatter.py mailman/Mailman/HTMLFormatter.p
  
      def FormatReminder(self, lang):
          if self.send_reminders:
-@@ -381,6 +370,7 @@ class HTMLFormatter:
+@@ -381,6 +370,8 @@ class HTMLFormatter:
              listlangs = self.GetLangSelectBox(lang).Format()
          d = {
              '<mm-mailman-footer>' : self.GetMailmanFooter(),
++            '<mm-favicon>' : '//www.hcs.harvard.edu/static/favicon.ico'
 +            '<mm-hcs-header>' : HCSHeader(),
              '<mm-list-name>' : self.real_name,
              '<mm-email-user>' : self._internal_name,
              '<mm-list-description>' : Utils.websafe(self.description),
+@@ -403,8 +394,6 @@ class HTMLFormatter:
+             '<mm-host>' : self.host_name,
+             '<mm-list-langs>' : listlangs,
+             }
+-        if mm_cfg.IMAGE_LOGOS:
+-            d['<mm-favicon>'] = mm_cfg.IMAGE_LOGOS + mm_cfg.SHORTCUT_ICON
+         return d
+ 
+     def GetAllReplacements(self, lang=None, list_hidden=False):
+Files mailman.orig/Mailman/mm_cfg.pyc and mailman/Mailman/mm_cfg.pyc differ
 diff -rupN mailman.orig/Mailman/MTA/Postfix.py mailman/Mailman/MTA/Postfix.py
---- mailman.orig/Mailman/MTA/Postfix.py	Fri Apr  3 06:03:28 2015
-+++ mailman/Mailman/MTA/Postfix.py	Tue Jul 14 19:07:45 2015
+--- mailman.orig/Mailman/MTA/Postfix.py	2015-04-03 06:03:28.000000000 -0700
++++ mailman/Mailman/MTA/Postfix.py	2015-07-15 18:41:03.288146800 -0700
 @@ -34,6 +34,7 @@ from Mailman.Logging.Syslog import syslo
  LOCKFILE = os.path.join(mm_cfg.LOCK_DIR, 'creator')
  ALIASFILE = os.path.join(mm_cfg.DATA_DIR, 'aliases')
@@ -604,7 +769,7 @@ diff -rupN mailman.orig/Mailman/MTA/Postfix.py mailman/Mailman/MTA/Postfix.py
 +        for domain in mm_cfg.HCS_LIST_DOMAINS:
 +            fqdnaddr = '%s@%s' % (k, domain)
 +            # Format the text file nicely
-+            print >> fp, fqdnaddr, ((fieldsz - len(k)) * ' '), mm_cfg.HCS_LIST_DESTINATION
++            print >> fp, fqdnaddr, ((fieldsz - len(fqdnaddr)) * ' '), mm_cfg.HCS_LIST_DESTINATION
 +    # Finish the text file stanza
 +    print >> fp, '# STANZA END:', listname
 +    print >> fp
@@ -648,141 +813,3 @@ diff -rupN mailman.orig/Mailman/MTA/Postfix.py mailman/Mailman/MTA/Postfix.py
          stat = None
          try:
              stat = os.stat(dbfile)
-diff -rupN mailman.orig/Mailman/htmlformat.py mailman/Mailman/htmlformat.py
---- mailman.orig/Mailman/htmlformat.py	Fri Apr  3 06:03:28 2015
-+++ mailman/Mailman/htmlformat.py	Tue Jul 14 01:12:53 2015
-@@ -300,10 +300,9 @@ class Document(Container):
- 
-     def Format(self, indent=0, **kws):
-         charset = 'us-ascii'
--        if self.language and Utils.IsLanguage(self.language):
-+        if self.language:
-             charset = Utils.GetCharSet(self.language)
--        output = ['Content-Type: text/html; charset=%s' % charset]
--        output.append('Cache-control: no-cache\n')
-+        output = ['Content-Type: text/html; charset=%s\n' % charset]
-         if not self.suppress_head:
-             kws.setdefault('bgcolor', self.bgcolor)
-             tab = ' ' * indent
-@@ -319,6 +318,7 @@ class Document(Container):
-                           'content="text/html; charset=%s">' % charset)
-             if self.title:
-                 output.append('%s<TITLE>%s</TITLE>' % (tab, self.title))
-+            output.append('<LINK REL="stylesheet" HREF="/static/hcs.css">')
-             output.append('%s</HEAD>' % tab)
-             quals = []
-             # Default link colors
-@@ -334,6 +334,7 @@ class Document(Container):
-             # Language direction
-             direction = Utils.GetDirection(self.language)
-             output.append('dir="%s">' % direction)
-+            output.append(HCSHeader())
-         # Always do this...
-         output.append(Container.Format(self, indent))
-         if not self.suppress_head:
-@@ -444,11 +445,14 @@ class InputObj:
-     def Format(self, indent=0):
-         output = ['<INPUT name="%s" type="%s" value="%s"' %
-                   (self.name, self.type, self.value)]
-+        if self.type == "SUBMIT":
-+            output = ['<button type="submit" name="%s" value="%s">%s</button>' % (self.name, self.value, self.value)]
-         for item in self.kws.items():
-             output.append('%s="%s"' % item)
-         if self.checked:
-             output.append('CHECKED')
--        output.append('>')
-+        if self.type != "SUBMIT":
-+            output.append('>')
-         return SPACE.join(output)
- 
- 
-@@ -631,34 +635,31 @@ GNU_HEAD = 'gnu-head-tiny.jpg'
- 
- 
- def MailmanLogo():
--    t = Table(border=0, width='100%')
--
--    version = mm_cfg.VERSION
--    mmlink = _("Delivered by Mailman")
--    pylink = _("Python Powered")
--    gnulink = _("GNU's Not Unix")
--    if mm_cfg.SITE_LINK:
--        sitelink = mm_cfg.SITE_TEXT
--
--    if mm_cfg.IMAGE_LOGOS:
--        def logo(file, alt, base=mm_cfg.IMAGE_LOGOS):
--            return '<img src="%s" alt="%s" border="0" />' % \
--              (base + file, alt)
--        mmlink = logo(DELIVERED_BY, mmlink)
--        pylink = logo(PYTHON_POWERED, pylink)
--        gnulink = logo(GNU_HEAD, gnulink)
--        if mm_cfg.SITE_LINK:
--            sitelink = logo(mm_cfg.SITE_LOGO, sitelink, "")
--
--    mmlink = Link(MAILMAN_URL, mmlink + _('<br>version %(version)s'))
--    pylink = Link(PYTHON_URL, pylink)
--    gnulink = Link(GNU_URL, gnulink)
--    links = [mmlink, pylink, gnulink]
--    if mm_cfg.SITE_LINK:
--        if mm_cfg.SITE_URL:
--            sitelink = Link(mm_cfg.SITE_URL, sitelink)
--        links.append(sitelink)
--    t.AddRow(links)
-+    t = "<table width=98% border=0 cellspacing=0 cellpadding=0 align=center><tr>"
-+    t += "<td width=33% class=credits align=left>"
-+    t += "Powered by <a href=http://www.list.org class=credits>Mailman</a>.</font>"
-+    t += "</td><td width=34% class=credits align=center>"
-+    t += "Copyright &#169; 2008-10 <a href=http://www.hcs.harvard.edu class=credits>Harvard Computer Society</a>"
-+    t += "</td><td width=33% class=credits align=right>"
-+    t += "Questions? Contact "
-+    t += "<script type=text/javascript><!-- \n"
-+    t += "emailaddress=('acctserv@'+'hcs.harvard.edu'); document.write('<a href=mailto:' + emailaddress + ' class=credits>acctserv</a>'); //--></script>"
-+    t += ".</td></tr></table>"
-+    return t
-+
-+
-+def HCSHeader():
-+    t = "<table width=100% border=0 cellspacing=0 cellpadding=0>"
-+    t += "<tr height=3 bgcolor=660000><td></td><td></td><td></td></tr>"
-+    t += "<tr height=27 align=left>"
-+    t += "<td width=8 bgcolor=660000></td>"
-+    t += "<td width=42 rowspan=3 valign=bottom background=https://www.hcs.harvard.edu/static/hcs.png></td>"
-+    t += "<td valign=middle bgcolor=660000>"
-+    t += "&nbsp;<a href=/mailman/listinfo class=title>HCS MAILING LISTS</a>"
-+    t += "</td></tr>"
-+    t += "<tr height=6 bgcolor=990000><td></td><td></td><td></td></tr>"
-+    t += "<tr height=15 bgcolor=white><td></td><td></td><td></td></tr>"
-+    t += "</table>"
-     return t
- 
- 
-Binary files mailman.orig/Mailman/mm_cfg.pyc and mailman/Mailman/mm_cfg.pyc differ
-diff -rupN mailman.orig/bin/newlist mailman/bin/newlist
---- mailman.orig/bin/newlist	Fri Apr  3 06:03:28 2015
-+++ mailman/bin/newlist	Mon Jul 13 23:04:30 2015
-@@ -107,6 +107,7 @@ _ = i18n._
- 
- PROGRAM = sys.argv[0]
- 
-+ERROR_LIST_EXISTS = 16
- 
- 
- def usage(code, msg=''):
-@@ -167,7 +168,7 @@ def main():
-     web_page_url = mm_cfg.DEFAULT_URL_PATTERN % urlhost
- 
-     if Utils.list_exists(listname):
--        usage(1, _('List already exists: %(listname)s'))
-+        usage(ERROR_LIST_EXISTS, _('List already exists: %(listname)s'))
- 
-     if len(args) > 1:
-         owner_mail = args[1]
-@@ -208,7 +209,7 @@ def main():
-                      _(' - owner addresses need to be fully-qualified names'
-                        ' like "owner@example.com", not just "owner".'))
-         except Errors.MMListAlreadyExistsError:
--            usage(1, _('List already exists: %(listname)s'))
-+            usage(ERROR_LIST_EXISTS, _('List already exists: %(listname)s'))
- 
-         # Assign domain-specific attributes
-         mlist.host_name = host_name
