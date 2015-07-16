@@ -58,7 +58,7 @@ class mailman {
   # Symlink mailman files to appropriate location
   file { '/var/lib/mailman/archives':
     ensure  => link,
-    target  => '${mount_dir}/mailman/archives',
+    target  => "${mount_dir}/mailman/archives",
     force   => true,
     owner   => 'root',
     group   => 'list',
@@ -68,7 +68,7 @@ class mailman {
 
   file { '/var/lib/mailman/data':
     ensure  => link,
-    target  => '${mount_dir}/mailman/data',
+    target  => "${mount_dir}/mailman/data",
     force   => true,
     owner   => 'root',
     group   => 'list',
@@ -78,7 +78,7 @@ class mailman {
   
   file { '/var/lib/mailman/lists':
     ensure  => link,
-    target  => '${mount_dir}/mailman/lists',
+    target  => "${mount_dir}/mailman/lists",
     force   => true,
     owner   => 'root',
     group   => 'list',
