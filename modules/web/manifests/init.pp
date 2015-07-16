@@ -3,6 +3,7 @@
 class web {
   
   $domain = hiera('domain')
+  $mount_dir = hiera('nfs-mount-dir')
     
   # Apache  
   package { 'apache2':
@@ -221,7 +222,7 @@ class web {
     # Symlink our web files to appropriate location
     file { '/var/www/hcs.harvard.edu':
       ensure  => link,
-      target  => '/mnt/tank/www-hcs.harvard.edu',
+      target  => '${mount_dir}/www-hcs.harvard.edu',
       force   => true,
       owner   => 'root',
       group   => 'root',
@@ -231,7 +232,7 @@ class web {
 
     file { '/var/www/hcs.harvard.edu-ssl':
       ensure  => link,
-      target  => '/mnt/tank/www-hcs.harvard.edu-ssl',
+      target  => '${mount_dir}/www-hcs.harvard.edu-ssl',
       force   => true,
       owner   => 'root',
       group   => 'root',
