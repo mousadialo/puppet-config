@@ -61,7 +61,7 @@ class mailman {
     target  => '${mount_dir}/mailman/archives',
     force   => true,
     owner   => 'root',
-    group   => 'root',
+    group   => 'list',
     require => [Nfs::Client::Mount['mailman'], Package['mailman']],
     notify  => Service['mailman'],
   }
@@ -71,7 +71,7 @@ class mailman {
     target  => '${mount_dir}/mailman/data',
     force   => true,
     owner   => 'root',
-    group   => 'root',
+    group   => 'list',
     require => [Nfs::Client::Mount['mailman'], Package['mailman']],
     notify  => Service['mailman'],
   }
@@ -81,7 +81,7 @@ class mailman {
     target  => '${mount_dir}/mailman/lists',
     force   => true,
     owner   => 'root',
-    group   => 'root',
+    group   => 'list',
     require => [Nfs::Client::Mount['mailman'], Package['mailman']],
     notify  => Service['mailman'],
   }
