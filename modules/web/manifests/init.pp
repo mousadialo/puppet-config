@@ -239,6 +239,16 @@ class web {
       # Must have mounted www-hcs.harvard.edu-ssl
       require => [Nfs::Client::Mount['www-hcs.harvard.edu-ssl'], Package['apache2']],
     }
+    
+    @@haproxy::balancermember {
+      listening_service => 'web-http',
+      options           => ['check'],
+    }
+    
+    @@haproxy::balancermember {
+      listening_service => 'web-https',
+      options           => ['check'],
+    }
   }
   elsif $::machine_type == 'lists' {
     require certs
@@ -254,6 +264,16 @@ class web {
     }
     web::apache2::vhost{ 'lists.hcs.harvard.edu': }
     web::apache2::vhost{ 'lists.hcs.harvard.edu-ssl': }
+    
+    @@haproxy::balancermember {
+      listening_service => 'lists-http',
+      options           => ['check'],
+    }
+    
+    @@haproxy::balancermember {
+      listening_service => 'lists-https',
+      options           => ['check'],
+    }
   }
   
 }

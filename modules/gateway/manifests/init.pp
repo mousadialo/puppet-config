@@ -1,7 +1,6 @@
-# configuration for gateway servers
+# configuration for bifrost servers
 class gateway {
 
-
-
+  include gateway::haproxy
 
 }

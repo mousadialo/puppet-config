@@ -28,6 +28,8 @@ class mailman {
     require => Package['mailman'],
   }
   
+  # This is the patch for mailman that will apply HCS customizations.
+  # To learn more about patches, see http://jungels.net/articles/diff-patch-ten-minutes.html
   file { '/usr/lib/mailman/mailman-hcs.diff':
     ensure  => file,
     source  => 'puppet:///modules/mailman/mailman-hcs.diff',
