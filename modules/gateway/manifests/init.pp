@@ -1,6 +1,8 @@
 # configuration for bifrost servers
 class gateway {
 
+  include apt
+
   apt::ppa { 'ppa:vbernat/haproxy-1.5':
     package_manage => false,
   } ->
