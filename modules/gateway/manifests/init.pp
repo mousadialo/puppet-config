@@ -1,6 +1,9 @@
 # configuration for bifrost servers
 class gateway {
 
+  apt::ppa { 'ppa:vbernat/haproxy-1.5':
+    package_manage => false,
+  } ->
   class { 'haproxy':
     defaults_options => {
       'log'     => 'global',
@@ -24,8 +27,10 @@ class gateway {
   haproxy::peers { 'bifrost': }
   
   @@haproxy::peer { "${::hostname}-peer":
-    peers_name => 'bifrost',
-    port       => '1039',
+    peers_name   => 'bifrost',
+    server_names => ${::hostname},
+    ipaddresses  => ${::ipaddress},
+    port         => '1039',
   }
   
   haproxy::frontend { 'http':
@@ -50,6 +55,7 @@ class gateway {
   
   haproxy::backend { 'web-http':
     options => {
+      'mode'      => 'http',
       'balance'   => 'source',
       'hash-type' => 'consistent',
       'option'    => 'httpchk',
@@ -58,6 +64,7 @@ class gateway {
   
   haproxy::backend { 'web-https':
     options => {
+      'mode'      => 'tcp',
       'balance'   => 'source',
       'hash-type' => 'consistent',
       'option'    => 'ssl-hello-chk',
@@ -66,6 +73,7 @@ class gateway {
   
   haproxy::backend { 'lists-http':
     options => {
+      'mode'      => 'http',
       'balance'   => 'source',
       'hash-type' => 'consistent',
       'option'    => 'httpchk',
@@ -74,6 +82,7 @@ class gateway {
   
   haproxy::backend { 'lists-https':
     options => {
+      'mode'      => 'tcp',
       'balance'   => 'source',
       'hash-type' => 'consistent',
       'option'    => 'ssl-hello-chk',
