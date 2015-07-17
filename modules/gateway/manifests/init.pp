@@ -61,8 +61,8 @@ class gateway {
         'enable',
         'uri /stats',
         'hide-version',
-        'auth hcs:euph4ria'
-      ]
+        'auth hcs:euph4ria',
+      ],
       'balance'   => 'source',
       'hash-type' => 'consistent',
       'option'    => 'httpchk',
