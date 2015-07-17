@@ -244,6 +244,7 @@ class web {
       listening_service => 'web-http',
       server_names      => $::hostname,
       ipaddresses       => $::ipaddress,
+      ports             => ['80'],
       options           => ['check'],
     }
     
@@ -251,6 +252,7 @@ class web {
       listening_service => 'web-https',
       server_names      => $::hostname,
       ipaddresses       => $::ipaddress,
+      ports             => ['443'],
       options           => ['check'],
     }
   }
@@ -273,6 +275,7 @@ class web {
       listening_service => 'lists-http',
       server_names      => $::hostname,
       ipaddresses       => $::ipaddress,
+      ports             => ['80'],
       options           => ['check'],
     }
     
@@ -280,6 +283,7 @@ class web {
       listening_service => 'lists-https',
       server_names      => $::hostname,
       ipaddresses       => $::ipaddress,
+      ports             => ['443'],
       options           => ['check'],
     }
   }
