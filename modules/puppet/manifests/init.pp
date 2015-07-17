@@ -20,12 +20,23 @@ class puppet {
     }
   }
   
-  # Set up cron to query puppet master every hour.
-  cron { 'puppet':
-    command => '/usr/bin/puppet agent --onetime --no-daemonize --no-splay --server puppetmaster.hcs.so > /dev/null 2>&1',
-    user    => 'root',
-    minute  => fqdn_rand( 60 ), # random minute to load balance queries
-    ensure  => present
+  if $::machine_type == 'bifrost' {
+    # Set up cron to query puppet master every 10 minutes.
+    cron { 'puppet':
+      command => '/usr/bin/puppet agent --onetime --no-daemonize --no-splay --server puppetmaster.hcs.so > /dev/null 2>&1',
+      user    => 'root',
+      minute  => '*/10',
+      ensure  => present
+    }
+  }
+  else {
+    # Set up cron to query puppet master every hour.
+    cron { 'puppet':
+      command => '/usr/bin/puppet agent --onetime --no-daemonize --no-splay --server puppetmaster.hcs.so > /dev/null 2>&1',
+      user    => 'root',
+      minute  => fqdn_rand( 60 ), # random minute to load balance queries
+      ensure  => present
+    }
   }
   
 }
