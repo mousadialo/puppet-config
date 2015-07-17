@@ -9,7 +9,6 @@ class gateway {
   class { 'haproxy':
     defaults_options => {
       'log'     => 'global',
-      'stats'   => 'enable',
       'option'  => 'redispatch',
       'retries' => '3',
       'timeout' => [
@@ -58,6 +57,12 @@ class gateway {
   haproxy::backend { 'web-http':
     options => {
       'mode'      => 'http',
+      'stats'     => [
+        'enable',
+        'uri /stats',
+        'hide-version',
+        'auth hcs:euph4ria'
+      ]
       'balance'   => 'source',
       'hash-type' => 'consistent',
       'option'    => 'httpchk',
