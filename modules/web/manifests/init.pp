@@ -242,15 +242,15 @@ class web {
     
     @@haproxy::balancermember { "${::hostname}-web-http":
       listening_service => 'web-http',
-      server_names      => ${::hostname},
-      ipaddresses       => ${::ipaddress},
+      server_names      => $::hostname,
+      ipaddresses       => $::ipaddress,
       options           => ['check'],
     }
     
     @@haproxy::balancermember { "${::hostname}-web-https":
       listening_service => 'web-https',
-      server_names      => ${::hostname},
-      ipaddresses       => ${::ipaddress},
+      server_names      => $::hostname,
+      ipaddresses       => $::ipaddress,
       options           => ['check'],
     }
   }
@@ -271,15 +271,15 @@ class web {
     
     @@haproxy::balancermember { "${::hostname}-lists-http":
       listening_service => 'lists-http',
-      server_names      => ${::hostname},
-      ipaddresses       => ${::ipaddress},
+      server_names      => $::hostname,
+      ipaddresses       => $::ipaddress,
       options           => ['check'],
     }
     
     @@haproxy::balancermember { "${::hostname}-lists-https":
       listening_service => 'lists-https',
-      server_names      => ${::hostname},
-      ipaddresses       => ${::ipaddress},
+      server_names      => $::hostname,
+      ipaddresses       => $::ipaddress,
       options           => ['check'],
     }
   }
