@@ -240,12 +240,12 @@ class web {
       require => [Nfs::Client::Mount['www-hcs.harvard.edu-ssl'], Package['apache2']],
     }
     
-    @@haproxy::balancermember { '${::hostname}-web-http':
+    @@haproxy::balancermember { "${::hostname}-web-http":
       listening_service => 'web-http',
       options           => ['check'],
     }
     
-    @@haproxy::balancermember { '${::hostname}-web-https':
+    @@haproxy::balancermember { "${::hostname}-web-https":
       listening_service => 'web-https',
       options           => ['check'],
     }
@@ -265,12 +265,12 @@ class web {
     web::apache2::vhost{ 'lists.hcs.harvard.edu': }
     web::apache2::vhost{ 'lists.hcs.harvard.edu-ssl': }
     
-    @@haproxy::balancermember { '${::hostname}-lists-http':
+    @@haproxy::balancermember { "${::hostname}-lists-http":
       listening_service => 'lists-http',
       options           => ['check'],
     }
     
-    @@haproxy::balancermember { '${::hostname}-lists-https':
+    @@haproxy::balancermember { "${::hostname}-lists-https":
       listening_service => 'lists-https',
       options           => ['check'],
     }
