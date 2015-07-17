@@ -29,7 +29,7 @@ class gateway {
   
   @@haproxy::peer { "${::hostname}-peer":
     peers_name   => 'bifrost',
-    server_names => $::hostname,
+    server_names => $::fqdn,
     ipaddresses  => $::ipaddress,
     port         => '1039',
   }

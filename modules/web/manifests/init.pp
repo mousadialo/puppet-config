@@ -242,7 +242,7 @@ class web {
     
     @@haproxy::balancermember { "${::hostname}-web-http":
       listening_service => 'web-http',
-      server_names      => $::hostname,
+      server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['80'],
       options           => ['check'],
@@ -250,7 +250,7 @@ class web {
     
     @@haproxy::balancermember { "${::hostname}-web-https":
       listening_service => 'web-https',
-      server_names      => $::hostname,
+      server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['443'],
       options           => ['check'],
@@ -273,7 +273,7 @@ class web {
     
     @@haproxy::balancermember { "${::hostname}-lists-http":
       listening_service => 'lists-http',
-      server_names      => $::hostname,
+      server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['80'],
       options           => ['check'],
@@ -281,7 +281,7 @@ class web {
     
     @@haproxy::balancermember { "${::hostname}-lists-https":
       listening_service => 'lists-https',
-      server_names      => $::hostname,
+      server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['443'],
       options           => ['check'],
