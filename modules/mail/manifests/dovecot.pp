@@ -29,7 +29,7 @@ class mail::dovecot {
     server_names      => $::fqdn,
     ipaddresses       => $::ipaddress,
     ports             => ['993'],
-    options           => ['check'],
+    options           => [],
   }
     
   @@haproxy::balancermember { "${::hostname}-mail-pop3s":
@@ -37,7 +37,7 @@ class mail::dovecot {
     server_names      => $::fqdn,
     ipaddresses       => $::ipaddress,
     ports             => ['995'],
-    options           => ['check'],
+    options           => [],
   }
 
 }
