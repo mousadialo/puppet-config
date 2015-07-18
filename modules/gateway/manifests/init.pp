@@ -46,7 +46,7 @@ class gateway {
       'user'                      => 'haproxy',
       'group'                     => 'haproxy',
       'daemon'                    => '',
-      'stats'                     => 'socket /var/lib/haproxy/stats'
+      'stats'                     => 'socket /var/lib/haproxy/stats',
       'tune.ssl.default-dh-param' => '2048',
     },
     defaults_options => {
