@@ -54,7 +54,7 @@ class mail::postfix {
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['25'],
-      options           => ['check'],
+      options           => ['send-proxy', 'check'],
     }
     
     @@haproxy::balancermember { "${::hostname}-mail-smtp-vrfy":

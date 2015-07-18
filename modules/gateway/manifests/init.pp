@@ -238,7 +238,9 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'option' => 'tcp-check',
+      'acl'         => 'mynetworks src 10.0.0.0/8',
+      'tcp-request' => 'content reject if !mynetworks',
+      'option'      => 'tcp-check',
     },
   }
   

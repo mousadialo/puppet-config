@@ -9,7 +9,9 @@
 # service type  private unpriv  chroot  wakeup  maxproc command + args
 #               (yes)   (yes)   (yes)   (never) (100)
 # ==========================================================================
+# HCS: Enable proxy protocol for smtpd
 smtp      inet  n       -       -       -       -       smtpd
+        -o smtpd_upstream_proxy_protocol=haproxy
 #smtp      inet  n       -       -       -       1       postscreen
 #smtpd     pass  -       -       -       -       -       smtpd
 #dnsblog   unix  -       -       -       -       0       dnsblog
