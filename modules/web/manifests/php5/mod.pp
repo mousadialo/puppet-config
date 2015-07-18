@@ -14,14 +14,14 @@ define web::php5::mod($ensure = 'enabled') {
     exec { "/usr/sbin/php5enmod ${title}" :
       unless  => "/bin/readlink -e /etc/php5/cgi/conf.d/20-${title}.ini 1> /dev/null",
       notify  => Service['apache2'],
-      require => [Package['libapache2-mod-php5'], Package["php5-${title}"]],
+      require => [Package['libapache2-mod-suphp'], Package["php5-${title}"]],
     }
   }
   else {
     exec { "/usr/sbin/php5dismod ${title}" :
       onlyif  => "/bin/readlink -e /etc/php5/cgi/conf.d/20-${title}.ini 1> /dev/null",
       notify  => Service['apache2'],
-      require => Package['libapache2-mod-php5'],
+      require => Package['libapache2-mod-suphp'],
     }
   }
   
