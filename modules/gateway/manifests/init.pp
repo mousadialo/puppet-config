@@ -50,10 +50,10 @@ class gateway {
       'tune.ssl.default-dh-param' => '2048',
     },
     defaults_options => {
-      'log'     => 'global',
-      'option'  => 'redispatch',
-      'retries' => '3',
-      'timeout' => [
+      'log'            => 'global',
+      'option'         => 'redispatch',
+      'retries'        => '3',
+      'timeout'        => [
         'http-request 5s',
         'queue        30s',
         'connect      5s',
@@ -63,7 +63,7 @@ class gateway {
         'check        10s',
         'tunnel       1h',
       ],
-      'maxconn' => '8000',
+      'maxconn'        => '8000',
     },
     require => [Apt::Ppa['ppa:vbernat/haproxy-1.5'], Concat[$pem]],
   }
@@ -94,7 +94,7 @@ class gateway {
       'mode'    => 'http',
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
-      'option'  => 'httpchk',
+      #'option'  => 'httpchk',
       'stats'   => [
         'enable',
         'uri /admin?stats',
@@ -109,7 +109,7 @@ class gateway {
       'mode'    => 'http',
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
-      'option'  => 'httpchk',
+      #'option'  => 'httpchk',
     },
   }
 
@@ -130,7 +130,7 @@ class gateway {
       'mode'    => 'http',
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
-      'option'  => 'httpchk',
+      #'option'  => 'httpchk',
     },
   }
   
@@ -139,7 +139,7 @@ class gateway {
       'mode'    => 'http',
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
-      'option'  => 'httpchk',
+      #'option'  => 'httpchk',
     },
   }
   
@@ -149,7 +149,7 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'option' => 'smtpchk'
+      #'option' => 'smtpchk'
     },
   }
   
@@ -159,7 +159,7 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'option' => 'ssl-hello-chk',
+      #'option' => 'ssl-hello-chk',
     },
   }
   
@@ -169,7 +169,7 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'option' => 'ssl-hello-chk',
+      #'option' => 'ssl-hello-chk',
     },
   }
   
@@ -181,7 +181,7 @@ class gateway {
     options => {
       'acl'         => 'mynetworks src 10.0.0.0/8',
       'tcp-request' => 'content reject if !mynetworks',
-      'option'      => 'smtpchk',
+      #'option'      => 'smtpchk',
     },
   }
   
@@ -191,7 +191,7 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'option' => 'smtpchk'
+      #'option' => 'smtpchk'
     },
   }
   
@@ -211,8 +211,8 @@ class gateway {
     options => {
       'mode'      => 'tcp',
       'balance'   => 'source',
-      'option'    => 'tcp-check',
-      'tcp-check' => 'expect string SSH-2.0-'
+      #'option'    => 'tcp-check',
+      #'tcp-check' => 'expect string SSH-2.0-'
     },
   }
   
@@ -240,7 +240,7 @@ class gateway {
     options => {
       'acl'         => 'mynetworks src 10.0.0.0/8',
       'tcp-request' => 'content reject if !mynetworks',
-      'option'      => 'tcp-check',
+      #'option'      => 'tcp-check',
     },
   }
   

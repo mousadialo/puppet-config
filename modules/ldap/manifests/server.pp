@@ -45,7 +45,7 @@ class ldap::server {
     server_names      => $::fqdn,
     ipaddresses       => $::ipaddress,
     ports             => ['389'],
-    options           => [],
+    options           => ['check'],
   }
   
 }

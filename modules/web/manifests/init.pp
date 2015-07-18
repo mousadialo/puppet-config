@@ -246,7 +246,7 @@ class web {
       ipaddresses       => $::ipaddress,
       ports             => ['80'],
       define_cookies    => true,
-      options           => [],
+      options           => ['check'],
     }
     
     @@haproxy::balancermember { "${::hostname}-web-https":
@@ -255,7 +255,7 @@ class web {
       ipaddresses       => $::ipaddress,
       ports             => ['443'],
       define_cookies    => true,
-      options           => ['ssl verify none'],
+      options           => ['check', 'ssl verify none'],
     }
   }
   elsif $::machine_type == 'lists' {
@@ -279,7 +279,7 @@ class web {
       ipaddresses       => $::ipaddress,
       ports             => ['80'],
       define_cookies    => true,
-      options           => [],
+      options           => ['check'],
     }
     
     @@haproxy::balancermember { "${::hostname}-lists-https":
@@ -288,7 +288,7 @@ class web {
       ipaddresses       => $::ipaddress,
       ports             => ['443'],
       define_cookies    => true,
-      options           => ['ssl verify none'],
+      options           => ['check', 'ssl verify none'],
     }
   }
   

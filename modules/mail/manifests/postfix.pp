@@ -54,7 +54,7 @@ class mail::postfix {
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['25'],
-      options           => ['send-proxy'],
+      options           => ['send-proxy', 'check'],
     }
     
     @@haproxy::balancermember { "${::hostname}-mail-smtp-vrfy":
@@ -62,7 +62,7 @@ class mail::postfix {
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['10025'],
-      options           => [],
+      options           => ['check'],
     }
   }
   elsif $::machine_type == 'lists' {
@@ -76,7 +76,7 @@ class mail::postfix {
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['25'],
-      options           => [],
+      options           => ['check'],
     }
   }
   else {
