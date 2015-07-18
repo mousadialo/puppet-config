@@ -2,12 +2,38 @@
 class gateway {
 
   require sshd
-  require certs
   include apt
 
+  $pem = '/etc/haproxy/hcs_harvard_edu.pem'
+  # PEM file containing everything
+  # it's the concatenation of the certificate, intermediates file, and key file
+  concat { $pem:
+    ensure         => present,
+    owner          => 'haproxy',
+    group          => 'haproxy',
+    mode           => '0400',
+    ensure_newline => true,
+  }
+  concat::fragment { "${pem}-${certificate}":
+    target => $pem,
+    source => 'puppet:///modules/certs/hcs_harvard_edu_cert.cer',
+    order  => '1',
+  }
+  concat::fragment { "${pem}-${intermediates}":
+    target => $pem,
+    source => 'puppet:///modules/certs/hcs_harvard_edu_interm.cer',
+    order  => '2',
+  }
+  concat::fragment { "${pem}-${key}":
+    target  => $pem,
+    content => hiera('hcs_harvard_edu.key'),
+    order   => '3',
+  }
+  
   apt::ppa { 'ppa:vbernat/haproxy-1.5':
     package_manage => false,
-  } ->
+  }
+  
   class { 'haproxy':
     global_options => {
       'log'     => [
@@ -21,7 +47,7 @@ class gateway {
       'group'   => 'haproxy',
       'daemon'  => '',
       'stats'   => 'socket /var/lib/haproxy/stats'
-    }
+    },
     defaults_options => {
       'log'     => 'global',
       'option'  => 'redispatch',
@@ -87,7 +113,7 @@ class gateway {
 
   haproxy::frontend { 'https':
     bind    => {
-      '*:443' => ['ssl', 'crt', $certs::pem]
+      '*:443' => ['ssl', 'crt', $pem]
     },
     mode    => 'http',
     options => {

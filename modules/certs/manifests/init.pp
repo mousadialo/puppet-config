@@ -1,7 +1,6 @@
 # manages certificates on the machine
 class certs {
 
-  $pem           = '/etc/ssl/certs/hcs_harvard_edu.pem'
   $chain         = '/etc/ssl/certs/hcs_harvard_edu.cer'
   $certificate   = '/etc/ssl/certs/hcs_harvard_edu_cert.cer'
   $intermediates = '/etc/ssl/certs/hcs_harvard_edu_interm.cer'
@@ -52,31 +51,6 @@ class certs {
     target => $chain,
     source => 'puppet:///modules/certs/hcs_harvard_edu_interm.cer',
     order  => '2',
-  }
-
-  # PEM file containing everything
-  # it's the concatenation of the certificate, intermediates file, and key file
-  concat { $pem:
-    ensure         => present,
-    owner          => 'root',
-    group          => 'root',
-    mode           => '0444',
-    ensure_newline => true,
-  }
-  concat::fragment { "${pem}-${certificate}":
-    target => $pem,
-    source => 'puppet:///modules/certs/hcs_harvard_edu_cert.cer',
-    order  => '1',
-  }
-  concat::fragment { "${pem}-${intermediates}":
-    target => $pem,
-    source => 'puppet:///modules/certs/hcs_harvard_edu_interm.cer',
-    order  => '2',
-  }
-  concat::fragment { "${pem}-${key}":
-    target  => $pem,
-    content => hiera('hcs_harvard_edu.key'),
-    order   => '3',
   }
 
 }

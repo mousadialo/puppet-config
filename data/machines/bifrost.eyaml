@@ -1,6 +1,5 @@
 ---
 classes:
-  - certs
   - gateway
 
 hcs_harvard_edu.key: >
