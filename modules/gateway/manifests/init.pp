@@ -233,14 +233,13 @@ class gateway {
   }
   
   haproxy::listen { 'ldap':
-    bind    => {
+    bind    => { 
       '*:389' => [],
     },
     mode    => 'tcp',
     options => {
       'acl'         => 'mynetworks src 10.0.0.0/8',
       'tcp-request' => 'content reject if !mynetworks',
-      #'option'      => 'tcp-check',
     },
   }
   

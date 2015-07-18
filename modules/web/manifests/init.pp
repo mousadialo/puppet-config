@@ -13,6 +13,26 @@ class web {
     ensure => running,
     enable => true,
   }
+  
+  package { 'apache2-dev':
+    ensure => installed,
+  }
+  
+  # Apache2 module which enables the proxy protocol.
+  # For more information and updates: https://github.com/ggrandes/apache22-modules/blob/master/mod_myfixip.c
+  file { '/usr/lib/apache2/modules/mod_myfixip.c':
+    ensure  => file,
+    source  => 'puppet:///modules/web/apache2/mods/mod_myfixip.c',
+    owner   => root,
+    group   => root,
+    require => Package['apache2'],
+  } ~>
+  exec { '/usr/bin/apxs -i -a -c /usr/lib/apache2/modules/mod_myfixip.c':
+    refreshonly => true,
+    require     => Package['apache2-dev'],
+    notify      => Service['apache2'],
+  } ->
+  web::apache2::mod { 'myfixip': }
 
   # This is the main apache configuration file. It sets high level directives
   # and includes sites-enabled and conf-enabled
@@ -30,7 +50,7 @@ class web {
     # Apache modules
     package { 'apache2-suexec-custom': }
     
-    package { 'libapache2-mod-php5': }
+    #package { 'libapache2-mod-php5': }
     # Custom PHP configs. Changes include:
     # - Higher file upload size
     # - Use NFS session directory
@@ -43,14 +63,14 @@ class web {
       notify  => Service['apache2'],
       require => Package['libapache2-mod-php5'],
     }
-    file {'/etc/php5/apache2/php.ini':
-      ensure  => file,
-      source  => 'puppet:///modules/web/php5/apache2/php.ini',
-      owner   => root,
-      group   => root,
-      notify  => Service['apache2'],
-      require => Package['libapache2-mod-php5'],
-    }
+    #file {'/etc/php5/apache2/php.ini':
+    #  ensure  => file,
+    #  source  => 'puppet:///modules/web/php5/apache2/php.ini',
+    #  owner   => root,
+    #  group   => root,
+    #  notify  => Service['apache2'],
+    #  require => Package['libapache2-mod-php5'],
+    #}
     
     package { 'libapache2-mod-suphp': }
     # Custom suphp conf which disables checking the Document root. If we don't
@@ -188,7 +208,7 @@ class web {
     web::apache2::mod { 'actions': }
     web::apache2::mod { 'alias': }
     web::apache2::mod { 'authnz_ldap': }
-    web::apache2::mod { 'cgi': }
+    web::apache2::mod { 'cgid': }
     web::apache2::mod { 'dav': }
     web::apache2::mod { 'dav_fs': }
     web::apache2::mod { 'fcgid':
@@ -197,10 +217,10 @@ class web {
     web::apache2::mod { 'headers': }
     web::apache2::mod { 'include': }
     web::apache2::mod { 'ldap': }
-    web::apache2::mod { 'php5':
-      ensure  => disabled,
-      require => Package['libapache2-mod-php5'],
-    }
+    #web::apache2::mod { 'php5':
+    #  ensure  => disabled,
+    #  require => Package['libapache2-mod-php5'],
+    #}
     web::apache2::mod { 'python':
       require => Package['libapache2-mod-python'],
     }
@@ -246,7 +266,7 @@ class web {
       ipaddresses       => $::ipaddress,
       ports             => ['80'],
       define_cookies    => true,
-      options           => ['check'],
+      options           => ['send-proxy', 'check'],
     }
     
     @@haproxy::balancermember { "${::hostname}-web-https":
@@ -255,7 +275,7 @@ class web {
       ipaddresses       => $::ipaddress,
       ports             => ['443'],
       define_cookies    => true,
-      options           => ['check', 'ssl verify none'],
+      options           => ['send-proxy', 'check', 'ssl verify none'],
     }
   }
   elsif $::machine_type == 'lists' {
@@ -279,7 +299,7 @@ class web {
       ipaddresses       => $::ipaddress,
       ports             => ['80'],
       define_cookies    => true,
-      options           => ['check'],
+      options           => ['send-proxy', 'check'],
     }
     
     @@haproxy::balancermember { "${::hostname}-lists-https":
@@ -288,7 +308,7 @@ class web {
       ipaddresses       => $::ipaddress,
       ports             => ['443'],
       define_cookies    => true,
-      options           => ['check', 'ssl verify none'],
+      options           => ['send-proxy', 'check', 'ssl verify none'],
     }
   }
   
