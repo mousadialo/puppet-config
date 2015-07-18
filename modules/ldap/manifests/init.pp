@@ -19,10 +19,11 @@ class ldap {
     match => '^#?BASE\s+\S+$',
   }
 
-  $ldap_server = hiera('ldap-server')
+  # hcs.harvard.edu points to our bifrost load balancers, which will redirect the
+  # request to any available LDAP servers.
   file_line { 'ldap_uri':
     path  => '/etc/ldap/ldap.conf',
-    line  => "URI\tldap://${ldap_server}",
+    line  => "URI\tldap://hcs.harvard.edu",
     match => '^#?URI\s+\S+',
   }
 

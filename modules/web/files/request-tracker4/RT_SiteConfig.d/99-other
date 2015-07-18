@@ -1,0 +1,10 @@
+# OTHER SETTINGS:
+
+Set($FriendlyFromLineFormat , "\"%s from HCS\" <%s>");
+
+# LOGGING:
+
+Set($LogDir, "/var/log/request-tracker4");
+Set($LogToFileNamed, "rt.log");
+Set($LogToFile, 'info');
+
