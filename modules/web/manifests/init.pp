@@ -61,7 +61,7 @@ class web {
       owner   => root,
       group   => root,
       notify  => Service['apache2'],
-      require => Package['libapache2-mod-php5'],
+      require => Package['libapache2-mod-suphp'],
     }
     #file {'/etc/php5/apache2/php.ini':
     #  ensure  => file,
