@@ -2,7 +2,7 @@
 class web::shibboleth {
 
     package { 'libapache2-mod-shib2':
-      ensure => installed
+      ensure  => installed,
       require => Package['apache2'],
     }
     
