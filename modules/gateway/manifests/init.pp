@@ -14,17 +14,17 @@ class gateway {
     mode           => '0400',
     ensure_newline => true,
   }
-  concat::fragment { "${pem}-${certificate}":
+  concat::fragment { "${pem}-certificate":
     target => $pem,
     source => 'puppet:///modules/certs/hcs_harvard_edu_cert.cer',
     order  => '1',
   }
-  concat::fragment { "${pem}-${intermediates}":
+  concat::fragment { "${pem}-intermediates":
     target => $pem,
     source => 'puppet:///modules/certs/hcs_harvard_edu_interm.cer',
     order  => '2',
   }
-  concat::fragment { "${pem}-${key}":
+  concat::fragment { "${pem}-key":
     target  => $pem,
     content => hiera('hcs_harvard_edu.key'),
     order   => '3',

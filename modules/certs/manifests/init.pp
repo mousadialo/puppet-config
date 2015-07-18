@@ -42,12 +42,12 @@ class certs {
     mode           => '0444',
     ensure_newline => true,
   }
-  concat::fragment { "${chain}-${certificate}":
+  concat::fragment { "${chain}-certificate":
     target => $chain,
     source => 'puppet:///modules/certs/hcs_harvard_edu_cert.cer',
     order  => '1',
   }
-  concat::fragment { "${chain}-${intermediates}":
+  concat::fragment { "${chain}-intermediates":
     target => $chain,
     source => 'puppet:///modules/certs/hcs_harvard_edu_interm.cer',
     order  => '2',
