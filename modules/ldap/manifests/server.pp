@@ -40,4 +40,12 @@ class ldap::server {
     require => Exec['setup-ds'],
   }
   
+  @@haproxy::balancermember { "${::hostname}-ldap":
+    listening_service => 'ldap',
+    server_names      => $::fqdn,
+    ipaddresses       => $::ipaddress,
+    ports             => ['389'],
+    options           => ['check'],
+  }
+  
 }

@@ -48,12 +48,36 @@ class mail::postfix {
       require     => [Package['postfix'], Package['postfix-cdb']],
       notify      => Service['postfix'],
     }
+    
+    @@haproxy::balancermember { "${::hostname}-mail-smtp":
+      listening_service => 'mail-smtp',
+      server_names      => $::fqdn,
+      ipaddresses       => $::ipaddress,
+      ports             => ['25'],
+      options           => ['check'],
+    }
+    
+    @@haproxy::balancermember { "${::hostname}-mail-smtp-vrfy":
+      listening_service => 'mail-smtp-vrfy',
+      server_names      => $::fqdn,
+      ipaddresses       => $::ipaddress,
+      ports             => ['10025'],
+      options           => ['check'],
+    }
   }
   elsif $::machine_type == 'lists' {
     mail::postfix::config { 'main.cf':
       suffix => '.lists',
     }
     mail::postfix::config { 'mynetworks': }
+    
+    @@haproxy::balancermember { "${::hostname}-lists-smtp":
+      listening_service => 'lists-smtp',
+      server_names      => $::fqdn,
+      ipaddresses       => $::ipaddress,
+      ports             => ['25'],
+      options           => ['check'],
+    }
   }
   else {
     # servers that aren't mail should use the NULL client configuration

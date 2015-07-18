@@ -3,6 +3,6 @@ classes:
   - nfs
   - ldap
   - mail # null client config
-  - alpine
+  - userfacing
 
 nfs::nfs_home_directory: true

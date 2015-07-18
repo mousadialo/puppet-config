@@ -245,6 +245,7 @@ class web {
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['80'],
+      define_cookies    => true,
       options           => ['check'],
     }
     
@@ -253,7 +254,8 @@ class web {
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['443'],
-      options           => ['check'],
+      define_cookies    => true,
+      options           => ['check', 'ssl verify none'],
     }
   }
   elsif $::machine_type == 'lists' {
@@ -276,6 +278,7 @@ class web {
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['80'],
+      define_cookies    => true,
       options           => ['check'],
     }
     
@@ -284,7 +287,8 @@ class web {
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['443'],
-      options           => ['check'],
+      define_cookies    => true,
+      options           => ['check', 'ssl verify none'],
     }
   }
   

@@ -1,30 +1,11 @@
 # manages certificates on the machine
 class certs {
 
+  $pem           = '/etc/ssl/certs/hcs_harvard_edu.pem'
   $chain         = '/etc/ssl/certs/hcs_harvard_edu.cer'
   $certificate   = '/etc/ssl/certs/hcs_harvard_edu_cert.cer'
   $intermediates = '/etc/ssl/certs/hcs_harvard_edu_interm.cer'
   $key           = '/etc/ssl/private/hcs_harvard_edu.key'
-
-  # X509 Certificate Chain Reverse, Base64 encoded
-  # it's simply the concatenation of the certificate and intermediates files
-  concat { $chain:
-    ensure         => present,
-    owner          => 'root',
-    group          => 'root',
-    mode           => '0444',
-    ensure_newline => true,
-  }
-  concat::fragment { $certificate:
-    target => $chain,
-    source => 'puppet:///modules/certs/hcs_harvard_edu_cert.cer',
-    order  => '1',
-  }
-  concat::fragment { $intermediates:
-    target => $chain,
-    source => 'puppet:///modules/certs/hcs_harvard_edu_interm.cer',
-    order  => '2',
-  }
 
   # X509 Certificate only, Base64 encoded
   file { $certificate:
@@ -51,6 +32,51 @@ class certs {
     owner   => 'root',
     group   => 'root',
     mode    => '0400',
+  }
+
+  # X509 Certificate Chain Reverse, Base64 encoded
+  # it's simply the concatenation of the certificate and intermediates file
+  concat { $chain:
+    ensure         => present,
+    owner          => 'root',
+    group          => 'root',
+    mode           => '0444',
+    ensure_newline => true,
+  }
+  concat::fragment { "${chain}-${certificate}":
+    target => $chain,
+    source => 'puppet:///modules/certs/hcs_harvard_edu_cert.cer',
+    order  => '1',
+  }
+  concat::fragment { "${chain}-${intermediates}":
+    target => $chain,
+    source => 'puppet:///modules/certs/hcs_harvard_edu_interm.cer',
+    order  => '2',
+  }
+
+  # PEM file containing everything
+  # it's the concatenation of the certificate, intermediates file, and key file
+  concat { $pem:
+    ensure         => present,
+    owner          => 'root',
+    group          => 'root',
+    mode           => '0444',
+    ensure_newline => true,
+  }
+  concat::fragment { "${pem}-${certificate}":
+    target => $pem,
+    source => 'puppet:///modules/certs/hcs_harvard_edu_cert.cer',
+    order  => '1',
+  }
+  concat::fragment { "${pem}-${intermediates}":
+    target => $pem,
+    source => 'puppet:///modules/certs/hcs_harvard_edu_interm.cer',
+    order  => '2',
+  }
+  concat::fragment { "${pem}-${key}":
+    target  => $pem,
+    content => hiera('hcs_harvard_edu.key'),
+    order   => '3',
   }
 
 }
