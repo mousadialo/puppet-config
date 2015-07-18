@@ -40,14 +40,14 @@ class gateway {
         '/dev/log local0',
         '/dev/log local1 notice',
       ],
-      'chroot'                  => '/var/lib/haproxy',
-      'pidfile'                 => '/var/run/haproxy.pid',
-      'maxconn'                 => '4000',
-      'user'                    => 'haproxy',
-      'group'                   => 'haproxy',
-      'daemon'                  => '',
-      'stats'                   => 'socket /var/lib/haproxy/stats'
-      tune.ssl.default-dh-param => '2048',
+      'chroot'                    => '/var/lib/haproxy',
+      'pidfile'                   => '/var/run/haproxy.pid',
+      'maxconn'                   => '4000',
+      'user'                      => 'haproxy',
+      'group'                     => 'haproxy',
+      'daemon'                    => '',
+      'stats'                     => 'socket /var/lib/haproxy/stats'
+      'tune.ssl.default-dh-param' => '2048',
     },
     defaults_options => {
       'log'     => 'global',
