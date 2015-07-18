@@ -3,6 +3,10 @@ class gateway {
 
   require sshd
   include apt
+  
+  apt::ppa { 'ppa:vbernat/haproxy-1.5':
+    package_manage => false,
+  }
 
   $pem = '/etc/haproxy/hcs_harvard_edu.pem'
   # PEM file containing everything
@@ -30,23 +34,20 @@ class gateway {
     order   => '3',
   }
   
-  apt::ppa { 'ppa:vbernat/haproxy-1.5':
-    package_manage => false,
-  }
-  
   class { 'haproxy':
     global_options => {
       'log'     => [
         '/dev/log local0',
         '/dev/log local1 notice',
       ],
-      'chroot'  => '/var/lib/haproxy',
-      'pidfile' => '/var/run/haproxy.pid',
-      'maxconn' => '4000',
-      'user'    => 'haproxy',
-      'group'   => 'haproxy',
-      'daemon'  => '',
-      'stats'   => 'socket /var/lib/haproxy/stats'
+      'chroot'                  => '/var/lib/haproxy',
+      'pidfile'                 => '/var/run/haproxy.pid',
+      'maxconn'                 => '4000',
+      'user'                    => 'haproxy',
+      'group'                   => 'haproxy',
+      'daemon'                  => '',
+      'stats'                   => 'socket /var/lib/haproxy/stats'
+      tune.ssl.default-dh-param => '2048',
     },
     defaults_options => {
       'log'     => 'global',
@@ -64,6 +65,7 @@ class gateway {
       ],
       'maxconn' => '8000',
     }
+    require => [Apt::Ppa['ppa:vbernat/haproxy-1.5'], Concat[$pem]],
   }
 
   haproxy::peers { 'bifrost': }
