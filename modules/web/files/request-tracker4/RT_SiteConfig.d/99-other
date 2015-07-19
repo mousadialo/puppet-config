@@ -1,6 +1,6 @@
 # OTHER SETTINGS:
 
-Set($FriendlyFromLineFormat , "\"%s from HCS\" <%s>");
+Set($FriendlyFromLineFormat, "\"%s from HCS\" <%s>");
 
 # LOGGING:
 

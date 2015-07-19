@@ -19,7 +19,7 @@ class web::request_tracker {
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/40-timezone',
       owner   => 'root',
-      group   => 'root',
+      group   => 'wheel',
       mode    => '0644',
       require => Package['request-tracker4'],
       notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
@@ -29,7 +29,7 @@ class web::request_tracker {
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/50-debconf',
       owner   => 'root',
-      group   => 'root',
+      group   => 'wheel',
       mode    => '0600',
       require => Package['request-tracker4'],
       notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
@@ -40,7 +40,7 @@ class web::request_tracker {
       ensure  => file,
       content => template('web/request-tracker4/RT_SiteConfig.d/51-dbconfig-common.erb'),
       owner   => 'root',
-      group   => 'root',
+      group   => 'wheel',
       mode    => '0600',
       require => Package['request-tracker4'],
       notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
@@ -50,7 +50,7 @@ class web::request_tracker {
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/52-ldap',
       owner   => 'root',
-      group   => 'root',
+      group   => 'wheel',
       mode    => '0600',
       require => Package['request-tracker4'],
       notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
@@ -60,13 +60,13 @@ class web::request_tracker {
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/99-other',
       owner   => 'root',
-      group   => 'root',
+      group   => 'wheel',
       mode    => '0644',
       require => Package['request-tracker4'],
       notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
     }
     
-    exec { '/usr/sbin/update-rt-siteconfig-4':
+    exec { '/usr/sbin/update-rt-siteconfig':
       refreshonly => true,
       notify      => Service['apache2'],
     }

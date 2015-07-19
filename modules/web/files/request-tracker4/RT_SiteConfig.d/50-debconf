@@ -3,11 +3,11 @@
 Set($rtname, 'hcs.harvard.edu');
 Set($Organization, 'hcs.harvard.edu');
 
-Set($CorrespondAddress , 'acctserv@hcs.harvard.edu');
-Set($CommentAddress , 'acctserv-comment@hcs.harvard.edu');
+Set($CorrespondAddress, 'acctserv@hcs.harvard.edu');
+Set($CommentAddress, 'acctserv-comment@hcs.harvard.edu');
 
 # THE WEBSERVER:
 
-Set($WebPath , "/rt");
-Set($WebBaseURL , "https://www.hcs.harvard.edu");
+Set($WebPath, "/rt");
+Set($WebBaseURL, "https://www.hcs.harvard.edu");
 Set($WebPort, 443);
