@@ -6,6 +6,10 @@ class web::shibboleth {
       require => Package['apache2'],
     }
     
+    web::apache2::mod { 'shib2':
+      require => Package['libapache2-mod-shib2'],
+    }
+    
     # Main shibboleth configuration file
     file { '/etc/shibboleth/shibboleth2.xml':
       ensure  => file,

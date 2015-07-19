@@ -15,6 +15,9 @@ class web {
     # Shibboleth
     include web::shibboleth
     
+    # ModSecurity
+    include web::modsecurity
+    
     # Packages needed by helios
     package { 'python-ldap': }
     package { 'python-flask': }

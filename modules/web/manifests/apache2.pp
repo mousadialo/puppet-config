@@ -113,14 +113,8 @@ class web::apache2 {
       require => Package['libapache2-mod-python'],
     }
     web::apache2::mod { 'rewrite': }
-    web::apache2::mod { 'shib2':
-      require => Package['libapache2-mod-shib2'],
-    }
     web::apache2::mod { 'ssl': }
     web::apache2::mod { 'suexec': }
-    web::apache2::mod { 'suphp':
-      require => Package['libapache2-mod-suphp'],
-    }
     web::apache2::config { 'mods-available/userdir.conf': }
     web::apache2::mod { 'userdir': }
     web::apache2::mod { 'wsgi':

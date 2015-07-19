@@ -25,6 +25,11 @@ class web::php {
     package { 'libapache2-mod-suphp':
       require => Package['apache2'],
     }
+    
+    web::apache2::mod { 'suphp':
+      require => Package['libapache2-mod-suphp'],
+    }
+    
     # Custom suphp conf which disables checking the Document root. If we don't
     # do this it errors because we symlink our /var/www to
     # /mnt/tank/hcs.harvard.edu
