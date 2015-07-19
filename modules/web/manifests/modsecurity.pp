@@ -28,6 +28,13 @@ class web::modsecurity {
     notify  => Service['apache2'],
   }
   
+  file { '/usr/share/modsecurity-crs/activated_rules':
+    ensure  => directory,
+    recurse => true,
+    purge   => true,
+    require => Package['modsecurity-crs'],
+  }
+  
   web::modsecurity::rule { 'modsecurity_crs_20_protocol_violations.conf':
     type => 'base',
   }
