@@ -51,14 +51,6 @@ class web::modsecurity {
     type => 'optional',
   }
   
-  web::modsecurity::rule { 'modsecurity_crs_47_skip_outbound_checks.conf':
-    type => 'optional',
-  }
-  
-  web::modsecurity::rule { 'modsecurity_crs_55_application_defects.conf':
-    type => 'optional',
-  }
-  
   web::modsecurity::rule { 'modsecurity_crs_46_slr_et_wordpress_attacks.conf':
     type => 'slr',
   }
@@ -66,11 +58,12 @@ class web::modsecurity {
     type => 'slr',
   }
   
-  web::modsecurity::rule { 'modsecurity_crs_46_slr_et_xss_attacks.conf':
-    type => 'slr',
+  web::modsecurity::rule { 'modsecurity_crs_47_skip_outbound_checks.conf':
+    type => 'optional',
   }
-  web::modsecurity::rule { 'modsecurity_46_slr_et_xss.data':
-    type => 'slr',
+  
+  web::modsecurity::rule { 'modsecurity_crs_55_application_defects.conf':
+    type => 'optional',
   }
   
 }
