@@ -10,6 +10,7 @@ define web::modsecurity::rule ($type) {
     owner   => 'root',
     group   => 'root',
     require => Package['modsecurity-crs'],
+    notify  => Service['apache2'],
   }
 
 }
