@@ -46,11 +46,11 @@ class web::request_tracker {
       mode    => '0644',
       require => Package['request-tracker4'],
     }
-    file { '/etc/request-tracker4/RT_SiteConfig.pm':
-      ensure  => file,
-      content => template('web/request-tracker4/RT_SiteConfig.pm.erb'),
-      require => Package['request-tracker4'],
-    }
+    #file { '/etc/request-tracker4/RT_SiteConfig.pm':
+    #  ensure  => file,
+    #  content => template('web/request-tracker4/RT_SiteConfig.pm.erb'),
+    #  require => Package['request-tracker4'],
+    #}
     
     exec { '/usr/bin/cpan -i RT::Authen::ExternalAuth':
       environment => 'PERL_MM_USE_DEFAULT=1',
