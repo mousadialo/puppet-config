@@ -1,4 +1,5 @@
-####### LDAP ########
+# LDAP
+
 Set( @Plugins, qw(RT::Authen::ExternalAuth) );
 
 # The order in which the services defined in ExternalSettings

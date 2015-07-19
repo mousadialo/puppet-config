@@ -47,6 +47,7 @@ class web::apache2 {
     package { 'libapache2-mod-perl2':
       require => Package['apache2'],
     }
+    package { 'libdbd-mysql-perl': }
 
     # Python packages
     package { 'libapache2-mod-python':
