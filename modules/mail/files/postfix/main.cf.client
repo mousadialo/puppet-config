@@ -7,8 +7,7 @@
 myorigin = hcs.harvard.edu
 
 # Pipe all mail to mail.hcs
-#relayhost = [mail.hcs.harvard.edu]
-relayhost = [mail1.hcs.so]
+relayhost = [hcs.harvard.edu]
 
 # Don't let other machines send mail to us
 mynetworks = 127.0.0.0/8

@@ -5,10 +5,9 @@ mydestination = localhost, localhost.localdomain, $myhostname, $mydomain, lists.
   hcs.harvard.edu, lists.hcs.harvard.edu
 
 # List server should pipe all outgoing messages to mail servers
-relayhost = [192.168.1.11]
-#relayhost = [mail.hcs.harvard.edu]
+relayhost = [hcs.harvard.edu]
 
-alias_maps = hash:/var/lib/mailman/data/aliases
+alias_maps = cdb:/var/lib/mailman/data/aliases
 
 # Only allow connections from local network
 mynetworks = $config_directory/mynetworks
@@ -17,8 +16,7 @@ mynetworks = $config_directory/mynetworks
 # those lists might have @hcs email, we need to relay that back to
 # the main hcs mail infrastructure
 local_recipient_maps =
-fallback_transport = smtp:[192.168.1.11]
-#fallback_transport = smtp:[mail.hcs.harvard.edu]
+fallback_transport = smtp:[hcs.harvard.edu]
 
 # Reject mail not from mynetworks
 smtpd_client_restrictions = permit_mynetworks, reject
