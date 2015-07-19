@@ -15,7 +15,7 @@ class web::request_tracker {
       require => Package['request-tracker4'],
     }
     
-    file { '/etc/request-tracker4/RT_SiteConfig.d/40-timezone:
+    file { '/etc/request-tracker4/RT_SiteConfig.d/40-timezone':
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/40-timezone',
       owner   => 'root',
@@ -25,7 +25,7 @@ class web::request_tracker {
       notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
     }
     
-    file { '/etc/request-tracker4/RT_SiteConfig.d/50-debconf:
+    file { '/etc/request-tracker4/RT_SiteConfig.d/50-debconf':
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/50-debconf',
       owner   => 'root',
@@ -46,7 +46,7 @@ class web::request_tracker {
       notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
     }
     
-    file { '/etc/request-tracker4/RT_SiteConfig.d/52-ldap:
+    file { '/etc/request-tracker4/RT_SiteConfig.d/52-ldap':
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/52-ldap',
       owner   => 'root',
@@ -56,7 +56,7 @@ class web::request_tracker {
       notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
     }
     
-    file { '/etc/request-tracker4/RT_SiteConfig.d/99-other:
+    file { '/etc/request-tracker4/RT_SiteConfig.d/99-other':
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/99-other',
       owner   => 'root',
