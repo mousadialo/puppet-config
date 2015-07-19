@@ -96,12 +96,6 @@ class gateway {
       'cookie'  => 'SRV insert indirect nocache',
       'option'  => 'forwardfor',
       #'option'  => 'httpchk',
-      'stats'   => [
-        'enable',
-        'uri /admin?stats',
-        'hide-version',
-        'auth hcs:euph4ria',
-      ],
     },
   }
   
@@ -134,6 +128,12 @@ class gateway {
       'cookie'  => 'SRV insert indirect nocache',
       'option'  => 'forwardfor',
       #'option'  => 'httpchk',
+      'stats'   => [
+        'enable',
+        'uri /admin?stats',
+        'hide-version',
+        'auth hcs:euph4ria',
+      ],
     },
   }
   
