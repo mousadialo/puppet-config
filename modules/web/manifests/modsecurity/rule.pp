@@ -1,8 +1,8 @@
 define web::modsecurity::rule ($type) {
 
-  validate_re($type, '^(experimental|optional|slr)$',
+  validate_re($type, '^(base|experimental|optional|slr)$',
     "${rule_type} is not supported for rule_type.
-    Allowed values are 'experimental', 'optional', and 'slr'.")
+    Allowed values are 'base', 'experimental', 'optional', and 'slr'.")
 
   file { "/usr/share/modsecurity-crs/activated_rules/${title}":
     ensure  => link,

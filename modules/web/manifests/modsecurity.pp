@@ -28,12 +28,61 @@ class web::modsecurity {
     notify  => Service['apache2'],
   }
   
-  web::modsecurity::rule { 'modsecurity_crs_10_ignore_static.conf':
-    type => 'optional',
+  web::modsecurity::rule { 'modsecurity_crs_20_protocol_violations.conf':
+    type => 'base',
   }
   
-  web::modsecurity::rule { 'modsecurity_crs_13_xml_enabler.conf':
-    type => 'optional',
+  web::modsecurity::rule { 'modsecurity_crs_23_request_limits.conf':
+    type => 'base',
+  }
+  
+  web::modsecurity::rule { 'modsecurity_crs_30_http_policy.conf':
+    type => 'base',
+  }
+  
+  web::modsecurity::rule { 'modsecurity_crs_35_bad_robots.conf':
+    type => 'base',
+  }
+  web::modsecurity::rule { 'modsecurity_35_bad_robots.data':
+    type => 'base',
+  }
+  web::modsecurity::rule { 'modsecurity_35_scanners.data':
+    type => 'base',
+  }
+  
+  web::modsecurity::rule { 'modsecurity_crs_40_generic_attacks.conf':
+    type => 'base',
+  }
+  web::modsecurity::rule { 'modsecurity_40_generic_attacks.data':
+    type => 'base',
+  }
+  
+  web::modsecurity::rule { 'modsecurity_crs_41_sql_injection_attacks.conf':
+    type => 'base',
+  }
+  
+  web::modsecurity::rule { 'modsecurity_crs_41_xss_attacks.conf':
+    type => 'base',
+  }
+  
+  web::modsecurity::rule { 'modsecurity_crs_42_tight_security.conf':
+    type => 'base',
+  }
+  
+  web::modsecurity::rule { 'modsecurity_crs_45_trojans.conf':
+    type => 'base',
+  }
+  
+  web::modsecurity::rule { 'modsecurity_crs_47_common_exceptions.conf':
+    type => 'base',
+  }
+  
+  web::modsecurity::rule { 'modsecurity_crs_49_inbound_blocking.conf':
+    type => 'base',
+  }
+  
+  web::modsecurity::rule { 'modsecurity_crs_60_correlation.conf':
+    type => 'base',
   }
   
   web::modsecurity::rule { 'modsecurity_crs_42_comment_spam.conf':
@@ -43,7 +92,7 @@ class web::modsecurity {
     type => 'optional',
   }
   
-  web::modsecurity::rule { 'modsecurity_crs_43_csrf_protection.conf':
+  web::modsecurity::rule { 'modsecurity_crs_47_skip_outbound_checks.conf':
     type => 'optional',
   }
   
@@ -52,14 +101,6 @@ class web::modsecurity {
   }
   web::modsecurity::rule { 'modsecurity_46_slr_et_wordpress.data':
     type => 'slr',
-  }
-  
-  web::modsecurity::rule { 'modsecurity_crs_47_skip_outbound_checks.conf':
-    type => 'optional',
-  }
-  
-  web::modsecurity::rule { 'modsecurity_crs_55_application_defects.conf':
-    type => 'optional',
   }
   
 }
