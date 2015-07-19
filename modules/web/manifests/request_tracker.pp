@@ -22,7 +22,7 @@ class web::request_tracker {
       group   => 'wheel',
       mode    => '0644',
       require => Package['request-tracker4'],
-      notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
+      notify  => Exec['/usr/sbin/update-rt-siteconfig'],
     }
     
     file { '/etc/request-tracker4/RT_SiteConfig.d/50-debconf':
@@ -32,7 +32,7 @@ class web::request_tracker {
       group   => 'wheel',
       mode    => '0600',
       require => Package['request-tracker4'],
-      notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
+      notify  => Exec['/usr/sbin/update-rt-siteconfig'],
     }
     
     $rt_database_password = hiera('rt-database-password')
@@ -43,7 +43,7 @@ class web::request_tracker {
       group   => 'wheel',
       mode    => '0600',
       require => Package['request-tracker4'],
-      notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
+      notify  => Exec['/usr/sbin/update-rt-siteconfig'],
     }
     
     file { '/etc/request-tracker4/RT_SiteConfig.d/52-ldap':
@@ -53,7 +53,7 @@ class web::request_tracker {
       group   => 'wheel',
       mode    => '0600',
       require => Package['request-tracker4'],
-      notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
+      notify  => Exec['/usr/sbin/update-rt-siteconfig'],
     }
     
     file { '/etc/request-tracker4/RT_SiteConfig.d/99-other':
@@ -63,7 +63,7 @@ class web::request_tracker {
       group   => 'wheel',
       mode    => '0644',
       require => Package['request-tracker4'],
-      notify  => Exec['/usr/sbin/update-rt-siteconfig-4'],
+      notify  => Exec['/usr/sbin/update-rt-siteconfig'],
     }
     
     exec { '/usr/sbin/update-rt-siteconfig':
