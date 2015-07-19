@@ -65,8 +65,10 @@ class nfs ($nfs_home_directory = false) {
         group   => 'root',
         perm    => '1733',
       }
-      
-      # Mount sshkeys directory for helios
+    }
+    
+    if $::machine_type == 'web' or $::machine_type == 'login' {
+      # Mount sshkeys directory for helios or ssh login
       nfs::client::mount { 'sshkeys':
         server  => $nfs_server,
         share   => "/${zpool_name}/services/sshkeys",
@@ -78,7 +80,8 @@ class nfs ($nfs_home_directory = false) {
         perm    => '0700',
       }
     }
-    elsif $::machine_type == 'mail' or $::machine_type == 'lists' {
+    
+    if $::machine_type == 'mail' or $::machine_type == 'lists' {
       if $::machine_type == 'lists' {
         # Mount mailman directory
         nfs::client::mount { 'mailman':
