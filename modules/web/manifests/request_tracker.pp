@@ -15,60 +15,41 @@ class web::request_tracker {
       require => Package['request-tracker4'],
     }
     
+    $rt_database_password = hiera('rt-database-password')
     file { '/etc/request-tracker4/RT_SiteConfig.d/40-timezone':
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/40-timezone',
-      owner   => 'root',
-      group   => 'wheel',
       mode    => '0644',
       require => Package['request-tracker4'],
-      notify  => Exec['/usr/sbin/update-rt-siteconfig'],
     }
-    
     file { '/etc/request-tracker4/RT_SiteConfig.d/50-debconf':
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/50-debconf',
-      owner   => 'root',
-      group   => 'wheel',
       mode    => '0600',
       require => Package['request-tracker4'],
-      notify  => Exec['/usr/sbin/update-rt-siteconfig'],
     }
-    
-    $rt_database_password = hiera('rt-database-password')
     file { '/etc/request-tracker4/RT_SiteConfig.d/51-dbconfig-common':
       ensure  => file,
       content => template('web/request-tracker4/RT_SiteConfig.d/51-dbconfig-common.erb'),
-      owner   => 'root',
-      group   => 'wheel',
       mode    => '0600',
       require => Package['request-tracker4'],
-      notify  => Exec['/usr/sbin/update-rt-siteconfig'],
     }
-    
     file { '/etc/request-tracker4/RT_SiteConfig.d/52-ldap':
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/52-ldap',
-      owner   => 'root',
-      group   => 'wheel',
       mode    => '0600',
       require => Package['request-tracker4'],
-      notify  => Exec['/usr/sbin/update-rt-siteconfig'],
     }
-    
     file { '/etc/request-tracker4/RT_SiteConfig.d/99-other':
       ensure  => file,
       source  => 'puppet:///modules/web/request-tracker4/RT_SiteConfig.d/99-other',
-      owner   => 'root',
-      group   => 'wheel',
       mode    => '0644',
       require => Package['request-tracker4'],
-      notify  => Exec['/usr/sbin/update-rt-siteconfig'],
     }
-    
-    exec { '/usr/sbin/update-rt-siteconfig':
-      refreshonly => true,
-      notify      => Service['apache2'],
+    file { '/etc/request-tracker4/RT_SiteConfig.pm':
+      ensure  => file,
+      content => template('web/request-tracker4/RT_SiteConfig.pm.erb'),
+      require => Package['request-tracker4'],
     }
     
     exec { '/usr/bin/cpan -i RT::Authen::ExternalAuth':
