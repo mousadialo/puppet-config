@@ -36,10 +36,6 @@ class web::modsecurity {
     type => 'optional',
   }
   
-  web::modsecurity::rule { 'modsecurity_crs_16_session_hijacking.conf':
-    type => 'optional',
-  }
-  
   web::modsecurity::rule { 'modsecurity_crs_42_comment_spam.conf':
     type => 'optional',
   }

@@ -94,6 +94,7 @@ class gateway {
       'mode'    => 'http',
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
+      'option'  => 'forwardfor',
       #'option'  => 'httpchk',
       'stats'   => [
         'enable',
@@ -109,6 +110,7 @@ class gateway {
       'mode'    => 'http',
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
+      'option'  => 'forwardfor',
       #'option'  => 'httpchk',
     },
   }
@@ -130,6 +132,7 @@ class gateway {
       'mode'    => 'http',
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
+      'option'  => 'forwardfor',
       #'option'  => 'httpchk',
     },
   }
@@ -139,6 +142,7 @@ class gateway {
       'mode'    => 'http',
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
+      'option'  => 'forwardfor',
       #'option'  => 'httpchk',
     },
   }
