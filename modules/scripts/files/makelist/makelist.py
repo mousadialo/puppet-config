@@ -118,7 +118,7 @@ stderr:
   def __init__(self):
     xmlrpc.XMLRPC.__init__(self)
     # A nice random 256-bit key
-    keyfile = open('/usr/lib/hcs-makelist/keyfile', 'rb')
+    keyfile = open('/usr/lib/makelist/keyfile', 'rb')
     self.secret_cipher = keyfile.read(32)
     self.secret_hmac = keyfile.read(32)
     keyfile.close()
