@@ -15,8 +15,8 @@ import time
 import urllib
 import xmlrpclib
 
-def mail(to, message, serverURL='hcs.harvard.edu'):
-  mailServer = smtplib.SMTP(serverURL)
+def mail(to, message):
+  mailServer = smtplib.SMTP('hcs.harvard.edu', '10025')
   mailServer.sendmail('systems@hcs.harvard.edu', to, message)
   mailServer.quit()
 

@@ -96,7 +96,7 @@ smtp-amavis     unix    -       -       -       -       20      smtp
         -o smtpd_client_connection_count_limit=0
         -o smtpd_client_connection_rate_limit=0
         -o receive_override_options=no_header_body_checks,no_unknown_recipient_checks
-# HCS: VRFY for makelist
+# HCS: For relaying emails from mailing lists and enabling the VRFY command
 <%= @ipaddress %>:10025 inet n  - y - - smtpd
         -o content_filter=
         -o disable_vrfy_command=no
