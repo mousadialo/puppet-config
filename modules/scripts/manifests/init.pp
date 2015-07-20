@@ -16,6 +16,7 @@ class scripts {
       source  => 'puppet:///modules/scripts/makelist',
       owner   => 'root',
       group   => 'root',
+      notify  => Service['hcs-makelist'],
     }
     
     file { '/etc/init.d/hcs-makelist':
@@ -24,6 +25,7 @@ class scripts {
       owner  => 'root',
       group  => 'root',
       mode   => '0755',
+      notify  => Service['hcs-makelist'],
     }
     
     service { 'hcs-makelist':
