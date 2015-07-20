@@ -26,11 +26,11 @@ LogLevel INFO
 # Authentication:
 LoginGraceTime 120
 PermitRootLogin no
-StrictModes yes
+StrictModes no
 
 RSAAuthentication yes
 PubkeyAuthentication yes
-#AuthorizedKeysFile	%h/.ssh/authorized_keys
+AuthorizedKeysFile	%h/.ssh/authorized_keys /mnt/tank/sshkeys/%u
 
 # Don't read the user's ~/.rhosts and ~/.shosts files
 IgnoreRhosts yes
@@ -87,6 +87,3 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
-
-# Only allow the HCS root user to login
-AllowUsers hcs
