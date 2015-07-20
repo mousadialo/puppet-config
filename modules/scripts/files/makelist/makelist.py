@@ -1,6 +1,7 @@
 from __future__ import with_statement
 
 from Crypto.Cipher import AES
+from Crypto import Random
 from twisted.web import xmlrpc
 
 import base64
@@ -125,6 +126,10 @@ stderr:
     if len(self.secret_cipher) != 32 or len(self.secret_hmac) != 32:
       raise ValueError('keyfile was not at least 512 bits long')
 
+  def new_cryptor(self):
+    iv = Random.new().read(AES.block_size)
+    return AES.new(self.secret_cipher, AES.MODE_CBC, iv)
+      
   def Fault(self, msg):
     return xmlrpclib.Fault(self.FAILURE, msg)
 
@@ -138,7 +143,7 @@ stderr:
 
     token = (token or '').strip()
     mac = (mac or '').strip()
-    cryptor = AES.new(self.secret_cipher, AES.MODE_CBC)
+    cryptor = self.new_cryptor()
 
     try:
       plaintext = cryptor.decrypt(base64.urlsafe_b64decode(token))
@@ -212,7 +217,7 @@ stderr:
     listadmin = (listadmin or '').strip()
     confirmation = (confirmation or '').strip()
 
-    cryptor = AES.new(self.secret_cipher, AES.MODE_CBC)
+    cryptor = self.new_cryptor()
 
     # check values are good; else return error
     if not listname or not password or not listadmin:
@@ -299,7 +304,7 @@ stderr:
 
     listname = (listname or '').strip()
 
-    cryptor = AES.new(self.secret_cipher, AES.MODE_CBC)
+    cryptor = self.new_cryptor()
 
     # check values are good; else return error
     if not listname:
@@ -345,7 +350,7 @@ stderr:
 
     token = (token or '').strip()
     mac = (mac or '').strip()
-    cryptor = AES.new(self.secret_cipher, AES.MODE_CBC)
+    cryptor = self.new_cryptor()
 
     try:
       plaintext = cryptor.decrypt(base64.urlsafe_b64decode(token))
