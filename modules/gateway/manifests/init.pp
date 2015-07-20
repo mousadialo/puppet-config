@@ -59,7 +59,7 @@ class gateway {
         'connect      5s',
         'client       30s',
         'client-fin   30s',
-        'server       30s',
+        'server       5m',
         'check        10s',
         'tunnel       1h',
       ],
@@ -239,6 +239,17 @@ class gateway {
   haproxy::listen { 'ldap':
     bind    => { 
       '*:389' => [],
+    },
+    mode    => 'tcp',
+    options => {
+      'acl'         => 'mynetworks src 10.0.0.0/8',
+      'tcp-request' => 'content reject if !mynetworks',
+    },
+  }
+  
+  haproxy::listen { 'makelist':
+    bind    => { 
+      '*:8080' => [],
     },
     mode    => 'tcp',
     options => {
