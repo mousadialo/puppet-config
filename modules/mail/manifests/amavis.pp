@@ -13,6 +13,7 @@ class mail::amavis {
   } ~>
   exec { '/usr/bin/freshclam':
     refreshonly => true,
+    timeout     => 0, # this will take a while
   } ->
   service { 'clamav-daemon':
     ensure  => running,
