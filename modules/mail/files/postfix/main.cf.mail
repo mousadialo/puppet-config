@@ -34,7 +34,7 @@ mailbox_command = /usr/bin/procmail -a "$EXTENSION"
 
 # HCS: Enable amavis content-filtering
 # See master.cf for service that listens for amavis returned mail
-#content_filter = smtp-amavis:[127.0.0.1]:10024
+content_filter = smtp-amavis:[127.0.0.1]:10024
 
 mynetworks = $config_directory/mynetworks
 
