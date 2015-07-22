@@ -57,8 +57,8 @@ class mail::postfix {
       options           => ['send-proxy', 'check'],
     }
     
-    @@haproxy::balancermember { "${::hostname}-mail-smtp-vrfy":
-      listening_service => 'mail-smtp-vrfy',
+    @@haproxy::balancermember { "${::hostname}-mail-smtp-relay":
+      listening_service => 'mail-smtp-relay',
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['10025'],

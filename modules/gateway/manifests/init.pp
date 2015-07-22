@@ -180,7 +180,7 @@ class gateway {
     },
   }
   
-  haproxy::listen { 'mail-smtp-vrfy':
+  haproxy::listen { 'mail-smtp-relay':
     bind    => {
       '*:10025' => [],
     },
