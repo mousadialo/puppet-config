@@ -18,27 +18,53 @@ class sshd {
 
   # Install SSH host keys.
   if $::machine_type == 'login' {
-    define host_key () {
-      file { "/etc/ssh/ssh_host_${title}_key":
-        ensure => file,
-        content => hiera("ssh_host_${title}_key"),
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0600',
-      }
-    
-      file { "/etc/ssh/ssh_host_${title}_key.pub":
-        ensure => file,
-        source => "puppet:///modules/sshd/ssh_host_${title}_key.pub",
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644',
-      }
+    file { '/etc/ssh/ssh_host_dsa_key':
+      ensure => file,
+      content => hiera('ssh_host_dsa_key'),
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0600',
     }
     
-    host_key { 'dsa': }
-    host_key { 'rsa': }
-    host_key { 'ecdsa': }
+    file { '/etc/ssh/ssh_host_dsa_key.pub':
+      ensure => file,
+      source => 'puppet:///modules/sshd/ssh_host_dsa_key.pub',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+    }
+    
+    file { '/etc/ssh/ssh_host_rsa_key':
+      ensure => file,
+      content => hiera('ssh_host_rsa_key'),
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0600',
+    }
+    
+    file { '/etc/ssh/ssh_host_rsa_key.pub':
+      ensure => file,
+      source => 'puppet:///modules/sshd/ssh_host_rsa_key.pub',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+    }
+    
+    file { '/etc/ssh/ssh_host_ecdsa_key':
+      ensure => file,
+      content => hiera('ssh_host_ecdsa_key'),
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0600',
+    }
+    
+    file { '/etc/ssh/ssh_host_ecdsa_key.pub':
+      ensure => file,
+      source => 'puppet:///modules/sshd/ssh_host_ecdsa_key.pub',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+    }
   }
 
 }
