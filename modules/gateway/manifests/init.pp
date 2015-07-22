@@ -64,6 +64,7 @@ class gateway {
         'tunnel       1h',
       ],
       'maxconn'        => '8000',
+      'default-server' => 'inter 30000 fastinter 10000 downinter 3000'
     },
     require => [Apt::Ppa['ppa:vbernat/haproxy-1.5'], Concat[$pem]],
   }
