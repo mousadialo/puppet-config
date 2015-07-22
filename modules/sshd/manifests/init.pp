@@ -19,11 +19,11 @@ class sshd {
   # Install SSH host keys.
   if $::machine_type == 'login' {
     file { '/etc/ssh/ssh_host_dsa_key':
-      ensure => file,
+      ensure  => file,
       content => hiera('ssh_host_dsa_key'),
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0600',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
     }
     
     file { '/etc/ssh/ssh_host_dsa_key.pub':
@@ -35,11 +35,11 @@ class sshd {
     }
     
     file { '/etc/ssh/ssh_host_rsa_key':
-      ensure => file,
+      ensure  => file,
       content => hiera('ssh_host_rsa_key'),
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0600',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
     }
     
     file { '/etc/ssh/ssh_host_rsa_key.pub':
@@ -51,11 +51,11 @@ class sshd {
     }
     
     file { '/etc/ssh/ssh_host_ecdsa_key':
-      ensure => file,
+      ensure  => file,
       content => hiera('ssh_host_ecdsa_key'),
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0600',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
     }
     
     file { '/etc/ssh/ssh_host_ecdsa_key.pub':
