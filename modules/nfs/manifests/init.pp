@@ -81,25 +81,12 @@ class nfs ($nfs_home_directory = false) {
       }
     }
     
-    if $::machine_type == 'mail' or $::machine_type == 'lists' {
-      if $::machine_type == 'lists' {
-        # Mount mailman directory
-        nfs::client::mount { 'mailman':
-          server  => $nfs_server,
-          share   => "/${zpool_name}/services/mailman",
-          mount   => "${mount_dir}/mailman",
-          options => 'rw,relatime,nosuid,nodev',
-          atboot  => true,
-          owner   => 'list',
-          group   => 'list',
-        }
-      }
-      
-      # Mount transport directory
-      nfs::client::mount { 'transport':
+    if $::machine_type == 'lists' {
+      # Mount mailman directory
+      nfs::client::mount { 'mailman':
         server  => $nfs_server,
-        share   => "/${zpool_name}/services/transport",
-        mount   => "${mount_dir}/transport",
+        share   => "/${zpool_name}/services/mailman",
+        mount   => "${mount_dir}/mailman",
         options => 'rw,relatime,nosuid,nodev',
         atboot  => true,
         owner   => 'list',
