@@ -1,0 +1,5 @@
+hosts = mysql.hcs.harvard.edu
+user = postfix
+password = <%= @mysql_password %>
+dbname = postfix
+query = SELECT 'smtp:[hcs.harvard.edu]:2525' FROM transport_mailman WHERE local_part = '%u'

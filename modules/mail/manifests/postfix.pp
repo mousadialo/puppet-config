@@ -12,17 +12,27 @@ class mail::postfix {
   service { 'postfix':
     ensure  => running,
     enable  => true,
-    require => Package['postfix'],
+    require => [Package['postfix'], Package['postfix-cdb']],
   }
 
   if $::machine_type == 'mail' {
     require nfs
+
+    package { 'postfix-mysql':
+      ensure => installed,
+    }
+    
+    Package['postfix-mysql'] -> Service['postfix']
   
     # main.cf configuration
     mail::postfix::config { 'main.cf':
       suffix => '.mail',
     }
     mail::postfix::config { 'master.cf':
+      template => true,
+    }
+    $mysql_password = hiera('mysql-password')
+    mail::postfix::config { 'mysql-transport-mailman.cf':
       template => true,
     }
     mail::postfix::config { 'mynetworks': }

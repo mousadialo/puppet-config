@@ -96,11 +96,12 @@ DEFAULT_SEND_REMINDERS = 0
 # /usr/share/doc/mailman/README.Debian first.
 MTA = 'Postfix'
 
-# HCS Specific Settings
+# MySQL Database settings for postfix MySQL map
 # See /usr/lib/mailman/Mailman/MTA/Postfix.py for usages.
-HCS_TRANSPORT_DIR = '/mnt/tank/transport'
-HCS_LIST_DOMAINS = ['lists.hcs.harvard.edu', 'hcs.harvard.edu', 'lists.<%= @domain %>', '<%= @domain %>']
-HCS_LIST_DESTINATION = 'smtp:[hcs.harvard.edu]:2525'
+MYSQL_HOSTNAME = 'mysql.hcs.harvard.edu'
+MYSQL_USERNAME = 'postfix'
+MYSQL_PASSWORD = '<%= @mysql_password %>'
+MYSQL_DATABASE = 'postfix'
 
 #-------------------------------------------------------------
 # Uncomment if you want to filter mail with SpamAssassin. For

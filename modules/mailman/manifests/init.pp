@@ -28,6 +28,11 @@ class mailman {
     require => Package['mailman'],
   }
   
+  # MySQL connector for use in Postfix.py
+  package { 'python-mysqldb':
+    ensure => installed,
+  }
+  
   # This is the patch for mailman that will apply HCS customizations.
   # To learn more about patches, see http://jungels.net/articles/diff-patch-ten-minutes.html
   file { '/usr/lib/mailman/mailman-hcs.diff':
@@ -36,7 +41,7 @@ class mailman {
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => Package['mailman'],
+    require => [Package['mailman'], Package['python-mysqldb']],
   }
   
   file { '/etc/mailman/en':
@@ -48,6 +53,7 @@ class mailman {
     require => Package['mailman'],
   }
   
+  $mysql_password = hiera('mysql-password')
   file { '/etc/mailman/mm_cfg.py':
     ensure  => file,
     content => template('mailman/mm_cfg.py.erb'),
