@@ -97,7 +97,7 @@ class web::apache2 {
     web::apache2::mod { 'actions': }
     web::apache2::mod { 'alias': }
     web::apache2::mod { 'authnz_ldap': }
-    web::apache2::mod { 'cgi': }
+    web::apache2::mod { 'cgid': }
     web::apache2::mod { 'dav': }
     web::apache2::mod { 'dav_fs': }
     web::apache2::mod { 'fcgid':
