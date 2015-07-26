@@ -22,7 +22,7 @@ class ldap {
   $ldap_server = hiera('ldap-server')
   file_line { 'ldap_uri':
     path  => '/etc/ldap/ldap.conf',
-    line  => "URI\tldaps://${ldap_server}",
+    line  => "URI\tldap://${ldap_server}",
     match => '^#?URI\s+\S+',
   }
   
