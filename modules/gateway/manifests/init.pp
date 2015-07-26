@@ -98,7 +98,7 @@ class gateway {
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
       'option'  => 'forwardfor',
-      #'option'  => 'httpchk',
+      'option'  => 'httpchk /health',
     },
   }
   
@@ -108,7 +108,7 @@ class gateway {
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
       'option'  => 'forwardfor',
-      #'option'  => 'httpchk',
+      'option'  => 'httpchk',
     },
   }
 
@@ -124,18 +124,19 @@ class gateway {
     },
   }
   
+  $stats_pwd = hiera('stats_pwd')
   haproxy::backend { 'web-https':
     options => {
       'mode'    => 'http',
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
       'option'  => 'forwardfor',
-      #'option'  => 'httpchk',
+      'option'  => 'httpchk /health',
       'stats'   => [
         'enable',
         'uri /admin?stats',
         'hide-version',
-        'auth hcs:euph4ria',
+        'auth hcs:${stats_pwd}',
       ],
     },
   }
@@ -146,7 +147,7 @@ class gateway {
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
       'option'  => 'forwardfor',
-      #'option'  => 'httpchk',
+      'option'  => 'httpchk',
     },
   }
   
@@ -156,7 +157,7 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      #'option' => 'smtpchk'
+      'option' => 'smtpchk'
     },
   }
   
@@ -166,7 +167,7 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      #'option' => 'ssl-hello-chk',
+      'option' => 'tcp-check',
     },
   }
   
@@ -176,7 +177,7 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      #'option' => 'ssl-hello-chk',
+      'option' => 'tcp-check',
     },
   }
   
@@ -188,7 +189,7 @@ class gateway {
     options => {
       'acl'         => 'mynetworks src 10.0.0.0/8',
       'tcp-request' => 'content reject if !mynetworks',
-      #'option'      => 'smtpchk',
+      'option'      => 'smtpchk',
     },
   }
   
@@ -198,7 +199,7 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      #'option' => 'smtpchk'
+      'option' => 'smtpchk'
     },
   }
   
@@ -218,8 +219,8 @@ class gateway {
     options => {
       'mode'      => 'tcp',
       'balance'   => 'source',
-      #'option'    => 'tcp-check',
-      #'tcp-check' => 'expect string SSH-2.0-'
+      'option'    => 'tcp-check',
+      'tcp-check' => 'expect string SSH-2.0-'
     },
   }
   
@@ -247,6 +248,7 @@ class gateway {
     options => {
       'acl'         => 'mynetworks src 10.0.0.0/8',
       'tcp-request' => 'content reject if !mynetworks',
+      'option'      => 'tcp-check',
     },
   }
   
@@ -258,6 +260,7 @@ class gateway {
     options => {
       'acl'         => 'mynetworks src 10.0.0.0/8',
       'tcp-request' => 'content reject if !mynetworks',
+      'option'      => 'tcp-check',
     },
   }
   
@@ -269,6 +272,7 @@ class gateway {
     options => {
       'acl'         => 'mynetworks src 10.0.0.0/8',
       'tcp-request' => 'content reject if !mynetworks',
+      'option'      => 'tcp-check',
     },
   }
   
