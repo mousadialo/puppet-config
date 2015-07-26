@@ -250,6 +250,17 @@ class gateway {
     },
   }
   
+  haproxy::listen { 'ldaps':
+    bind    => { 
+      '*:636' => [],
+    },
+    mode    => 'tcp',
+    options => {
+      'acl'         => 'mynetworks src 10.0.0.0/8',
+      'tcp-request' => 'content reject if !mynetworks',
+    },
+  }
+  
   haproxy::listen { 'makelist':
     bind    => { 
       '*:8080' => [],

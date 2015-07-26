@@ -7,6 +7,10 @@ class ldap::server {
     ensure => installed,
   }
   
+  package { 'libnss3-tools':
+    ensure => installed,
+  }
+  
   file { '/etc/dirsrv/schema/00core.ldif':
     ensure  => file,
     source  => 'puppet:///modules/ldap/00core.ldif',
@@ -27,17 +31,33 @@ class ldap::server {
     require => Package['389-ds-base'],
   }
   
+  file { '/etc/dirsrv/config/setupssl.sh':
+    ensure  => file,
+    source  => 'puppet:///modules/ldap/setupssl.sh',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0700',
+    require => Package['389-ds-base'],
+  }
+  
   exec { 'setup-ds':
     command => '/usr/sbin/setup-ds --silent --file=/etc/dirsrv/config/setup.inf',
     creates => "/etc/dirsrv/slapd-${::hostname}",
     user    => 'root',
     require => File['/etc/dirsrv/config/setup.inf'],
+  } ~>
+  exec { 'setup-ds-ssl':
+    command     => "/etc/dirsrv/config/setupssl.sh /etc/dirsrv/slapd-${::hostname}",
+    environment => "DMPWD=${root_dn_pwd}",
+    refreshonly => true,
+    user        => 'root',
+    require     => [File['/etc/dirsrv/config/setupssl.sh'], Package['libnss3-tools']],
   }
   
   service { 'dirsrv':
     ensure  => running,
     enable  => true,
-    require => Exec['setup-ds'],
+    require => [Exec['setup-ds'], Exec['setup-ds-ssl']],
   }
   
   @@haproxy::balancermember { "${::hostname}-ldap":
@@ -45,6 +65,14 @@ class ldap::server {
     server_names      => $::fqdn,
     ipaddresses       => $::ipaddress,
     ports             => ['389'],
+    options           => ['check'],
+  }
+  
+  @@haproxy::balancermember { "${::hostname}-ldaps":
+    listening_service => 'ldaps',
+    server_names      => $::fqdn,
+    ipaddresses       => $::ipaddress,
+    ports             => ['636'],
     options           => ['check'],
   }
   
