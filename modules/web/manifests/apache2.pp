@@ -69,7 +69,6 @@ class web::apache2 {
     # secure and non-secure pages.
     web::apache2::config { 'hcs-conf/directories.conf': }
     web::apache2::config { 'hcs-conf/redirects.conf': }
-    web::apache2::config { 'hcs-conf/shibboleth.conf': }
     web::apache2::config { 'hcs-conf/tilde-rewrites.conf': }
 
     # HCS configurations for non-secure pages
@@ -79,6 +78,7 @@ class web::apache2 {
     web::apache2::config { 'hcs-ssl-conf/helios.conf': }
     web::apache2::config { 'hcs-ssl-conf/phpmyadmin.conf': }
     web::apache2::config { 'hcs-ssl-conf/rt.conf': }
+    web::apache2::config { 'hcs-ssl-conf/shibboleth.conf': }
     
     # Remove default vhost
     web::apache2::vhost{ '000-default':

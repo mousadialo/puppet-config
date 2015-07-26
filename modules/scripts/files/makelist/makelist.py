@@ -2,6 +2,7 @@ from __future__ import with_statement
 
 from Crypto.Cipher import AES
 from twisted.web import xmlrpc
+from email import Utils
 
 import base64
 import hmac
@@ -25,6 +26,8 @@ class Server(xmlrpc.XMLRPC):
 From: acctserv@hcs.harvard.edu
 To: %(confirmation)s
 Subject: Mailing list %(listname)s requires confirmation
+Date: %(date)s
+Message-ID: %(messageid)s
 
 Somebody wants to create a mailing list at hcs.harvard.edu with your email as the
 primary email contact.
@@ -42,6 +45,8 @@ following this link:
 From: acctserv@hcs.harvard.edu
 To: %(recipients)s
 Subject: Mailing list %(listname)s password reset requires confirmation
+Date: %(date)s
+Message-ID: %(messageid)s
 
 Somebody wants to reset the password for a mailing list at hcs.harvard.edu for
 which you are an administrator.
@@ -56,6 +61,8 @@ this link:
 From: systems@hcs.harvard.edu
 To: acctserv@hcs.harvard.edu
 Subject: Mailing list %(listname)s successfully created
+Date: %(date)s
+Message-ID: %(messageid)s
 X-No-Create-Ticket: true
 
 List name: %(listname)s
@@ -71,6 +78,8 @@ Here is mailman's opinion:
 From: systems@hcs.harvard.edu
 To: acctserv@hcs.harvard.edu
 Subject: Mailing list %(listname)s password reset
+Date: %(date)s
+Message-ID: %(messageid)s
 X-No-Create-Ticket: true
 
 List name: %(listname)s
@@ -81,6 +90,8 @@ List admin: %(listadmin)s
 From: systems@hcs.harvard.edu
 To: systems@hcs.harvard.edu
 Subject: Automatic mailing list creation failed for unknown reason
+Date: %(date)s
+Message-ID: %(messageid)s
 
 Unknown error while trying to create list with trajan.hcs.harvard.edu/makelist:
 List name: %(listname)s
@@ -100,6 +111,8 @@ stderr:
 From: systems@hcs.harvard.edu
 To: systems@hcs.harvard.edu
 Subject: Password reset failed for unknown reason
+Date: %(date)s
+Message-ID: %(messageid)s
 
 Unknown error while trying to reset password for:
 List name: %(listname)s
@@ -173,6 +186,8 @@ stderr:
         # return success message
         output = p.stdout.read()
         mail('acctserv@hcs.harvard.edu', self.log_success_message % {
+            'date' : Utils.formatdate(localtime = True),
+            'messageid' : Utils.make_msgid(),
             'listname' : listname,
             'password' : '...',
             'listadmin' : listadmin,
@@ -189,6 +204,8 @@ stderr:
         output = p.stdout.read()
         outerr = p.stderr.read()
         mail('systems@hcs.harvard.edu', self.unknown_mailman_error % {
+            'date' : Utils.formatdate(localtime = True),
+            'messageid' : Utils.make_msgid(),
             'listname' : listname,
             'password' : password,
             'listadmin' : listadmin,
@@ -262,11 +279,13 @@ stderr:
 
     # Send confirmation e-mail.
     mail(confirmation, self.confirm_message % {
-      'listname' : listname,
-      'password' : password,
-      'listadmin' : listadmin,
-      'confirmation' : confirmation,
-      'confirmurl' : confirmurl })
+        'date' : Utils.formatdate(localtime = True),
+        'messageid' : Utils.make_msgid(),
+        'listname' : listname,
+        'password' : password,
+        'listadmin' : listadmin,
+        'confirmation' : confirmation,
+        'confirmurl' : confirmurl })
     
     return True
 
@@ -332,9 +351,11 @@ stderr:
 
     # Send confirmation e-mail.
     mail(admins, self.confirm_password_message % {
-      'listname' : listname,
-      'recipients': ', '.join(admins),
-      'confirmurl' : confirmurl })
+        'date' : Utils.formatdate(localtime = True),
+        'messageid' : Utils.make_msgid(),
+        'listname' : listname,
+        'recipients': ', '.join(admins),
+        'confirmurl' : confirmurl })
     
     return True
 
@@ -374,6 +395,8 @@ stderr:
         # return success message
         output = p.stdout.read()
         mail('acctserv@hcs.harvard.edu', self.log_password_success_message % {
+            'date' : Utils.formatdate(localtime = True),
+            'messageid' : Utils.make_msgid(),
             'listname': listname,
             'listadmin': admins})
 
@@ -384,6 +407,8 @@ stderr:
         output = p.stdout.read()
         outerr = p.stderr.read()
         mail('systems@hcs.harvard.edu', self.unknown_mailman_password_error % {
+            'date' : Utils.formatdate(localtime = True),
+            'messageid' : Utils.make_msgid(),
             'listname' : listname,
             'listadmin' : admins,
             'output' : output,

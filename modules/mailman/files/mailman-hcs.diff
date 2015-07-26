@@ -788,3 +788,40 @@ diff -rupN mailman.orig/Mailman/MTA/Postfix.py mailman/Mailman/MTA/Postfix.py
          stat = None
          try:
              stat = os.stat(dbfile)
+diff -rupN mailman.orig/Mailman/Queue/BounceRunner.py mailman/Mailman/Queue/BounceRunner.py
+--- mailman.orig/Mailman/Queue/BounceRunner.py	2015-04-03 06:03:28.000000000 -0700
++++ mailman/Mailman/Queue/BounceRunner.py	2015-07-24 14:46:43.470750300 -0700
+@@ -201,11 +201,11 @@ class BounceRunner(Runner, BounceMixin):
+             # Send it on to the site owners, but craft the envelope sender to
+             # be the -loop detection address, so if /they/ bounce, we won't
+             # get stuck in a bounce loop.
+-            outq.enqueue(msg, msgdata,
+-                         recips=mlist.owner,
+-                         envsender=Utils.get_site_email(extra='loop'),
+-                         nodecorate=1,
+-                         )
++            #outq.enqueue(msg, msgdata,
++            #             recips=mlist.owner,
++            #             envsender=Utils.get_site_email(extra='loop'),
++            #             nodecorate=1,
++            #             )
+             return
+         # Is this a possible looping message sent directly to a list-bounces
+         # address other than the site list?
+@@ -215,11 +215,11 @@ class BounceRunner(Runner, BounceMixin):
+                 Utils.get_site_email(mlist.host_name, 'bounces')):
+             # Just send it to the sitelist-owner address.  If that bounces
+             # we'll handle it above.
+-            outq.enqueue(msg, msgdata,
+-                         recips=[Utils.get_site_email(extra='owner')],
+-                         envsender=Utils.get_site_email(extra='loop'),
+-                         nodecorate=1,
+-                         )
++            #outq.enqueue(msg, msgdata,
++            #             recips=[Utils.get_site_email(extra='owner')],
++            #             envsender=Utils.get_site_email(extra='loop'),
++            #             nodecorate=1,
++            #             )
+             return
+         # List isn't doing bounce processing?
+         if not mlist.bounce_processing:
