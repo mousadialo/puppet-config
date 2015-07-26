@@ -50,10 +50,6 @@ ChallengeResponseAuthentication no
 # Change to no to disable tunnelled clear text passwords
 PasswordAuthentication no
 
-# Permit password authentication from Harvard IPs
-Match Address 128.103.224.4,140.247.0.0/16,128.103.0.0/16,65.112.10.0/23,65.112.8.0/23
-    PasswordAuthentication yes
-
 # Kerberos options
 #KerberosAuthentication no
 #KerberosGetAFSToken no
@@ -90,3 +86,7 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 # PAM authentication, then enable this but set PasswordAuthentication
 # and ChallengeResponseAuthentication to 'no'.
 UsePAM yes
+
+# Permit password authentication from Harvard IPs
+Match Address 128.103.224.4,140.247.0.0/16,128.103.0.0/16,65.112.10.0/23,65.112.8.0/23
+    PasswordAuthentication yes
