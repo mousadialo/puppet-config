@@ -99,7 +99,7 @@ class gateway {
       'cookie'  => 'SRV insert indirect nocache',
       'option'  => [
         'forwardfor',
-        'httpchk /health',
+        'httpchk HEAD /health',
       ],
     },
   }
@@ -136,13 +136,13 @@ class gateway {
       'cookie'  => 'SRV insert indirect nocache',
       'option'  => [
         'forwardfor',
-        'httpchk /health',
+        'httpchk HEAD /health',
       ],
       'stats'   => [
         'enable',
         'uri /admin?stats',
         'hide-version',
-        'auth hcs:${stats_pwd}',
+        "auth hcs:${stats_pwd}",
       ],
     },
   }
