@@ -13,7 +13,7 @@ class ldap::client {
     ensure    => running,
     enable    => true,
     require   => Package['nscd'],
-    subscribe => File['/etc/ldap/ldap.conf'],
+    subscribe => [File_line['ldap_uri'], File_line['ldap_tls_reqcert']],
   }
   
   file { '/etc/ldap.conf':
