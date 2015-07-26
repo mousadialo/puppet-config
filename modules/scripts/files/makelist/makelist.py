@@ -23,7 +23,7 @@ def mail(to, message):
 
 class Server(xmlrpc.XMLRPC):
   confirm_message = """\
-From: acctserv@hcs.harvard.edu
+From: HCS Account Services <acctserv@hcs.harvard.edu>
 To: %(confirmation)s
 Subject: Mailing list %(listname)s requires confirmation
 Date: %(date)s
@@ -42,7 +42,7 @@ following this link:
 """
 
   confirm_password_message = """\
-From: acctserv@hcs.harvard.edu
+From: HCS Account Services <acctserv@hcs.harvard.edu>
 To: %(recipients)s
 Subject: Mailing list %(listname)s password reset requires confirmation
 Date: %(date)s
@@ -58,7 +58,7 @@ this link:
 """
 
   log_success_message = """\
-From: systems@hcs.harvard.edu
+From: HCS Systems <systems@hcs.harvard.edu>
 To: acctserv@hcs.harvard.edu
 Subject: Mailing list %(listname)s successfully created
 Date: %(date)s
@@ -75,7 +75,7 @@ Here is mailman's opinion:
 """
 
   log_password_success_message = """\
-From: systems@hcs.harvard.edu
+From: HCS Systems <systems@hcs.harvard.edu>
 To: acctserv@hcs.harvard.edu
 Subject: Mailing list %(listname)s password reset
 Date: %(date)s
@@ -87,7 +87,7 @@ List admin: %(listadmin)s
 """
 
   unknown_mailman_error = """\
-From: systems@hcs.harvard.edu
+From: HCS Systems <systems@hcs.harvard.edu>
 To: systems@hcs.harvard.edu
 Subject: Automatic mailing list creation failed for unknown reason
 Date: %(date)s
@@ -108,7 +108,7 @@ stderr:
 """
 
   unknown_mailman_password_error = """\
-From: systems@hcs.harvard.edu
+From: HCS Systems <systems@hcs.harvard.edu>
 To: systems@hcs.harvard.edu
 Subject: Password reset failed for unknown reason
 Date: %(date)s
