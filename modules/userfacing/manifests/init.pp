@@ -24,7 +24,7 @@ class userfacing {
     server_names      => $::fqdn,
     ipaddresses       => $::ipaddress,
     ports             => ['22'],
-    options           => ['check'],
+    options           => ['usesrc clientip', 'check'],
   }
 
   #$userfacing = hiera_array('userfacing_packages')
