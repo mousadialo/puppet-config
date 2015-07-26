@@ -12,7 +12,7 @@ class ldap::client {
   service { 'nscd':
     ensure    => running,
     enable    => true,
-    require   => Package['nscd']
+    require   => Package['nscd'],
     subscribe => File['/etc/ldap/ldap.conf'],
   }
   
