@@ -99,7 +99,6 @@ userfacing_packages:
   - ruby-memcache-client
   - ruby-text-format
   - ruby-tzinfo
-  - ttf-dejavu-core
 
   # Additional packages just because
   - bwm-ng
