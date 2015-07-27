@@ -44,8 +44,8 @@
   # lists, as spammers will abuse it if they can see it.
   #
   <LocationMatch "^/mailman/(listinfo|admin)/?$">
-    ErrorDocument 403 "This page can only be accessed within the Harvard network or through the Harvard VPN."
-    Require ip 140.247
+    ErrorDocument 403 "This page can only be accessed within the Harvard network or through the <a href="https://vpn.harvard.edu/">Harvard VPN</a>."
+    Require ip 128.103.224.4 140.247.0.0/16 128.103.0.0/16 65.112.10.0/23 65.112.8.0/23 67.134.206.0/24
   </LocationMatch>
 </VirtualHost>
 
