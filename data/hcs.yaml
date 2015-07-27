@@ -6,10 +6,7 @@ classes:
 
 # TODO: audit these
 userfacing_packages:
-  # essentials
-  - build-essential
-
-  # languages
+  # Languages
   - ghc6
   - ocaml-nox
   - perl
@@ -72,18 +69,26 @@ userfacing_packages:
   # Editors
   - emacs23-nox
   - vim
+  
+  # File compression
+  - zip
+  - unzip
+  - rar
+  - unrar
+  - p7zip-full
 
   # General Utilities
   - alpine
   - apache2-utils
+  - aspell
   - cowsay
   - cscope
   - curl
+  - drush
   - exuberant-ctags
   - finger
   - gdb
   - gnupg
-  #- ldap-utils
   - mutt
   - mysql-client
 
@@ -100,7 +105,7 @@ userfacing_packages:
   - ruby-text-format
   - ttf-dejavu-core
 
-  # additional packages just because
+  # Additional packages just because
   - bwm-ng
   - dstat
   - htop

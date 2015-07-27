@@ -5,7 +5,6 @@ classes:
 # TODO: do we need the cloud packages?
 # TODO: we should define which base services are on/off
 base_packages:
-
   # standard packages
   - ubuntu-minimal
   - ubuntu-standard
