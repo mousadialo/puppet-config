@@ -77,7 +77,7 @@ class nfs ($nfs_home_directory = false) {
         atboot  => true,
         owner   => 'webapps',
         group   => 'hcs',
-        perm    => '0755', # TODO: Somehow make this non world readable.
+        perm    => '0711',
       }
     }
     
