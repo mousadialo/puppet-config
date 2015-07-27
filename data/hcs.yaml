@@ -7,7 +7,7 @@ classes:
 # TODO: audit these
 userfacing_packages:
   # Languages
-  - ghc6
+  - ghc
   - ocaml-nox
   - perl
 
@@ -50,9 +50,6 @@ userfacing_packages:
   - ruby-net-ssh
   - ruby-nokogiri
   - ruby-sqlite3
-  - ruby1.9.1
-  - ruby1.9.1-dev
-  - rubygems
 
   # Node JS
   - coffeescript
@@ -96,13 +93,13 @@ userfacing_packages:
   - ledit
   - libblas3gf
   - liblapack3gf
-  - libmemcache-client-ruby
-  - libtzinfo-ruby
   - python-greenlet
   - ruby-builder
   - ruby-i18n
+  - ruby-memcache-client
   - ruby-rack
   - ruby-text-format
+  - ruby-tzinfo
   - ttf-dejavu-core
 
   # Additional packages just because

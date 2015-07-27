@@ -1,10 +1,23 @@
 # Userfacing packages available to all HCS users
 class userfacing {
 
+  apt::source { 'ubuntu_archive_multiverse':
+    location => 'http://us-east-1.ec2.archive.ubuntu.com/ubuntu/',
+    release  => $lsbdistcodename,
+    repos    => 'multiverse',
+  }
+  
+  apt::source { 'ubuntu_archive_updates_multiverse':
+    location => 'http://us-east-1.ec2.archive.ubuntu.com/ubuntu/',
+    release  => "${lsbdistcodename}-updates",
+    repos    => 'multiverse',
+  }
+
   # install the base packages listed in data/hcs.yaml
   $userfacing = hiera_array('userfacing_packages')
   package { $userfacing:
-    ensure => installed
+    ensure => installed,
+    require => [Apt::Source['ubuntu_archive_multiverse'], Apt::Source['ubuntu_archive_updates_multiverse']],
   }
   
   # Alpine configuration
