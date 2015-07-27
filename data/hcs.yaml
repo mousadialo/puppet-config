@@ -91,13 +91,12 @@ userfacing_packages:
 
   # Resolve package ambiguities
   - ledit
-  - libblas3gf
-  - liblapack3gf
+  - libblas3
+  - liblapack3
   - python-greenlet
   - ruby-builder
   - ruby-i18n
   - ruby-memcache-client
-  - ruby-rack
   - ruby-text-format
   - ruby-tzinfo
   - ttf-dejavu-core
