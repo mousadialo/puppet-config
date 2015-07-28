@@ -241,9 +241,9 @@ class gateway {
   
   haproxy::backend { 'lists-https':
     options => {
-      'mode'                   => 'http',
-      'balance'                => 'roundrobin',
-      'cookie'                 => 'SRV insert indirect nocache',
+      'mode'                => 'http',
+      'balance'             => 'roundrobin',
+      'cookie'              => 'SRV insert indirect nocache',
       'acl'                 => [
         'high_conn_cur src_conn_cur(lists-http) ge 10',
         'high_conn_rate src_conn_rate(lists-http) ge 10',
@@ -260,7 +260,7 @@ class gateway {
         'deny if high_req_rate blacklist',
         'deny if high_err_rate blacklist',
       ],
-      'option'                 => [
+      'option'              => [
         'forwardfor',
         'httpchk',
       ],
