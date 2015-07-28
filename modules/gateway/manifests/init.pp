@@ -17,6 +17,8 @@ class gateway {
     group          => 'haproxy',
     mode           => '0400',
     ensure_newline => true,
+    require        => Package['haproxy'],
+    before         => Service['haproxy'],
   }
   concat::fragment { "${pem}-certificate":
     target => $pem,
@@ -34,6 +36,28 @@ class gateway {
     order   => '3',
   }
   
+  exec{ 'retrieve_cloudflare_ips':
+    command => '/usr/bin/wget -q https://www.cloudflare.com/ips-v4 -O /etc/haproxy/cloudflare_ips',
+    creates => '/etc/haproxy/cloudflare_ips',
+    require => Package['haproxy'],
+  } ->
+  file { '/etc/haproxy/cloudflare_ips':
+    owner   => 'haproxy',
+    group   => 'haproxy',
+    mode    => '0644',
+    before  => Service['haproxy'],
+  }
+  
+  file { '/etc/haproxy/harvard_ips':
+    ensure  => file,
+    source  => 'puppet:///modules/gateway/harvard_ips',
+    owner   => 'haproxy',
+    group   => 'haproxy',
+    mode    => '0644',
+    require => Package['haproxy'],
+    before  => Service['haproxy'],
+  }
+  
   class { 'haproxy':
     global_options => {
       'log'     => [
@@ -47,6 +71,7 @@ class gateway {
       'group'                     => 'haproxy',
       'daemon'                    => '',
       'stats'                     => 'socket /var/lib/haproxy/stats',
+      'spread-checks'             => '5',
       'tune.ssl.default-dh-param' => '2048',
     },
     defaults_options => {
@@ -68,8 +93,6 @@ class gateway {
     },
     require => Apt::Ppa['ppa:vbernat/haproxy-1.5'],
   }
-  
-  Package['haproxy'] -> Concat[$pem] -> Service['haproxy']
 
   haproxy::peers { 'bifrost': }
   
@@ -94,11 +117,30 @@ class gateway {
   
   haproxy::backend { 'web-http':
     options => {
-      'mode'    => 'http',
-      'balance' => 'roundrobin',
-      'cookie'  => 'SRV insert indirect nocache',
-      'option'  => [
-        'forwardfor',
+      'mode'                   => 'http',
+      'balance'                => 'roundrobin',
+      'cookie'                 => 'SRV insert indirect nocache',
+      'stick-table'            => 'type ip size 1m expire 30s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(20s)',
+      'acl'                    => [
+        'harvard src -f /etc/haproxy/harvard_ips',
+        'cloudflare src -f /etc/haproxy/cloudflare_ips',
+        'abuse src_http_req_rate(web-http) ge 10',
+        'scanner src_http_err_rate(web-http) ge 10',
+        'blacklist src_inc_gpc0(blacklist) ge 0',
+      ],
+      'tcp-request connection' => [
+        'accept if harvard or cloudflare',
+        'reject if { src_get_gpc0(blacklist) gt 0 }',
+        'reject if { src_conn_cur(web-http) ge 10 }',
+        'reject if { src_conn_rate(web-http) ge 10 }',
+        'track-sc1 src table web-http',
+      ],
+      'http-request'           => [
+        'deny if abuse blacklist',
+        'deny if scanner blacklist',
+      ],
+      'option'                 => [
+        'forwardfor except cloudflare',
         'httpchk HEAD /health',
       ],
     },
@@ -109,6 +151,25 @@ class gateway {
       'mode'    => 'http',
       'balance' => 'roundrobin',
       'cookie'  => 'SRV insert indirect nocache',
+      'stick-table'            => 'type ip size 1m expire 30s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(20s)',
+      'acl'                    => [
+        'harvard src -f /etc/haproxy/harvard_ips',
+        'cloudflare src -f /etc/haproxy/cloudflare_ips',
+        'abuse src_http_req_rate(lists-http) ge 10',
+        'scanner src_http_err_rate(lists-http) ge 10',
+        'blacklist src_inc_gpc0(blacklist) ge 0',
+      ],
+      'tcp-request connection' => [
+        'accept if harvard or cloudflare',
+        'reject if { src_get_gpc0(blacklist) gt 0 }',
+        'reject if { src_conn_cur(lists-http) ge 10 }',
+        'reject if { src_conn_rate(lists-http) ge 10 }',
+        'track-sc1 src table lists-http',
+      ],
+      'http-request'           => [
+        'deny if abuse blacklist',
+        'deny if scanner blacklist',
+      ],
       'option'  => [
         'forwardfor',
         'httpchk',
@@ -131,15 +192,34 @@ class gateway {
   $stats_pwd = hiera('stats_pwd')
   haproxy::backend { 'web-https':
     options => {
-      'mode'    => 'http',
-      'balance' => 'roundrobin',
-      'cookie'  => 'SRV insert indirect nocache',
-      'option'  => [
+      'mode'                   => 'http',
+      'balance'                => 'roundrobin',
+      'cookie'                 => 'SRV insert indirect nocache',
+      'acl'                    => [
+        'harvard src -f /etc/haproxy/harvard_ips',
+        'cloudflare src -f /etc/haproxy/cloudflare_ips',
+        'abuse src_http_req_rate(web-http) ge 10',
+        'scanner src_http_err_rate(web-http) ge 10',
+        'blacklist src_inc_gpc0(blacklist) ge 0',
+      ],
+      'tcp-request connection' => [
+        'accept if harvard or cloudflare',
+        'reject if { src_get_gpc0(blacklist) gt 0 }',
+        'reject if { src_conn_cur(web-http) ge 10 }',
+        'reject if { src_conn_rate(web-http) ge 10 }',
+        'track-sc1 src table web-http',
+      ],
+      'http-request'           => [
+        'deny if abuse blacklist',
+        'deny if scanner blacklist',
+      ],
+      'option'                 => [
         'forwardfor',
         'httpchk HEAD /health',
       ],
-      'stats'   => [
+      'stats'                  => [
         'enable',
+        'realm HAProxy\ Statistics',
         'uri /admin?stats',
         'hide-version',
         "auth hcs:${stats_pwd}",
@@ -149,10 +229,28 @@ class gateway {
   
   haproxy::backend { 'lists-https':
     options => {
-      'mode'    => 'http',
-      'balance' => 'roundrobin',
-      'cookie'  => 'SRV insert indirect nocache',
-      'option'  => [
+      'mode'                   => 'http',
+      'balance'                => 'roundrobin',
+      'cookie'                 => 'SRV insert indirect nocache',
+      'acl'                    => [
+        'harvard src -f /etc/haproxy/harvard_ips',
+        'cloudflare src -f /etc/haproxy/cloudflare_ips',
+        'abuse src_http_req_rate(lists-http) ge 10',
+        'scanner src_http_err_rate(lists-http) ge 10',
+        'blacklist src_inc_gpc0(blacklist) ge 0',
+      ],
+      'tcp-request connection' => [
+        'accept if harvard or cloudflare',
+        'reject if { src_get_gpc0(blacklist) gt 0 }',
+        'reject if { src_conn_cur(lists-http) ge 10 }',
+        'reject if { src_conn_rate(lists-http) ge 10 }',
+        'track-sc1 src table lists-http',
+      ],
+      'http-request'           => [
+        'deny if abuse blacklist',
+        'deny if scanner blacklist',
+      ],
+      'option'                 => [
         'forwardfor',
         'httpchk',
       ],
@@ -281,6 +379,13 @@ class gateway {
       'acl'         => 'mynetworks src 10.0.0.0/8',
       'tcp-request' => 'content reject if !mynetworks',
       'option'      => 'tcp-check',
+    },
+  }
+  
+  haproxy::backend { 'blacklist':
+    collect_exported => false,
+    options          => {
+      'stick-table' => 'type ip size 1m expire 30s peers bifrost store gpc0',
     },
   }
   
