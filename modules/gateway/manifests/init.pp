@@ -114,11 +114,12 @@ class gateway {
         'mynetworks src 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
-        'blacklisted src_get_gpc0(blacklist) gt 0',
+        'blacklisted sc0_get_gpc0(blacklist) gt 0',
       ],
       'tcp-request connection' => [
         'accept if mynetworks or harvard or cloudflare',
         'reject if blacklisted',
+        'track-sc0 src table blacklist',
       ],
       'use_backend'            => 'lists-http if host_lists',
       'default_backend'        => 'web-http',
@@ -132,16 +133,16 @@ class gateway {
       'cookie'              => 'SRV insert indirect nocache',
       'stick-table'         => 'type ip size 1m expire 30s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
       'acl'                 => [
-        'high_conn_cur src_conn_cur(web-http) ge 10',
-        'high_conn_rate src_conn_rate(web-http) ge 10',
-        'high_req_rate src_http_req_rate(web-http) ge 10',
-        'high_err_rate src_http_err_rate(web-http) ge 10',
-        'blacklist src_inc_gpc0(blacklist) ge 0',
+        'high_conn_cur sc2_conn_cur(web-http) ge 10',
+        'high_conn_rate sc2_conn_rate(web-http) ge 10',
+        'high_req_rate sc2_http_req_rate(web-http) ge 10',
+        'high_err_rate sc2_http_err_rate(web-http) ge 10',
+        'blacklist sc0_inc_gpc0(blacklist)',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
         'reject if high_conn_rate',
-        'track-sc1 src table web-http',
+        'track-sc2 src table web-http',
       ],
       'http-request'        => [
         'deny if high_req_rate blacklist',
@@ -161,16 +162,16 @@ class gateway {
       'cookie'              => 'SRV insert indirect nocache',
       'stick-table'         => 'type ip size 1m expire 30s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
       'acl'                 => [
-        'high_conn_cur src_conn_cur(lists-http) ge 10',
-        'high_conn_rate src_conn_rate(lists-http) ge 10',
-        'high_req_rate src_http_req_rate(lists-http) ge 10',
-        'high_err_rate src_http_err_rate(lists-http) ge 10',
-        'blacklist src_inc_gpc0(blacklist) ge 0',
+        'high_conn_cur sc2_conn_cur(lists-http) ge 10',
+        'high_conn_rate sc2_conn_rate(lists-http) ge 10',
+        'high_req_rate sc2_http_req_rate(lists-http) ge 10',
+        'high_err_rate sc2_http_err_rate(lists-http) ge 10',
+        'blacklist sc0_inc_gpc0(blacklist)',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
         'reject if high_conn_rate',
-        'track-sc1 src table lists-http',
+        'track-sc2 src table lists-http',
       ],
       'http-request'        => [
         'deny if high_req_rate blacklist',
@@ -194,11 +195,12 @@ class gateway {
         'mynetworks src 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
-        'blacklisted src_get_gpc0(blacklist) gt 0',
+        'blacklisted sc0_get_gpc0(blacklist) gt 0',
       ],
       'tcp-request connection' => [
         'accept if mynetworks or harvard or cloudflare',
         'reject if blacklisted',
+        'track-sc0 src table blacklist',
       ],
       'use_backend'            => 'lists-https if host_lists',
       'default_backend'        => 'web-https',
@@ -212,16 +214,16 @@ class gateway {
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
       'acl'                 => [
-        'high_conn_cur src_conn_cur(web-http) ge 10',
-        'high_conn_rate src_conn_rate(web-http) ge 10',
-        'high_req_rate src_http_req_rate(web-http) ge 10',
-        'high_err_rate src_http_err_rate(web-http) ge 10',
-        'blacklist src_inc_gpc0(blacklist) ge 0',
+        'high_conn_cur sc2_conn_cur(web-http) ge 10',
+        'high_conn_rate sc2_conn_rate(web-http) ge 10',
+        'high_req_rate sc2_http_req_rate(web-http) ge 10',
+        'high_err_rate sc2_http_err_rate(web-http) ge 10',
+        'blacklist sc0_inc_gpc0(blacklist)',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
         'reject if high_conn_rate',
-        'track-sc1 src table web-http',
+        'track-sc2 src table web-http',
       ],
       'http-request'        => [
         'deny if high_req_rate blacklist',
@@ -247,16 +249,16 @@ class gateway {
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
       'acl'                 => [
-        'high_conn_cur src_conn_cur(lists-http) ge 10',
-        'high_conn_rate src_conn_rate(lists-http) ge 10',
-        'high_req_rate src_http_req_rate(lists-http) ge 10',
-        'high_err_rate src_http_err_rate(lists-http) ge 10',
-        'blacklist src_inc_gpc0(blacklist) ge 0',
+        'high_conn_cur sc2_conn_cur(lists-http) ge 10',
+        'high_conn_rate sc2_conn_rate(lists-http) ge 10',
+        'high_req_rate sc2_http_req_rate(lists-http) ge 10',
+        'high_err_rate sc2_http_err_rate(lists-http) ge 10',
+        'blacklist sc0_inc_gpc0(blacklist)',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
         'reject if high_conn_rate',
-        'track-sc1 src table lists-http',
+        'track-sc2 src table lists-http',
       ],
       'http-request'        => [
         'deny if high_req_rate blacklist',
@@ -365,7 +367,7 @@ class gateway {
     mode    => 'tcp',
     options => {
       'acl'         => 'mynetworks src 10.0.0.0/8',
-      'tcp-request' => 'content reject if !mynetworks',
+      'tcp-request' => 'connection reject if !mynetworks',
       'option'      => 'tcp-check',
     },
   }
@@ -377,7 +379,7 @@ class gateway {
     mode    => 'tcp',
     options => {
       'acl'         => 'mynetworks src 10.0.0.0/8',
-      'tcp-request' => 'content reject if !mynetworks',
+      'tcp-request' => 'connection reject if !mynetworks',
       'option'      => 'tcp-check',
     },
   }
@@ -389,7 +391,7 @@ class gateway {
     mode    => 'tcp',
     options => {
       'acl'         => 'mynetworks src 10.0.0.0/8',
-      'tcp-request' => 'content reject if !mynetworks',
+      'tcp-request' => 'connection reject if !mynetworks',
       'option'      => 'tcp-check',
     },
   }
