@@ -111,12 +111,13 @@ class gateway {
     options => {
       'acl'                    => [
         'host_lists hdr(host) -i lists.hcs.harvard.edu lists.hcs.so',
+        'mynetworks src 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
         'blacklisted src_get_gpc0(blacklist) gt 0',
       ],
       'tcp-request connection' => [
-        'accept if harvard or cloudflare',
+        'accept if mynetworks or harvard or cloudflare',
         'reject if blacklisted',
       ],
       'use_backend'            => 'lists-http if host_lists',
@@ -190,12 +191,13 @@ class gateway {
     options => {
       'acl'                    => [
         'host_lists hdr(host) -i lists.hcs.harvard.edu lists.hcs.so',
+        'mynetworks src 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
         'blacklisted src_get_gpc0(blacklist) gt 0',
       ],
       'tcp-request connection' => [
-        'accept if harvard or cloudflare',
+        'accept if mynetworks or harvard or cloudflare',
         'reject if blacklisted',
       ],
       'use_backend'            => 'lists-https if host_lists',
