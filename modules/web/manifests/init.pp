@@ -16,7 +16,8 @@ class web {
     include web::shibboleth
     
     # ModSecurity
-    include web::modsecurity
+    # TODO(fred): Too many false positives, disabling for now.
+    #include web::modsecurity
     
     # Packages needed by helios
     package { 'python-ldap': }
