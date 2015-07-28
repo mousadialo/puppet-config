@@ -777,8 +777,11 @@ static void register_hooks(apr_pool_t *p)
     ap_register_input_filter(myfixip_filter_name, helocon_filter_in, NULL, AP_FTYPE_CONNECTION + 9);
     ap_hook_post_config(post_config, NULL, NULL, APR_HOOK_MIDDLE);
     ap_hook_child_init(child_init, NULL, NULL, APR_HOOK_MIDDLE);
-    ap_hook_process_connection(process_connection, NULL, NULL, APR_HOOK_FIRST);
-    ap_hook_post_read_request(post_read_handler, NULL, NULL, APR_HOOK_FIRST);
+    /*
+     * needs to be called before mod_cloudflare and mod_security, hence APR_HOOK_REALLY_FIRST - 20
+     */
+    ap_hook_process_connection(process_connection, NULL, NULL, APR_HOOK_REALLY_FIRST - 20);
+    ap_hook_post_read_request(post_read_handler, NULL, NULL, APR_HOOK_REALLY_FIRST - 20);
 }
 
 module AP_MODULE_DECLARE_DATA myfixip_module = {
