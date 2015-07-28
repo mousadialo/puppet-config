@@ -91,6 +91,7 @@ class gateway {
       'maxconn'        => '8000',
       'default-server' => 'inter 30000 fastinter 10000 downinter 3000',
     },
+    restart_command  => '/usr/sbin/service haproxy reload',
     require => Apt::Ppa['ppa:vbernat/haproxy-1.5'],
   }
 
@@ -137,7 +138,7 @@ class gateway {
         'high_conn_rate sc2_conn_rate(web-http) ge 10',
         'high_req_rate sc2_http_req_rate(web-http) ge 10',
         'high_err_rate sc2_http_err_rate(web-http) ge 10',
-        'blacklist sc0_inc_gpc0(blacklist)',
+        'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -166,7 +167,7 @@ class gateway {
         'high_conn_rate sc2_conn_rate(lists-http) ge 10',
         'high_req_rate sc2_http_req_rate(lists-http) ge 10',
         'high_err_rate sc2_http_err_rate(lists-http) ge 10',
-        'blacklist sc0_inc_gpc0(blacklist)',
+        'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -218,7 +219,7 @@ class gateway {
         'high_conn_rate sc2_conn_rate(web-http) ge 10',
         'high_req_rate sc2_http_req_rate(web-http) ge 10',
         'high_err_rate sc2_http_err_rate(web-http) ge 10',
-        'blacklist sc0_inc_gpc0(blacklist)',
+        'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -253,7 +254,7 @@ class gateway {
         'high_conn_rate sc2_conn_rate(lists-http) ge 10',
         'high_req_rate sc2_http_req_rate(lists-http) ge 10',
         'high_err_rate sc2_http_err_rate(lists-http) ge 10',
-        'blacklist sc0_inc_gpc0(blacklist)',
+        'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
