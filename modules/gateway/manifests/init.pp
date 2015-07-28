@@ -131,8 +131,8 @@ class gateway {
         'reject if !host_lists web_high_conn_rate',
         'reject if host_lists lists_high_conn_cur',
         'reject if host_lists lists_high_conn_rate',
-        'track-sc1 src table web-http if !host_lists',
-        'track-sc1 src table lists-http if host_lists',
+        'track-sc0 src table web-http if !host_lists',
+        'track-sc0 src table lists-http if host_lists',
       ],
       'http-request'           => [
         'deny if !host_lists web_high_req_rate blacklist',
@@ -199,8 +199,8 @@ class gateway {
         'reject if !host_lists web_high_conn_rate',
         'reject if host_lists lists_high_conn_cur',
         'reject if host_lists lists_high_conn_rate',
-        'track-sc1 src table web-http if !host_lists',
-        'track-sc1 src table lists-http if host_lists',
+        'track-sc0 src table web-http if !host_lists',
+        'track-sc0 src table lists-http if host_lists',
       ],
       'http-request'           => [
         'deny if !host_lists web_high_req_rate blacklist',
