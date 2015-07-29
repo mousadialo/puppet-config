@@ -136,7 +136,7 @@ class gateway {
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(web-http) ge 10',
         'high_conn_rate sc2_conn_rate(web-http) ge 10',
-        'high_req_rate sc2_http_req_rate(web-http) ge 30',
+        'high_req_rate sc2_http_req_rate(web-http) ge 50',
         'high_err_rate sc2_http_err_rate(web-http) ge 10',
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
@@ -165,7 +165,7 @@ class gateway {
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(lists-http) ge 10',
         'high_conn_rate sc2_conn_rate(lists-http) ge 10',
-        'high_req_rate sc2_http_req_rate(lists-http) ge 30',
+        'high_req_rate sc2_http_req_rate(lists-http) ge 50',
         'high_err_rate sc2_http_err_rate(lists-http) ge 10',
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
@@ -217,7 +217,7 @@ class gateway {
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(web-http) ge 10',
         'high_conn_rate sc2_conn_rate(web-http) ge 10',
-        'high_req_rate sc2_http_req_rate(web-http) ge 30',
+        'high_req_rate sc2_http_req_rate(web-http) ge 50',
         'high_err_rate sc2_http_err_rate(web-http) ge 10',
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
@@ -252,7 +252,7 @@ class gateway {
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(lists-http) ge 10',
         'high_conn_rate sc2_conn_rate(lists-http) ge 10',
-        'high_req_rate sc2_http_req_rate(lists-http) ge 30',
+        'high_req_rate sc2_http_req_rate(lists-http) ge 50',
         'high_err_rate sc2_http_err_rate(lists-http) ge 10',
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
