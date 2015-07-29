@@ -118,6 +118,7 @@ class gateway {
         'blacklisted sc0_get_gpc0(blacklist) gt 0',
       ],
       'tcp-request connection' => [
+        'accept if mynetworks or harvard or cloudflare',
         'track-sc0 src table blacklist',
       ],
       'http-request'           => [
@@ -143,11 +144,11 @@ class gateway {
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
+        'reject if high_conn_cur',
+        'reject if high_conn_rate',
         'track-sc2 src table web-http',
       ],
       'http-request'        => [
-        'tarpit if high_conn_cur blacklist',
-        'tarpit if high_conn_rate blacklist',
         'tarpit if high_req_rate blacklist',
         'tarpit if high_err_rate blacklist',
       ],
@@ -172,11 +173,11 @@ class gateway {
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
+        'reject if high_conn_cur',
+        'reject if high_conn_rate',
         'track-sc2 src table lists-http',
       ],
       'http-request'        => [
-        'tarpit if high_conn_cur blacklist',
-        'tarpit if high_conn_rate blacklist',
         'tarpit if high_req_rate blacklist',
         'tarpit if high_err_rate blacklist',
       ],
@@ -201,6 +202,7 @@ class gateway {
         'blacklisted sc0_get_gpc0(blacklist) gt 0',
       ],
       'tcp-request connection' => [
+        'accept if mynetworks or harvard or cloudflare',
         'track-sc0 src table blacklist',
       ],
       'http-request'           => [
@@ -226,11 +228,11 @@ class gateway {
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
+        'reject if high_conn_cur',
+        'reject if high_conn_rate',
         'track-sc2 src table web-http',
       ],
       'http-request'        => [
-        'tarpit if high_conn_cur blacklist',
-        'tarpit if high_conn_rate blacklist',
         'tarpit if high_req_rate blacklist',
         'tarpit if high_err_rate blacklist',
       ],
@@ -261,11 +263,11 @@ class gateway {
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
+        'reject if high_conn_cur',
+        'reject if high_conn_rate',
         'track-sc2 src table lists-http',
       ],
       'http-request'        => [
-        'tarpit if high_conn_cur blacklist',
-        'tarpit if high_conn_rate blacklist',
         'tarpit if high_req_rate blacklist',
         'tarpit if high_err_rate blacklist',
       ],
