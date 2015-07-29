@@ -28,13 +28,14 @@ board: hcsa,prez,secretary,bizman,communications,project,newmembers
 # appointed by zeilberg to handle incoming mail from hascs (mar '03).  modified by gdb (25 Aug 09) to see if anything actually comes here
 bullshit-coordinator: systems
 business: bizman
+amavis: systems
 clamav: systems
 daemon: systems
 datamatch: datamtch
 dinners: systems
 dos: systems-director
 # email registered with hcs.so
-domain: fwidjaja
+domain: systems
 elections: systems
 events: systems
 feedback: board
@@ -48,7 +49,7 @@ gopher: online-svcs,prez
 help: acctserv
 hcs: info
 # Dynamically expands into the hvirt group.
-hvirt: hcsa, gdb,keito,jscushman,carl,abrody,rait,jkroll,quentin,jhoon,broder
+hvirt: hcsa,gdb,keito,jscushman,carl,abrody,rait,jkroll,quentin,jhoon,broder
 info: board
 kmem: systems
 lp: systems
