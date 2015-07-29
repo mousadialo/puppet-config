@@ -112,15 +112,17 @@ class gateway {
     options => {
       'acl'                    => [
         'host_lists hdr(host) -i lists.hcs.harvard.edu lists.hcs.so',
-        'mynetworks src 10.0.0.0/8',
+        'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
         'blacklisted sc0_get_gpc0(blacklist) gt 0',
       ],
       'tcp-request connection' => [
-        'accept if mynetworks or harvard or cloudflare',
-        'reject if blacklisted',
         'track-sc0 src table blacklist',
+      ],
+      'http-request'           => [
+        'allow if mynetworks or harvard or cloudflare',
+        'tarpit if blacklisted',
       ],
       'use_backend'            => 'lists-http if host_lists',
       'default_backend'        => 'web-http',
@@ -132,7 +134,7 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 1m expire 30s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
+      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(web-http) ge 10',
         'high_conn_rate sc2_conn_rate(web-http) ge 10',
@@ -141,13 +143,13 @@ class gateway {
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
-        'reject if high_conn_cur',
-        'reject if high_conn_rate',
         'track-sc2 src table web-http',
       ],
       'http-request'        => [
-        'deny if high_req_rate blacklist',
-        'deny if high_err_rate blacklist',
+        'tarpit if high_conn_cur blacklist',
+        'tarpit if high_conn_rate blacklist',
+        'tarpit if high_req_rate blacklist',
+        'tarpit if high_err_rate blacklist',
       ],
       'option'              => [
         'forwardfor',
@@ -161,7 +163,7 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 1m expire 30s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
+      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(lists-http) ge 10',
         'high_conn_rate sc2_conn_rate(lists-http) ge 10',
@@ -170,13 +172,13 @@ class gateway {
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
-        'reject if high_conn_cur',
-        'reject if high_conn_rate',
         'track-sc2 src table lists-http',
       ],
       'http-request'        => [
-        'deny if high_req_rate blacklist',
-        'deny if high_err_rate blacklist',
+        'tarpit if high_conn_cur blacklist',
+        'tarpit if high_conn_rate blacklist',
+        'tarpit if high_req_rate blacklist',
+        'tarpit if high_err_rate blacklist',
       ],
       'option'              => [
         'forwardfor',
@@ -193,15 +195,17 @@ class gateway {
     options => {
       'acl'                    => [
         'host_lists hdr(host) -i lists.hcs.harvard.edu lists.hcs.so',
-        'mynetworks src 10.0.0.0/8',
+        'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
         'blacklisted sc0_get_gpc0(blacklist) gt 0',
       ],
       'tcp-request connection' => [
-        'accept if mynetworks or harvard or cloudflare',
-        'reject if blacklisted',
         'track-sc0 src table blacklist',
+      ],
+      'http-request'           => [
+        'allow if mynetworks or harvard or cloudflare',
+        'tarpit if blacklisted',
       ],
       'use_backend'            => 'lists-https if host_lists',
       'default_backend'        => 'web-https',
@@ -222,13 +226,13 @@ class gateway {
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
-        'reject if high_conn_cur',
-        'reject if high_conn_rate',
         'track-sc2 src table web-http',
       ],
       'http-request'        => [
-        'deny if high_req_rate blacklist',
-        'deny if high_err_rate blacklist',
+        'tarpit if high_conn_cur blacklist',
+        'tarpit if high_conn_rate blacklist',
+        'tarpit if high_req_rate blacklist',
+        'tarpit if high_err_rate blacklist',
       ],
       'option'              => [
         'forwardfor',
@@ -257,13 +261,13 @@ class gateway {
         'blacklist sc0_inc_gpc0(blacklist) gt 0',
       ],
       'tcp-request content' => [
-        'reject if high_conn_cur',
-        'reject if high_conn_rate',
         'track-sc2 src table lists-http',
       ],
       'http-request'        => [
-        'deny if high_req_rate blacklist',
-        'deny if high_err_rate blacklist',
+        'tarpit if high_conn_cur blacklist',
+        'tarpit if high_conn_rate blacklist',
+        'tarpit if high_req_rate blacklist',
+        'tarpit if high_err_rate blacklist',
       ],
       'option'              => [
         'forwardfor',
@@ -278,7 +282,8 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'option' => 'smtpchk',
+      'balance' => 'leastconn',
+      'option'  => 'smtpchk',
     },
   }
   
@@ -288,7 +293,8 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'option' => 'tcp-check',
+      'balance' => 'leastconn',
+      'option'  => 'tcp-check',
     },
   }
   
@@ -298,7 +304,8 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'option' => 'tcp-check',
+      'balance' => 'leastconn',
+      'option'  => 'tcp-check',
     },
   }
   
@@ -308,8 +315,9 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
+      'balance'     => 'leastconn',
       'acl'         => 'mynetworks src 10.0.0.0/8',
-      'tcp-request' => 'content reject if !mynetworks',
+      'tcp-request' => 'connection reject if !mynetworks',
       'option'      => 'smtpchk',
     },
   }
@@ -320,7 +328,8 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'option' => 'smtpchk',
+      'balance' => 'leastconn',
+      'option'  => 'smtpchk',
     },
   }
   
@@ -330,18 +339,32 @@ class gateway {
     },
     mode => 'tcp',
     options => {
-      'acl'             => 'mynetworks src 127.0.0.0/8 10.0.0.0/8',
-      'use_backend'     => 'login-ssh if !mynetworks',
-      'default_backend' => 'local-ssh',
+      'stick-table'            => 'type ip size 1m expire 1d peers bifrost store conn_cur,conn_rate(1d)',
+      'acl'                    => [
+        'mynetworks src 127.0.0.0/8 10.0.0.0/8',
+        'harvard src -f /etc/haproxy/harvard_ips',
+        'high_conn_cur sc0_conn_cur(ssh) ge 10',
+        'high_conn_rate sc0_conn_rate(ssh) ge 300',
+      ],
+      'tcp-request connection' => [
+        'accept if mynetworks or harvard',
+        'reject if high_conn_cur',
+        'reject if high_conn_rate',
+        'track-sc0 src table ssh',
+      ],
+      'use_backend'            => 'local-ssh if mynetworks',
+      'default_backend'        => 'login-ssh',
     },
   }
   
   haproxy::backend { 'login-ssh':
     options => {
-      'mode'      => 'tcp',
-      'balance'   => 'source',
-      'option'    => 'tcp-check',
-      'tcp-check' => 'expect string SSH-2.0-'
+      'mode'                => 'tcp',
+      'balance'             => 'leastconn',
+      'stick-table'         => 'type ip size 500k expire 1h peers bifrost',
+      'stick on'            => 'src table login-ssh',
+      'option'              => 'tcp-check',
+      'tcp-check'           => 'expect string SSH-2.0-'
     },
   }
   
@@ -367,7 +390,8 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'acl'         => 'mynetworks src 10.0.0.0/8',
+      'balance'     => 'leastconn',
+      'acl'         => 'mynetworks src 127.0.0.0/8 10.0.0.0/8',
       'tcp-request' => 'connection reject if !mynetworks',
       'option'      => 'tcp-check',
     },
@@ -379,7 +403,8 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'acl'         => 'mynetworks src 10.0.0.0/8',
+      'balance'     => 'leastconn',
+      'acl'         => 'mynetworks src 127.0.0.0/8 10.0.0.0/8',
       'tcp-request' => 'connection reject if !mynetworks',
       'option'      => 'tcp-check',
     },
@@ -391,7 +416,8 @@ class gateway {
     },
     mode    => 'tcp',
     options => {
-      'acl'         => 'mynetworks src 10.0.0.0/8',
+      'balance'     => 'leastconn',
+      'acl'         => 'mynetworks src 127.0.0.0/8 10.0.0.0/8',
       'tcp-request' => 'connection reject if !mynetworks',
       'option'      => 'tcp-check',
     },
@@ -400,7 +426,7 @@ class gateway {
   haproxy::backend { 'blacklist':
     collect_exported => false,
     options          => {
-      'stick-table' => 'type ip size 1m expire 30s peers bifrost store gpc0',
+      'stick-table' => 'type ip size 300k expire 30s peers bifrost store gpc0',
     },
   }
   
