@@ -65,6 +65,7 @@ class web {
       options           => ['send-proxy', 'check', 'ssl verify none'],
     }
     
+    # Compatibility stuff
     # Some groups use /nfs/home instead of /home
     file { '/nfs':
       ensure => link,
