@@ -125,6 +125,7 @@ class gateway {
         'allow if mynetworks or harvard or cloudflare',
         'tarpit if blacklisted',
       ],
+      'monitor-uri'            => '/health',
       'use_backend'            => 'lists-http if host_lists',
       'default_backend'        => 'web-http',
     },
@@ -135,7 +136,7 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
+      'stick-table'         => 'type ip size 200k expire 1d peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s),bytes_out_rate(1d)',
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(web-http) ge 10',
         'high_conn_rate sc2_conn_rate(web-http) ge 20',
@@ -164,7 +165,7 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
+      'stick-table'         => 'type ip size 200k expire 1d peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s),bytes_out_rate(1d)',
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(lists-http) ge 10',
         'high_conn_rate sc2_conn_rate(lists-http) ge 20',
@@ -209,6 +210,7 @@ class gateway {
         'allow if mynetworks or harvard or cloudflare',
         'tarpit if blacklisted',
       ],
+      'monitor-uri'            => '/health',
       'use_backend'            => 'lists-https if host_lists',
       'default_backend'        => 'web-https',
     },
@@ -425,10 +427,11 @@ class gateway {
     },
   }
   
+  # Dummy backend for blacklist stick-table
   haproxy::backend { 'blacklist':
     collect_exported => false,
     options          => {
-      'stick-table' => 'type ip size 300k expire 30s peers bifrost store gpc0',
+      'stick-table' => 'type ip size 200k expire 30s peers bifrost store gpc0',
     },
   }
   
