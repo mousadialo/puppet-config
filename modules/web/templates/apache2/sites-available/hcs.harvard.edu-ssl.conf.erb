@@ -3,7 +3,10 @@
   ServerAlias hcs.harvard.edu www.<%= @domain %> <%= @domain %>
   
   # Always canonicalize host to www.hcs.harvard.edu
-  Redirect permanent / https://www.hcs.harvard.edu/
+  RewriteEngine  On
+  RewriteOptions Inherit
+  RewriteCond %{HTTP_HOST} !^www\.hcs\.harvard\.edu$ [NC]  # [NC]: case-insensitive
+  RewriteRule ^ https://www.hcs.harvard.edu%{REQUEST_URI} [R=301,L]
   UseCanonicalName On
   
   DocumentRoot /var/www/hcs.harvard.edu/htdocs
