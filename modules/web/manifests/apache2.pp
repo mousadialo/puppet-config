@@ -31,6 +31,7 @@ class web::apache2 {
     package { 'apache2-suexec-custom':
       require => Package['apache2'],
     }
+    web::apache2::config { 'suexec/www-data': }
 
     package { 'libapache2-mod-fcgid':
       require => Package['apache2'],
