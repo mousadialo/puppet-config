@@ -11,9 +11,7 @@
   ServerAlias lists.<%= @domain %>
 
   # Redirect to use HTTPS instead.
-  RewriteEngine On
-  RewriteCond %{HTTPS} Off
-  RewriteRule .* https://lists.hcs.harvard.edu%{REQUEST_URI} [R=301,L]
+  Redirect permanent / https://lists.hcs.harvard.edu/
   
   DocumentRoot /var/www/
   ServerAdmin  webmaster@hcs
