@@ -10,6 +10,13 @@
   ServerName lists.hcs.harvard.edu
   ServerAlias lists.<%= @domain %>
   
+  # Always canonicalize host to lists.hcs.harvard.edu
+  RewriteEngine  On
+  RewriteOptions Inherit
+  RewriteCond %{HTTP_HOST} !^lists\.hcs\.harvard\.edu$ [NC]  # [NC]: case-insensitive
+  RewriteRule ^/(.*) https://lists.hcs.harvard.edu/$1 [R=301,L]
+  UseCanonicalName On
+  
   DocumentRoot /var/www/
   ServerAdmin webmaster@hcs
 

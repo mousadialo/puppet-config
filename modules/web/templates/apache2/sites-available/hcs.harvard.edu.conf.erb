@@ -1,15 +1,13 @@
 <VirtualHost *:80>
   ServerName  www.hcs.harvard.edu
   ServerAlias hcs.harvard.edu www.<%= @domain %> <%= @domain %>
-  
-  RewriteEngine  on
-  RewriteOptions inherit
 
-  # If host is hcs.harvard.edu, canonicalize host to www.hcs.harvard.edu
-  # TODO(fwidjaja): Also redirect hcs.so and www.hcs.so
-  RewriteCond %{HTTP_HOST} ^hcs\.harvard\.edu$ [NC]  # [NC]: case-insensitive
+  # Always canonicalize host to www.hcs.harvard.edu
+  RewriteEngine  On
+  RewriteOptions Inherit
+  RewriteCond %{HTTP_HOST} !^www\.hcs\.harvard\.edu$ [NC]  # [NC]: case-insensitive
   RewriteRule ^/(.*) http://www.hcs.harvard.edu/$1 [R=301,L]
-  #UseCanonicalName On
+  UseCanonicalName On
 
   DocumentRoot /var/www/hcs.harvard.edu/htdocs
   ServerAdmin  webmaster@hcs

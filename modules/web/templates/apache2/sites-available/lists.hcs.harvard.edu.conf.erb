@@ -12,8 +12,8 @@
 
   # Redirect to use HTTPS instead.
   RewriteEngine On
-  RewriteCond %{HTTPS} off
-  RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+  RewriteCond %{HTTPS} Off
+  RewriteRule ^/(.*) https://lists.hcs.harvard.edu/$1 [R=301,L]
   
   DocumentRoot /var/www/
   ServerAdmin  webmaster@hcs
