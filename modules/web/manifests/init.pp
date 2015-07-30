@@ -64,6 +64,22 @@ class web {
       define_cookies    => true,
       options           => ['send-proxy', 'check', 'ssl verify none'],
     }
+    
+    # Some groups use /nfs/home instead of /home
+    file { '/nfs':
+      ensure => link,
+      target => hiera('nfs-mount-dir'),
+      owner  => 'root',
+      group  => 'root',
+    }
+    
+    # Old perl location
+    file { '/usr/local/bin/perl':
+      ensure => link,
+      target => '/usr/bin/perl',
+      owner  => 'root',
+      group  => 'root',
+    }
   }
   elsif $::machine_type == 'lists' {
     @@haproxy::balancermember { "${::hostname}-lists-http":
