@@ -1,7 +1,7 @@
 <SPConfig xmlns="urn:mace:shibboleth:2.0:native:sp:config" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     clockSkew="1800">
 
-    <ApplicationDefaults entityID="https://hcs.harvard.edu/hcs/helios/sp"
+    <ApplicationDefaults entityID="https://hcs.harvard.edu/hcs/login/sp"
         REMOTE_USER="eppn">
 
         <!-- You should use secure cookies if at all possible.  See cookieProps in this Wiki article. -->
