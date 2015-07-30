@@ -14,7 +14,7 @@
   RewriteEngine  On
   RewriteOptions Inherit
   RewriteCond %{HTTP_HOST} !^lists\.hcs\.harvard\.edu$ [NC]  # [NC]: case-insensitive
-  RewriteRule ^/(.*) https://lists.hcs.harvard.edu/$1 [R=301,L]
+  RewriteRule .* https://lists.hcs.harvard.edu%{REQUEST_URI} [R=301,L]
   UseCanonicalName On
   
   DocumentRoot /var/www/
