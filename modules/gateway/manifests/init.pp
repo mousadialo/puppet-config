@@ -155,7 +155,7 @@ class gateway {
       ],
       'option'              => [
         'forwardfor',
-        'httpchk HEAD /health',
+        'httpchk HEAD /health HTTP/1.1\r\nHost:www.hcs.harvard.edu',
       ],
     },
   }
@@ -240,7 +240,7 @@ class gateway {
       ],
       'option'              => [
         'forwardfor',
-        'httpchk HEAD /health',
+        'httpchk HEAD /health HTTP/1.1\r\nHost:www.hcs.harvard.edu',
       ],
       'stats'               => [
         'enable',
