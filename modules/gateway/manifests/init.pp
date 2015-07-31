@@ -136,7 +136,7 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 1d peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s),bytes_out_rate(1d)',
+      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(web-http) ge 10',
         'high_conn_rate sc2_conn_rate(web-http) ge 20',
@@ -165,7 +165,7 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 1d peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s),bytes_out_rate(1d)',
+      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(lists-http) ge 10',
         'high_conn_rate sc2_conn_rate(lists-http) ge 20',
