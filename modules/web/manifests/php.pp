@@ -47,8 +47,9 @@ class web::php {
     }
 
     # PHP5 modules
-    web::php5::mod { 'mcrypt': }
+    web::php5::mod { 'curl': }
     web::php5::mod { 'gd': }
+    web::php5::mod { 'mcrypt': }
     web::php5::mod { 'mysql': }
     
 }
