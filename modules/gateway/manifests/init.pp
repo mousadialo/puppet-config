@@ -156,6 +156,7 @@ class gateway {
       'option'              => [
         'forwardfor',
         'httpchk HEAD /health HTTP/1.1\r\nHost:www.hcs.harvard.edu',
+        'httplog',
       ],
     },
   }
@@ -185,6 +186,7 @@ class gateway {
       'option'              => [
         'forwardfor',
         'httpchk',
+        'httplog',
       ],
     },
   }
@@ -241,6 +243,7 @@ class gateway {
       'option'              => [
         'forwardfor',
         'httpchk HEAD /health HTTP/1.1\r\nHost:www.hcs.harvard.edu',
+        'httplog',
       ],
       'stats'               => [
         'enable',
@@ -276,6 +279,7 @@ class gateway {
       'option'              => [
         'forwardfor',
         'httpchk',
+        'httplog',
       ],
     },
   }
@@ -287,7 +291,10 @@ class gateway {
     mode    => 'tcp',
     options => {
       'balance' => 'leastconn',
-      'option'  => 'smtpchk',
+      'option'  => [
+        'smtpchk',
+        'tcplog',
+      ],
     },
   }
   
@@ -298,7 +305,10 @@ class gateway {
     mode    => 'tcp',
     options => {
       'balance' => 'leastconn',
-      'option'  => 'tcp-check',
+      'option'  => [
+        'tcp-check',
+        'tcplog',
+      ],
     },
   }
   
@@ -309,7 +319,10 @@ class gateway {
     mode    => 'tcp',
     options => {
       'balance' => 'leastconn',
-      'option'  => 'tcp-check',
+      'option'  => [
+        'tcp-check',
+        'tcplog',
+      ],
     },
   }
   
@@ -322,7 +335,10 @@ class gateway {
       'balance'     => 'leastconn',
       'acl'         => 'mynetworks src 10.0.0.0/8',
       'tcp-request' => 'connection reject if !mynetworks',
-      'option'      => 'smtpchk',
+      'option'      => [
+        'smtpchk',
+        'tcplog',
+      ],
     },
   }
   
@@ -333,7 +349,10 @@ class gateway {
     mode    => 'tcp',
     options => {
       'balance' => 'leastconn',
-      'option'  => 'smtpchk',
+      'option'  => [
+        'smtpchk',
+        'tcplog',
+      ],
     },
   }
   
@@ -367,7 +386,10 @@ class gateway {
       'balance'             => 'leastconn',
       'stick-table'         => 'type ip size 500k expire 1h peers bifrost',
       'stick on'            => 'src table login-ssh',
-      'option'              => 'tcp-check',
+      'option'              => [
+        'tcp-check',
+        'tcplog',
+      ],
       'tcp-check'           => 'expect string SSH-2.0-'
     },
   }
@@ -397,7 +419,10 @@ class gateway {
       'balance'     => 'leastconn',
       'acl'         => 'mynetworks src 127.0.0.0/8 10.0.0.0/8',
       'tcp-request' => 'connection reject if !mynetworks',
-      'option'      => 'tcp-check',
+      'option'      => [
+        'tcp-check',
+        'tcplog',
+      ],
     },
   }
   
@@ -410,7 +435,10 @@ class gateway {
       'balance'     => 'leastconn',
       'acl'         => 'mynetworks src 127.0.0.0/8 10.0.0.0/8',
       'tcp-request' => 'connection reject if !mynetworks',
-      'option'      => 'tcp-check',
+      'option'      => [
+        'tcp-check',
+        'tcplog',
+      ],
     },
   }
   
@@ -423,7 +451,10 @@ class gateway {
       'balance'     => 'leastconn',
       'acl'         => 'mynetworks src 127.0.0.0/8 10.0.0.0/8',
       'tcp-request' => 'connection reject if !mynetworks',
-      'option'      => 'tcp-check',
+      'option'      => [
+        'tcp-check',
+        'tcplog',
+      ],
     },
   }
   
