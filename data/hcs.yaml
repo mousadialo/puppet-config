@@ -73,6 +73,10 @@ userfacing_packages:
   - rar
   - unrar
   - p7zip-full
+  
+  # Shells
+  - tcsh
+  - zsh
 
   # General Utilities
   - alpine
@@ -113,3 +117,4 @@ userfacing_packages:
   - tcpdump
   - tmux
   - traceroute
+  - whois
