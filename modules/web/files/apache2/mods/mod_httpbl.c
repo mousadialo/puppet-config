@@ -2797,7 +2797,7 @@ int serialize_hashtable_to_file(apr_pool_t* p, apr_file_t* the_hashtable_file, a
  */
 static void outputIPOkayJSAlertString(request_rec *r)
 {
-    char*           text_add            = r->connection->client_ip;
+    char*           text_add            = r->useragent_ip;
     ap_rputs("<html><body><pre style=\"background-color: #FFFF00;\">Requesting address: ", r);
     ap_rputs(text_add, r);
     ap_rputs(" is okay. ACCESS GRANTED.</pre></body></html>\n", r);
@@ -2810,7 +2810,7 @@ static void outputIPOkayJSAlertString(request_rec *r)
  */
 static void outputIPAddressJSAlertString(request_rec *r)
 {
-    char*           text_add            = r->connection->client_ip;
+    char*           text_add            = r->useragent_ip;
     ap_rputs("<html><body><pre style=\"background-color: #FFFF00;\">Requesting address: ", r);
     ap_rputs(text_add, r);
     ap_rputs(".  ACCESS DENIED.</pre></body></html>\n", r);
@@ -5511,7 +5511,7 @@ static apr_status_t prepare_honeypot_request_postdata(request_rec* r, apr_pool_t
     this_tag1                                   = apr_pstrdup(p, "e217e1664d3b7db40a52fb2c5abdafa5");
     this_tag2                                   = apr_pstrdup(p, "f609af9d0d820f29f584f009165e6e78");
     this_tag3                                   = apr_pstrdup(p, "34aa2473d1aa4705f92165addfe297ff");
-    this_ip                                     = apr_pstrdup(p, r->connection->client_ip);
+    this_ip                                     = apr_pstrdup(p, r->useragent_ip);
 //    this_svrn                                   = apr_pstrdup(p, r->connection->local_host);    // not always available
     this_svrn                                   = apr_pstrdup(p, r->server->server_hostname);
     this_svp                                    = apr_pstrdup(p, r->parsed_uri.port_str);
@@ -5956,14 +5956,14 @@ static int handlePageAccessAction(request_rec* r, int access_value, const char* 
     case HTTPBL_ACTION_DENY:
         ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: - (0.5.1.1) page access: \"DENY\".\nReturning %d.", HTTP_FORBIDDEN);
         the_return_value = HTTP_FORBIDDEN;
-        ap_log_rerror(APLOG_MARK, APLOG_NOTICE, 0, r, "HTTPBL: IP/URL combination denied by mod_httpbl configuration; IP: {%s}; RBL-value:{%s}; URL: {%s}", r->connection->client_ip, the_rbl_string, full_url);
+        ap_log_rerror(APLOG_MARK, APLOG_NOTICE, 0, r, "HTTPBL: IP/URL combination denied by mod_httpbl configuration; IP: {%s}; RBL-value:{%s}; URL: {%s}", r->useragent_ip, the_rbl_string, full_url);
         break;
     case HTTPBL_ACTION_ALLOW_XLATE_EMAILS:
         ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: - (0.5.1.2.1) page access: \"ALLOW_XLATE_EMAILS\".\nReturning %d.", DECLINED);
         ap_add_output_filter("REPLACE_EMAIL_LINKS", NULL, r, r->connection); // set the replace-emails output filter to run... first pass replaces link URLs
         ap_add_output_filter("REPLACE_EMAIL_TEXT", NULL, r, r->connection); // set the replace-emails output filter to run... second pass replaces all other email text
         the_return_value = DECLINED;
-        ap_log_rerror(APLOG_MARK, APLOG_NOTICE, 0, r, "HTTPBL: IP/URL combination allowed with translated emails by mod_httpbl configuration; IP: {%s}; RBL-value:{%s}; URL: {%s}", r->connection->client_ip, the_rbl_string, full_url);
+        ap_log_rerror(APLOG_MARK, APLOG_NOTICE, 0, r, "HTTPBL: IP/URL combination allowed with translated emails by mod_httpbl configuration; IP: {%s}; RBL-value:{%s}; URL: {%s}", r->useragent_ip, the_rbl_string, full_url);
         break;
     case HTTPBL_ACTION_ALLOW:
         ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: - (0.5.1.2.0) page access: \"ALLOW\".\nReturning %d.", DECLINED);
@@ -5975,7 +5975,7 @@ static int handlePageAccessAction(request_rec* r, int access_value, const char* 
         redir_to            = apr_psprintf(r->pool, "%s?ref=%s", this_dir_cfg->challenge_url, yahoo_urlencode(r->pool, r->uri));
         apr_table_setn(r->headers_out, "Location", redir_to);   // this is a non-internal redirect; it would be nice to be able to cloak the challenge/whitelist token from logs by doing an internal redirect
         the_return_value    = HTTP_MOVED_TEMPORARILY;
-        ap_log_rerror(APLOG_MARK, APLOG_NOTICE, 0, r, "HTTPBL: IP/URL combination challenged by mod_httpbl configuration; IP: {%s}; RBL-value:{%s}; URL: {%s}", r->connection->client_ip, the_rbl_string, full_url);
+        ap_log_rerror(APLOG_MARK, APLOG_NOTICE, 0, r, "HTTPBL: IP/URL combination challenged by mod_httpbl configuration; IP: {%s}; RBL-value:{%s}; URL: {%s}", r->useragent_ip, the_rbl_string, full_url);
         break;
 #endif
 #ifdef SHOULD_REQUEST_HONEYPOTS
@@ -5985,7 +5985,7 @@ static int handlePageAccessAction(request_rec* r, int access_value, const char* 
         ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: - (0.5.1.4) page access: \"HONEYPOT\".\nReturning %s.", (the_return_value==OK)?"OK":(the_return_value==DECLINED)?"DECLINED":"UNKNOWN");
         if(the_return_value == OK)
             the_return_value = DONE;
-        ap_log_rerror(APLOG_MARK, APLOG_NOTICE, 0, r, "HTTPBL: IP/URL combination 'honey pot'ed by mod_httpbl configuration; IP: {%s}; RBL-value:{%s}; URL: {%s}", r->connection->client_ip, the_rbl_string, full_url);
+        ap_log_rerror(APLOG_MARK, APLOG_NOTICE, 0, r, "HTTPBL: IP/URL combination 'honey pot'ed by mod_httpbl configuration; IP: {%s}; RBL-value:{%s}; URL: {%s}", r->useragent_ip, the_rbl_string, full_url);
         break;
 #endif
     default: // handle the DEFAULT ACTION (as defined by the precompiler constant)
@@ -6107,7 +6107,7 @@ static int handle_any_whitelist_tokens(request_rec* r)
 
     if(is_request_a_whitelist_token(r))
     {
-        whitelist_insert(r->pool, r->connection->client_ip);
+        whitelist_insert(r->pool, r->useragent_ip);
 
         if(strstr(r->uri, this_cfg->token_str) != NULL)
         {
@@ -6219,7 +6219,7 @@ static int handle_honeypot_request(request_rec* r)
 
     testing_url                             = get_this_requests_g_httpbl_testing_url(r);
     full_testing_url_string                 = apr_psprintf(hpot_pool, "Your diagnostics URL: <a href=\"%s\">Diagnostics Page</a>", testing_url);
-    this_ip                                 = apr_pstrdup(hpot_pool, r->connection->client_ip);                                                        
+    this_ip                                 = apr_pstrdup(hpot_pool, r->useragent_ip);                                                        
     this_access_key                         = get_access_key_for_this_request(r, NULL, NULL);
     hpot_logfile_filename                   = apr_psprintf(hpot_pool, "%shttpbl_honeypot_params_%s_%"APR_TIME_T_FMT"%s", get_log_dir(), this_ip, timestamp_now, ".log");
 
@@ -6698,7 +6698,7 @@ static int access_checker(request_rec* r)
         ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: Request -> FLN: \"%s\"", r->filename);
 
         // First see if the IP itself is in the hitlist
-        n                                   = ntt_find(hit_list, r->connection->client_ip);
+        n                                   = ntt_find(hit_list, r->useragent_ip);
 
         if(!n || (n && ntt_is_expired(n))) // if the requesting IP does not have an active record in the hitlist
         {
@@ -6714,10 +6714,10 @@ static int access_checker(request_rec* r)
             ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "HTTPBL: RBL Value (in access checker): \"%s\"", the_rbl_string);
 
             // insert new RBL lookup object into the hitlist ntt
-            hitlist_insert(r->pool, r->connection->client_ip, the_rbl_string, r);
+            hitlist_insert(r->pool, r->useragent_ip, the_rbl_string, r);
             ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "HTTPBL: called hitlist_insert (in access checker): \"%s\"", the_rbl_string);
 
-            n   = ntt_find(hit_list, r->connection->client_ip);
+            n   = ntt_find(hit_list, r->useragent_ip);
 
             if(n)
                 ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: n found: \"%s\" => \"%s\" (%p).", n->key, n->rbl_value, n);
@@ -6732,24 +6732,24 @@ static int access_checker(request_rec* r)
         if(!(n->rbl_value) || httpbl_string_matches(n->rbl_value, ""))
             n->rbl_value    = get_cleanlist_rbl_value(r->pool);                  // set the rbl_value to our special whitelist value (for data integrity while storing)
 
-        ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "HTTPBL: - (0.1.1) Stored RBL value on IP (in NTT): %s => %s", r->connection->client_ip, (n->rbl_value)?(string_matches_whitelist_rbl_value(n->rbl_value)?"WHITELISTED_VALUE":string_matches_cleanlist_rbl_value(n->rbl_value)?"CLEANLIST_VALUE":n->rbl_value):"NULL");
+        ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "HTTPBL: - (0.1.1) Stored RBL value on IP (in NTT): %s => %s", r->useragent_ip, (n->rbl_value)?(string_matches_whitelist_rbl_value(n->rbl_value)?"WHITELISTED_VALUE":string_matches_cleanlist_rbl_value(n->rbl_value)?"CLEANLIST_VALUE":n->rbl_value):"NULL");
         ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "HTTPBL: - (0.1.1.0) httpbl_string_matches(\"%s\", WHITELIST_VALUE): %s", n->rbl_value, string_matches_whitelist_rbl_value(n->rbl_value)?"TRUE":"FALSE");
         ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "HTTPBL: - (0.1.1.1) httpbl_string_matches(\"%s\", CLEANLIST_VALUE): %s", n->rbl_value, string_matches_cleanlist_rbl_value(n->rbl_value)?"TRUE":"FALSE");
 
-        if(string_matches_whitelist_rbl_value(n->rbl_value) || is_whitelisted(r->connection->client_ip))
+        if(string_matches_whitelist_rbl_value(n->rbl_value) || is_whitelisted(r->useragent_ip))
         {
-            whitelist_insert(r->pool, r->connection->client_ip);    // insert/update whitelist record for this requesting IP
-            ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: - (0.1.1.2) IP %s is whitelisted... page request ALLOWed", r->connection->client_ip);
+            whitelist_insert(r->pool, r->useragent_ip);    // insert/update whitelist record for this requesting IP
+            ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: - (0.1.1.2) IP %s is whitelisted... page request ALLOWed", r->useragent_ip);
             return DECLINED;
         }
         if(string_matches_cleanlist_rbl_value(n->rbl_value))
         {
-            ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: - (0.1.1.3) IP %s is cleanlisted... page request ALLOWed", r->connection->client_ip);
+            ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: - (0.1.1.3) IP %s is cleanlisted... page request ALLOWed", r->useragent_ip);
             return DECLINED;
         }
         else    // RBL value is something other than clean/whitelist-value
         {
-            ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "Incoming request from: IP: '%s';      PID: '%ld';      RBL: '%s';      Found in resident memory", r->connection->client_ip, (long)getpid(), n->rbl_value);
+            ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "Incoming request from: IP: '%s';      PID: '%ld';      RBL: '%s';      Found in resident memory", r->useragent_ip, (long)getpid(), n->rbl_value);
         }
         int access_value    = is_access_allowed(r->pool, this_dir_cfg, this_svr_cfg, n->rbl_value, r);
         ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, r, "HTTPBL: - (0.1.1.4) access_value: %d", access_value);
@@ -6791,7 +6791,7 @@ static char* check_via(request_rec *r, const char* via_list)
         return NULL;
     }
 
-    ha = r->connection->client_ip; // get the requesting IP from the request_rec
+    ha = r->useragent_ip; // get the requesting IP from the request_rec
 
     // take the network address, convert to ascii, reverse the order of
     // the numbers, tack on the rbl-style list to search, add a period
@@ -6937,7 +6937,7 @@ static int handle_404_recording(request_rec *r)
     apr_cpystrn(req_meth,       r->method!=NULL?r->method:"",                                                                     254);   // Request Method (i.e. GET, POST, HEAD, etc.) String
     apr_cpystrn(req_host,       r->server->server_hostname!=NULL?r->server->server_hostname:"",                                   254);   // Request Host String
     apr_cpystrn(req_uri,        r->the_request!=NULL?r->the_request:"",                                                           254);   // Request UI String
-    apr_cpystrn(req_ip,         r->connection->client_ip,                                                                         254);   // Requesting IP
+    apr_cpystrn(req_ip,         r->useragent_ip,                                                                         254);   // Requesting IP
     apr_cpystrn(req_ua,         apr_table_get(r->headers_in, "User-Agent")!=NULL?apr_table_get(r->headers_in, "User-Agent"):"",   254);   // Get the User Agent string
     apr_cpystrn(req_ref,        apr_table_get(r->headers_in, "referer")!=NULL?apr_table_get(r->headers_in, "referer"):"",         254);   // Get the Referer string
     apr_cpystrn(req_timestamp,  req_timestamp?req_timestamp:"",                                                                   64);    // Request UI String
@@ -6946,7 +6946,7 @@ static int handle_404_recording(request_rec *r)
     apr_cpystrn(req_meth,       yahoo_urlencode(r->pool, r->method!=NULL?r->method:""),                                                                     254);   // Request Method (i.e. GET, POST, HEAD, etc.) String
     apr_cpystrn(req_host,       yahoo_urlencode(r->pool, r->server->server_hostname!=NULL?r->server->server_hostname:""),                                   254);   // Request Host String
     apr_cpystrn(req_uri,        yahoo_urlencode(r->pool, r->the_request!=NULL?r->the_request:""),                                                           254);   // Request UI String
-    apr_cpystrn(req_ip,         yahoo_urlencode(r->pool, r->connection->client_ip),                                                                         254);   // Requesting IP
+    apr_cpystrn(req_ip,         yahoo_urlencode(r->pool, r->useragent_ip),                                                                         254);   // Requesting IP
     apr_cpystrn(req_ua,         yahoo_urlencode(r->pool, apr_table_get(r->headers_in, "User-Agent")!=NULL?apr_table_get(r->headers_in, "User-Agent"):""),   254);   // Get the User Agent string
     apr_cpystrn(req_ref,        yahoo_urlencode(r->pool, apr_table_get(r->headers_in, "referer")!=NULL?apr_table_get(r->headers_in, "referer"):""),         254);   // Get the Referer string
     apr_cpystrn(req_timestamp,  yahoo_urlencode(r->pool, req_timestamp?req_timestamp:""),                                                                   64);    // Request UI String
@@ -6980,7 +6980,7 @@ static int handle_404_recording(request_rec *r)
                                         g_FOF_cur_count+1,
                                         req_uri,
                                         g_FOF_cur_count+1,
-                                        r->connection->client_ip,
+                                        r->useragent_ip,
                                         g_FOF_cur_count+1,
                                         req_ua,
                                         g_FOF_cur_count+1,
