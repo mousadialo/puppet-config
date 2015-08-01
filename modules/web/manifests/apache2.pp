@@ -138,18 +138,13 @@ class web::apache2 {
   
   # Apache2 module which enables the proxy protocol.
   # For more information and updates: https://github.com/ggrandes/apache24-modules/blob/master/mod_myfixip.c
-  file { '/usr/lib/apache2/modules/mod_myfixip.c':
-    ensure  => file,
-    source  => 'puppet:///modules/web/apache2/mods/mod_myfixip.c',
-    owner   => root,
-    group   => root,
-    require => Package['apache2'],
-  } ~>
-  exec { '/usr/bin/apxs -i -a -c /usr/lib/apache2/modules/mod_myfixip.c':
-    refreshonly => true,
-    require     => Package['apache2-dev'],
-    notify      => Service['apache2'],
-  } ->
+  web::apache2::mod_source { 'myfixip': } ->
   web::apache2::mod { 'myfixip': }
+  
+  # Project Honeypot HTTP:BL implementation
+  # See https://www.projecthoneypot.org/httpbl_download.php
+  web::apache2::config { 'mods-available/httpbl.conf': } ->
+  web::apache2::mod_source { 'httpbl': } ->
+  web::apache2::mod { 'httpbl': }
   
 }
