@@ -711,7 +711,7 @@ static int              handle_honeypot_request             (request_rec*);
 static int              handle_404_recording                (request_rec*);
 //static int              handle_this_request_as_a_honeypot   (request_rec* r);
 static char*            check_via                           (request_rec*,      const char*);
-static int              access_checker                      (request_rec*);
+static int              check_access                        (request_rec*);
 static void             register_hooks                      (apr_pool_t*);
 
 
@@ -6639,7 +6639,7 @@ static int is_access_allowed(apr_pool_t* p, httpbl_dir_cfg* the_dir_cfg, httpbl_
     Access Checker - main handler of HTTPBL protected pages.
     This function is called first and determines if an IP should be allowed to view a page.
 */
-static int access_checker(request_rec* r)
+static int check_access(request_rec* r)
 {
     char*               the_rbl_string  = NULL;
     struct ntt_node*    n               = NULL;
@@ -7589,17 +7589,17 @@ static void register_hooks (apr_pool_t *p)
 #endif
     init_404_post_url(p);
 
-    ap_hook_access_checker      (access_checker,            NULL,                       NULL,                       APR_HOOK_FIRST);        // file request handler - call "access_checker" first (before other handler functions) on all requests
+    ap_hook_check_access_ex     (check_access,              NULL,                       NULL,                       APR_HOOK_REALLY_FIRST, AP_AUTH_INTERNAL_PER_CONF); // file request handler - call "check_access" first (before other handler functions) on all requests
     ap_hook_handler             (handle_any_httpbl_tests,   NULL,                       NULL,                       APR_HOOK_FIRST);
 #ifdef SHOULD_REQUEST_HONEYPOTS
     ap_hook_handler             (handle_any_honeypots,      NULL,                       NULL,                       APR_HOOK_FIRST);
 #endif
 #ifdef SHOULD_SUBMIT_404s
-    ap_hook_fixups              (handle_404_recording,      NULL,                       NULL,                       APR_HOOK_LAST);         // file request handler - intercept 404 errors after all other handlers have been called
+    ap_hook_fixups              (handle_404_recording,      NULL,                       NULL,                       APR_HOOK_LAST); // file request handler - intercept 404 errors after all other handlers have been called
 #endif
     ap_register_output_filter   ("REPLACE_EMAIL_LINKS",     replace_email_links_filter, NULL,                       AP_FTYPE_CONTENT_SET);
-    ap_register_output_filter   ("REPLACE_EMAIL_TEXT",      replace_email_text_filter,  NULL,                       AP_FTYPE_CONTENT_SET);  // 
-    apr_pool_cleanup_register   (p,                         NULL,                       apr_pool_cleanup_null,      destroy_hit_list);      // call "destroy_hit_list" when the apr_pool is performing cleanup
+    ap_register_output_filter   ("REPLACE_EMAIL_TEXT",      replace_email_text_filter,  NULL,                       AP_FTYPE_CONTENT_SET);
+    apr_pool_cleanup_register   (p,                         NULL,                       apr_pool_cleanup_null,      destroy_hit_list); // call "destroy_hit_list" when the apr_pool is performing cleanup
 
     ap_hook_post_config         (httpbl_post_config,        NULL,                       NULL,                       APR_HOOK_LAST);
 }
