@@ -110,16 +110,17 @@ class gateway {
     },
     mode    => 'http',
     options => {
+      'stick-table'            => 'type ip size 200k expire 30s peers bifrost store gpc0',
       'acl'                    => [
         'host_lists hdr(host) -i lists.hcs.harvard.edu lists.hcs.so',
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
-        'blacklisted sc0_get_gpc0(blacklist) gt 0',
+        'blacklisted sc0_get_gpc0(http) gt 0',
       ],
       'tcp-request connection' => [
         'accept if mynetworks or harvard or cloudflare',
-        'track-sc0 src table blacklist',
+        'track-sc0 src table http',
       ],
       'http-request'           => [
         'allow if mynetworks or harvard or cloudflare',
@@ -142,7 +143,7 @@ class gateway {
         'high_conn_rate sc2_conn_rate(web-http) ge 20',
         'high_req_rate sc2_http_req_rate(web-http) ge 50',
         'high_err_rate sc2_http_err_rate(web-http) ge 10',
-        'blacklist sc0_inc_gpc0(blacklist) gt 0',
+        'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -172,7 +173,7 @@ class gateway {
         'high_conn_rate sc2_conn_rate(lists-http) ge 20',
         'high_req_rate sc2_http_req_rate(lists-http) ge 50',
         'high_err_rate sc2_http_err_rate(lists-http) ge 10',
-        'blacklist sc0_inc_gpc0(blacklist) gt 0',
+        'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -202,11 +203,11 @@ class gateway {
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
-        'blacklisted sc0_get_gpc0(blacklist) gt 0',
+        'blacklisted sc0_get_gpc0(http) gt 0',
       ],
       'tcp-request connection' => [
         'accept if mynetworks or harvard or cloudflare',
-        'track-sc0 src table blacklist',
+        'track-sc0 src table http',
       ],
       'http-request'           => [
         'allow if mynetworks or harvard or cloudflare',
@@ -229,7 +230,7 @@ class gateway {
         'high_conn_rate sc2_conn_rate(web-http) ge 20',
         'high_req_rate sc2_http_req_rate(web-http) ge 50',
         'high_err_rate sc2_http_err_rate(web-http) ge 10',
-        'blacklist sc0_inc_gpc0(blacklist) gt 0',
+        'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -265,7 +266,7 @@ class gateway {
         'high_conn_rate sc2_conn_rate(lists-http) ge 20',
         'high_req_rate sc2_http_req_rate(lists-http) ge 50',
         'high_err_rate sc2_http_err_rate(lists-http) ge 10',
-        'blacklist sc0_inc_gpc0(blacklist) gt 0',
+        'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -455,14 +456,6 @@ class gateway {
         'tcp-check',
         'tcplog',
       ],
-    },
-  }
-  
-  # Dummy backend for blacklist stick-table
-  haproxy::backend { 'blacklist':
-    collect_exported => false,
-    options          => {
-      'stick-table' => 'type ip size 200k expire 30s peers bifrost store gpc0',
     },
   }
   
