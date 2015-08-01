@@ -143,6 +143,12 @@ class web::apache2 {
   
   # Project Honeypot HTTP:BL implementation
   # See https://www.projecthoneypot.org/httpbl_download.php
+  file { '/var/log/httpbl':
+    ensure => directory,
+    owner  => 'www-data',
+    group  => 'www-data',
+    mode   => '0755',
+  } ->
   web::apache2::config { 'mods-available/httpbl.conf': } ->
   web::apache2::mod_source { 'httpbl': } ->
   web::apache2::mod { 'httpbl': }
