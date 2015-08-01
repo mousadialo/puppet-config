@@ -5487,7 +5487,7 @@ static apr_status_t prepare_honeypot_request_postdata(request_rec* r, apr_pool_t
     char*           this_svip                   = NULL;
     char*           this_rquri                  = NULL;
     char*           this_phpself                = NULL;
-    char*           this_version                = NULL;
+    char*           this_description            = NULL;
     char*           this_sn                     = NULL;
     char*           this_ref                    = NULL;
 
@@ -5518,8 +5518,8 @@ static apr_status_t prepare_honeypot_request_postdata(request_rec* r, apr_pool_t
 //    this_svp                                    = apr_psprintf(p, "%u", r->server->port);       // not always available
     this_svip                                   = apr_pstrdup(p, r->connection->local_ip);
     this_rquri                                  = apr_pstrdup(p, r->unparsed_uri);
+    this_description                            = apr_pstrdup(p, ap_get_server_description());
     this_phpself                                = apr_pstrdup(p, r->unparsed_uri);
-    this_version                                = apr_pstrdup(p, ap_get_server_version());
     this_sn                                     = apr_pstrdup(p, r->unparsed_uri);
     this_ref                                    = apr_pstrdup(p, apr_table_get(r->headers_in, "Referer"));
     this_ua                                     = apr_pstrdup(p, apr_table_get(r->headers_in, "User-Agent"));
@@ -5550,7 +5550,7 @@ static apr_status_t prepare_honeypot_request_postdata(request_rec* r, apr_pool_t
                                                                     (this_svip)?yahoo_urlencode(p, this_svip):"",
                                                                         (this_rquri)?yahoo_urlencode(p, this_rquri):"",
                                                                             (this_phpself)?yahoo_urlencode(p, this_phpself):"",
-                                                                                (this_version)?yahoo_urlencode(p, this_version):"",
+                                                                                (this_description)?yahoo_urlencode(p, this_description):"",
                                                                                     (this_sn)?yahoo_urlencode(p, this_sn):"",
                                                                                         (this_ref)?yahoo_urlencode(p, this_ref):"",
                                                                                             (this_ua)?yahoo_urlencode(p, this_ua):"");
