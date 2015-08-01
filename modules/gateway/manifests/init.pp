@@ -137,12 +137,12 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
+      'stick-table'         => 'type ip size 200k expire 15s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(15s),http_err_rate(15s)',
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(web-http) ge 10',
         'high_conn_rate sc2_conn_rate(web-http) ge 20',
-        'high_req_rate sc2_http_req_rate(web-http) ge 50',
-        'high_err_rate sc2_http_err_rate(web-http) ge 10',
+        'high_req_rate sc2_http_req_rate(web-http) ge 100',
+        'high_err_rate sc2_http_err_rate(web-http) ge 20',
         'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
@@ -167,12 +167,12 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
+      'stick-table'         => 'type ip size 200k expire 15s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(15s),http_err_rate(15s)',
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(lists-http) ge 10',
         'high_conn_rate sc2_conn_rate(lists-http) ge 20',
-        'high_req_rate sc2_http_req_rate(lists-http) ge 50',
-        'high_err_rate sc2_http_err_rate(lists-http) ge 10',
+        'high_req_rate sc2_http_req_rate(lists-http) ge 100',
+        'high_err_rate sc2_http_err_rate(lists-http) ge 20',
         'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
@@ -228,8 +228,8 @@ class gateway {
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(web-http) ge 10',
         'high_conn_rate sc2_conn_rate(web-http) ge 20',
-        'high_req_rate sc2_http_req_rate(web-http) ge 50',
-        'high_err_rate sc2_http_err_rate(web-http) ge 10',
+        'high_req_rate sc2_http_req_rate(web-http) ge 100',
+        'high_err_rate sc2_http_err_rate(web-http) ge 20',
         'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
@@ -264,8 +264,8 @@ class gateway {
       'acl'                 => [
         'high_conn_cur sc2_conn_cur(lists-http) ge 10',
         'high_conn_rate sc2_conn_rate(lists-http) ge 20',
-        'high_req_rate sc2_http_req_rate(lists-http) ge 50',
-        'high_err_rate sc2_http_err_rate(lists-http) ge 10',
+        'high_req_rate sc2_http_req_rate(lists-http) ge 100',
+        'high_err_rate sc2_http_err_rate(lists-http) ge 20',
         'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
