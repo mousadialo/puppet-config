@@ -6578,7 +6578,7 @@ static int is_access_allowed(apr_pool_t* p, httpbl_dir_cfg* the_dir_cfg, httpbl_
         if (this_rbl_handler) // this rbl_handler != NULL
         {
 #if VERBOSITY >= APLOG_DEBUG
-            ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "HTTPBL: - (9.0.4) Iteration #%d;\tTesting: octets: [%d].[%d].[%d].[%d],\tdays: [%d-%d] = %s,\tscore: [%d-%d] = %s,\tcategories bs: [%d] = %s,\tverbs bs: [%"APR_UINT64_T_FMT"] = %s,\ttest = %s",
+            ap_log_rerror(APLOG_MARK, APLOG_DEBUG, 0, r, "HTTPBL: - (9.0.4) Iteration #%d;\tTesting: octets: [%d].[%d].[%d].[%d],\tverbs bs: [%"APR_UINT64_T_FMT"] = %s,\tdays: [%d-%d] = %s,\tscore: [%d-%d] = %s,\tcategories bs: [%d] = %s,\ttest = %s",
                                                                                        i,
                                                                                                               octet1,
                                                                                                                    octet2,
