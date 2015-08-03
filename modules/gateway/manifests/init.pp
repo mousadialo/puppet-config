@@ -116,7 +116,7 @@ class gateway {
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
-        'blacklisted sc0_get_gpc0(http) gt 0',
+        'throttled sc0_get_gpc0(http) gt 0',
       ],
       'tcp-request connection' => [
         'accept if mynetworks or harvard or cloudflare',
@@ -124,7 +124,7 @@ class gateway {
       ],
       'http-request'           => [
         'allow if mynetworks or harvard or cloudflare',
-        'tarpit if blacklisted',
+        'tarpit if throttled',
       ],
       'monitor-uri'            => '/health',
       'use_backend'            => 'lists-http if host_lists',
@@ -147,7 +147,7 @@ class gateway {
         'wp_login path_end -i /wp-login.php',
         'bruteforce_detection sc2_http_req_rate(web-https) gt 5',
         
-        'blacklist sc0_inc_gpc0(http) gt 0',
+        'throttle sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -156,9 +156,9 @@ class gateway {
         'track-sc2 src table web-https if METH_POST wp_login',
       ],
       'http-request'        => [
-        'deny if high_req_rate blacklist',
-        'deny if high_err_rate blacklist',
-        'deny if bruteforce_detection blacklist',
+        'deny if high_req_rate throttle',
+        'deny if high_err_rate throttle',
+        'deny if bruteforce_detection',
       ],
       'option'              => [
         'forwardfor',
@@ -180,7 +180,7 @@ class gateway {
         'high_req_rate sc1_http_req_rate(lists-http) gt 100',
         'high_err_rate sc1_http_err_rate(lists-http) gt 20',
         
-        'blacklist sc0_inc_gpc0(http) gt 0',
+        'throttle sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -188,8 +188,8 @@ class gateway {
         'track-sc1 src table lists-http',
       ],
       'http-request'        => [
-        'deny if high_req_rate blacklist',
-        'deny if high_err_rate blacklist',
+        'deny if high_req_rate throttle',
+        'deny if high_err_rate throttle',
       ],
       'option'              => [
         'forwardfor',
@@ -210,7 +210,7 @@ class gateway {
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
-        'blacklisted sc0_get_gpc0(http) gt 0',
+        'throttled sc0_get_gpc0(http) gt 0',
       ],
       'tcp-request connection' => [
         'accept if mynetworks or harvard or cloudflare',
@@ -218,7 +218,7 @@ class gateway {
       ],
       'http-request'           => [
         'allow if mynetworks or harvard or cloudflare',
-        'tarpit if blacklisted',
+        'tarpit if throttled',
       ],
       'monitor-uri'            => '/health',
       'use_backend'            => 'lists-https if host_lists',
@@ -232,7 +232,7 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 5m peers bifrost store http_req_rate(5m)',
+      'stick-table'         => 'type ip size 200k expire 30s peers bifrost store http_req_rate(30s)',
       'acl'                 => [
         'high_conn_cur sc1_conn_cur(web-http) gt 10',
         'high_conn_rate sc1_conn_rate(web-http) gt 20',
@@ -242,7 +242,7 @@ class gateway {
         'wp_login path_end -i /wp-login.php',
         'bruteforce_detection sc2_http_req_rate(web-https) gt 5',
         
-        'blacklist sc0_inc_gpc0(http) gt 0',
+        'throttle sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -251,9 +251,9 @@ class gateway {
         'track-sc2 src table web-https if METH_POST wp_login',
       ],
       'http-request'        => [
-        'deny if high_req_rate blacklist',
-        'deny if high_err_rate blacklist',
-        'deny if bruteforce_detection blacklist',
+        'deny if high_req_rate throttle',
+        'deny if high_err_rate throttle',
+        'deny if bruteforce_detection',
       ],
       'option'              => [
         'forwardfor',
@@ -281,7 +281,7 @@ class gateway {
         'high_req_rate sc1_http_req_rate(lists-http) gt 100',
         'high_err_rate sc1_http_err_rate(lists-http) gt 20',
         
-        'blacklist sc0_inc_gpc0(http) gt 0',
+        'throttle sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
@@ -289,8 +289,8 @@ class gateway {
         'track-sc1 src table lists-http',
       ],
       'http-request'        => [
-        'deny if high_req_rate blacklist',
-        'deny if high_err_rate blacklist',
+        'deny if high_req_rate throttle',
+        'deny if high_err_rate throttle',
       ],
       'option'              => [
         'forwardfor',
