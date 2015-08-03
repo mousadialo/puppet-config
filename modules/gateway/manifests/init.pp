@@ -110,7 +110,7 @@ class gateway {
     },
     mode    => 'http',
     options => {
-      'stick-table'            => 'type ip size 200k expire 30s peers bifrost store gpc0',
+      'stick-table'            => 'type ip size 300k expire 30s peers bifrost store gpc0',
       'acl'                    => [
         'host_lists hdr(host) -i lists.hcs.harvard.edu lists.hcs.so',
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
@@ -139,20 +139,26 @@ class gateway {
       'cookie'              => 'SRV insert indirect nocache',
       'stick-table'         => 'type ip size 200k expire 15s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(15s),http_err_rate(15s)',
       'acl'                 => [
-        'high_conn_cur sc2_conn_cur(web-http) ge 10',
-        'high_conn_rate sc2_conn_rate(web-http) ge 20',
-        'high_req_rate sc2_http_req_rate(web-http) ge 100',
-        'high_err_rate sc2_http_err_rate(web-http) ge 20',
+        'high_conn_cur sc1_conn_cur(web-http) gt 10',
+        'high_conn_rate sc1_conn_rate(web-http) gt 20',
+        'high_req_rate sc1_http_req_rate(web-http) gt 100',
+        'high_err_rate sc1_http_err_rate(web-http) gt 20',
+        
+        'wp_login path_end -i /wp-login.php',
+        'bruteforce_detection sc2_http_req_rate(web-https) gt 5',
+        
         'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
         'reject if high_conn_rate',
-        'track-sc2 src table web-http',
+        'track-sc1 src table web-http',
+        'track-sc2 src table web-https if METH_POST wp_login',
       ],
       'http-request'        => [
-        'tarpit if high_req_rate blacklist',
-        'tarpit if high_err_rate blacklist',
+        'deny if high_req_rate blacklist',
+        'deny if high_err_rate blacklist',
+        'deny if bruteforce_detection blacklist',
       ],
       'option'              => [
         'forwardfor',
@@ -169,20 +175,21 @@ class gateway {
       'cookie'              => 'SRV insert indirect nocache',
       'stick-table'         => 'type ip size 200k expire 15s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(15s),http_err_rate(15s)',
       'acl'                 => [
-        'high_conn_cur sc2_conn_cur(lists-http) ge 10',
-        'high_conn_rate sc2_conn_rate(lists-http) ge 20',
-        'high_req_rate sc2_http_req_rate(lists-http) ge 100',
-        'high_err_rate sc2_http_err_rate(lists-http) ge 20',
+        'high_conn_cur sc1_conn_cur(lists-http) gt 10',
+        'high_conn_rate sc1_conn_rate(lists-http) gt 20',
+        'high_req_rate sc1_http_req_rate(lists-http) gt 100',
+        'high_err_rate sc1_http_err_rate(lists-http) gt 20',
+        
         'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
         'reject if high_conn_rate',
-        'track-sc2 src table lists-http',
+        'track-sc1 src table lists-http',
       ],
       'http-request'        => [
-        'tarpit if high_req_rate blacklist',
-        'tarpit if high_err_rate blacklist',
+        'deny if high_req_rate blacklist',
+        'deny if high_err_rate blacklist',
       ],
       'option'              => [
         'forwardfor',
@@ -225,21 +232,28 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
+      'stick-table'         => 'type ip size 200k expire 5m peers bifrost store http_req_rate(5m)',
       'acl'                 => [
-        'high_conn_cur sc2_conn_cur(web-http) ge 10',
-        'high_conn_rate sc2_conn_rate(web-http) ge 20',
-        'high_req_rate sc2_http_req_rate(web-http) ge 100',
-        'high_err_rate sc2_http_err_rate(web-http) ge 20',
+        'high_conn_cur sc1_conn_cur(web-http) gt 10',
+        'high_conn_rate sc1_conn_rate(web-http) gt 20',
+        'high_req_rate sc1_http_req_rate(web-http) gt 100',
+        'high_err_rate sc1_http_err_rate(web-http) gt 20',
+        
+        'wp_login path_end -i /wp-login.php',
+        'bruteforce_detection sc2_http_req_rate(web-https) gt 5',
+        
         'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
         'reject if high_conn_rate',
-        'track-sc2 src table web-http',
+        'track-sc1 src table web-http',
+        'track-sc2 src table web-https if METH_POST wp_login',
       ],
       'http-request'        => [
-        'tarpit if high_req_rate blacklist',
-        'tarpit if high_err_rate blacklist',
+        'deny if high_req_rate blacklist',
+        'deny if high_err_rate blacklist',
+        'deny if bruteforce_detection blacklist',
       ],
       'option'              => [
         'forwardfor',
@@ -262,20 +276,21 @@ class gateway {
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
       'acl'                 => [
-        'high_conn_cur sc2_conn_cur(lists-http) ge 10',
-        'high_conn_rate sc2_conn_rate(lists-http) ge 20',
-        'high_req_rate sc2_http_req_rate(lists-http) ge 100',
-        'high_err_rate sc2_http_err_rate(lists-http) ge 20',
+        'high_conn_cur sc1_conn_cur(lists-http) gt 10',
+        'high_conn_rate sc1_conn_rate(lists-http) gt 20',
+        'high_req_rate sc1_http_req_rate(lists-http) gt 100',
+        'high_err_rate sc1_http_err_rate(lists-http) gt 20',
+        
         'blacklist sc0_inc_gpc0(http) gt 0',
       ],
       'tcp-request content' => [
         'reject if high_conn_cur',
         'reject if high_conn_rate',
-        'track-sc2 src table lists-http',
+        'track-sc1 src table lists-http',
       ],
       'http-request'        => [
-        'tarpit if high_req_rate blacklist',
-        'tarpit if high_err_rate blacklist',
+        'deny if high_req_rate blacklist',
+        'deny if high_err_rate blacklist',
       ],
       'option'              => [
         'forwardfor',
