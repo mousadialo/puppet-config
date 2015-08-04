@@ -114,10 +114,7 @@ class web::apache2 {
     web::apache2::mod { 'rewrite': }
     web::apache2::mod { 'ssl': }
     web::apache2::mod { 'suexec': }
-    file { ['/etc/apache2/mods-available/userdir.conf',
-            '/etc/apache2/mods-enabled/userdir.conf']:
-      ensure => absent,
-    } ->
+    web::apache2::config { 'mods-available/userdir.conf': } ->
     web::apache2::mod { 'userdir': }
     web::apache2::mod { 'wsgi':
       require => Package['libapache2-mod-wsgi'],
