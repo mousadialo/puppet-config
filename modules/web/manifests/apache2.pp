@@ -71,6 +71,7 @@ class web::apache2 {
     web::apache2::config { 'hcs-conf/directories.conf': }
     web::apache2::config { 'hcs-conf/redirects.conf': }
     web::apache2::config { 'hcs-conf/tilde-rewrites.conf': }
+    web::apache2::config { 'hcs-conf/userdir.conf': }
 
     # HCS configurations for non-secure pages
     web::apache2::config { 'hcs-nonsecure-conf/redirects.conf': }
@@ -113,7 +114,10 @@ class web::apache2 {
     web::apache2::mod { 'rewrite': }
     web::apache2::mod { 'ssl': }
     web::apache2::mod { 'suexec': }
-    web::apache2::config { 'mods-available/userdir.conf': }
+    file { ['/etc/apache2/mods-available/userdir.conf',
+            '/etc/apache2/mods-enabled/userdir.conf']:
+      ensure => absent,
+    } ->
     web::apache2::mod { 'userdir': }
     web::apache2::mod { 'wsgi':
       require => Package['libapache2-mod-wsgi'],
