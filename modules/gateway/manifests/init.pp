@@ -193,7 +193,7 @@ class gateway {
       ],
       'option'              => [
         'forwardfor',
-        'httpchk',
+        'httpchk HEAD /mailman/listinfo/mailman HTTP/1.1\r\nHost:lists.hcs.harvard.edu',
         'httplog',
       ],
     },
@@ -294,7 +294,7 @@ class gateway {
       ],
       'option'              => [
         'forwardfor',
-        'httpchk',
+        'httpchk HEAD /mailman/listinfo/mailman HTTP/1.1\r\nHost:lists.hcs.harvard.edu',
         'httplog',
       ],
     },
