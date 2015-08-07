@@ -62,6 +62,23 @@ class mailman {
     require => Package['mailman'],
     notify  => Service['mailman'],
   }
+  
+  # Only enable mailman cron jobs on one server
+  if $::fqdn == hiera('mailman-cron-server') {
+    file { '/etc/cron.d/mailman':
+      ensure  => file,
+      source  => 'puppet:///modules/mailman/cron/mailman',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      require => Package['mailman'],
+    }
+  } else {
+    file { '/etc/cron.d/mailman':
+      ensure  => absent,
+      require => Package['mailman'],
+    }
+  }
 
   # Symlink mailman files to appropriate location
   file { '/var/lib/mailman/archives':
