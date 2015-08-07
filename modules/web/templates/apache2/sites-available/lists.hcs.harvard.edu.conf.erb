@@ -8,7 +8,7 @@
 # This is our lists virtual host.
 <VirtualHost *:80>
   ServerName lists.hcs.harvard.edu
-  ServerAlias lists.<%= @domain %>
+  ServerAlias <%= @secondary_domains.map{ |domain| "lists." + domain }.join(" ") %>
 
   # Redirect to use HTTPS instead.
   Redirect permanent / https://lists.hcs.harvard.edu/

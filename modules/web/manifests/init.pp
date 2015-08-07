@@ -65,8 +65,9 @@ class web {
       options           => ['send-proxy', 'check', 'ssl verify none'],
     }
     
-    # Compatibility stuff
-    # Some groups use /nfs/home instead of /home
+    ## Compatibility stuff ##
+    
+    # Some groups use /nfs/home instead of /home. Point to new NFS mount location.
     file { '/nfs':
       ensure => link,
       target => hiera('nfs-mount-dir'),

@@ -6,7 +6,7 @@ define web::apache2::vhost ($ensure = 'enabled') {
     Allowed values are 'enabled' and 'disabled'.")
 
   if $ensure == 'enabled' {
-    $domain = hiera('domain')
+    $secondary_domains = hiera_array('secondary-domains')
     file { "/etc/apache2/sites-available/${title}.conf":
       ensure  => file,
       content => template("web/apache2/sites-available/${title}.conf.erb"),

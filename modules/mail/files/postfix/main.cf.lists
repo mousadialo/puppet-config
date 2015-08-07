@@ -1,13 +1,14 @@
 # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
 
-mydestination = localhost, localhost.localdomain, $myhostname, $mydomain, lists.$mydomain,
-  hcs.harvard.edu, lists.hcs.harvard.edu
+mydestination = localhost, localhost.localdomain, $myhostname, hcs.harvard.edu, lists.hcs.harvard.edu,
+  $mydomain, lists.$mydomain
 
 # List server should pipe all outgoing messages to mail servers
 relayhost = [hcs.harvard.edu]:10025
 
-alias_maps = cdb:/var/lib/mailman/data/aliases
+# Route using a MySQL table containing alias to command mappings
+alias_maps = mysql:/etc/postfix/mysql-alias-mailman.cf
 
 # Only allow connections from local network
 mynetworks = $config_directory/mynetworks

@@ -3,8 +3,8 @@
 
 myorigin = hcs.harvard.edu
 
-mydestination = localhost, localhost.localdomain, $myhostname, $mydomain, lists.$mydomain,
-  hcs.harvard.edu, lists.hcs.harvard.edu
+mydestination = localhost, localhost.localdomain, $myhostname, hcs.harvard.edu, lists.hcs.harvard.edu,
+  $mydomain, lists.$mydomain
 
 relay_domains = $mydestination, eecs.harvard.edu, solarsail.hcs.harvard.edu
 
@@ -17,16 +17,16 @@ disable_vrfy_command = yes
 #HCS: rewrite @fas to the correct address
 canonical_maps = cdb:/etc/postfix/canonical
 
-# HCS: need to have local_recipient_maps for transport tables
-local_recipient_maps = proxy:unix:passwd.byname $alias_maps $transport_maps
+alias_maps = cdb:/etc/aliases
+alias_database = cdb:/etc/aliases
 
 # HCS: Forward list traffic correctly
 # This uses a MySQL table that is updated automatically when a list is
 # added or removed.
 transport_maps = mysql:/etc/postfix/mysql-transport-mailman.cf
 
-alias_maps = cdb:/etc/aliases
-alias_database = cdb:/etc/aliases
+# HCS: need to have local_recipient_maps for transport tables
+local_recipient_maps = proxy:unix:passwd.byname $alias_maps $transport_maps
 
 home_mailbox = .inbox
 forward_path = $home/.forward

@@ -6,7 +6,6 @@ class nfs ($nfs_home_directory = false) {
   require hosts
   require ldap
 
-  $domain = hiera('domain')
   $nfs_server = hiera('nfs-server')
   $zpool_name = hiera('zfs::zpool_name')
   $mount_dir = hiera('nfs-mount-dir')
@@ -204,7 +203,7 @@ class nfs ($nfs_home_directory = false) {
   # clients. It should be identical on clients and server
   file { '/etc/idmapd.conf':
     ensure  => file,
-    content => template('nfs/idmapd.conf.erb'),
+    source  => 'puppet:///modules/nfs/idmapd.conf',
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
