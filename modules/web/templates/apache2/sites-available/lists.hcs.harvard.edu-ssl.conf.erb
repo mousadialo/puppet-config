@@ -8,7 +8,9 @@
 # This is our lists virtual host.
 <VirtualHost *:443>
   ServerName lists.hcs.harvard.edu
+<% unless @secondary_domains.empty? %>
   ServerAlias <%= @secondary_domains.map{ |domain| "lists." + domain }.join(" ") %>
+<% end %>
   
   # Always canonicalize host to lists.hcs.harvard.edu
   RewriteEngine  On

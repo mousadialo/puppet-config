@@ -1,6 +1,6 @@
 <VirtualHost *:443>
   ServerName  www.hcs.harvard.edu
-  ServerAlias <%= @secondary_domains.map{ |domain| "www." + domain }.join(" ") %> hcs.harvard.edu <%= @secondary_domains.join(" ") %>
+  ServerAlias<%= @secondary_domains.map{ |domain| " www." + domain }.join("") %> hcs.harvard.edu<%= @secondary_domains.map{ |domain| " " + domain }.join("") %>
   
   # Always canonicalize host to www.hcs.harvard.edu
   RewriteEngine  On
