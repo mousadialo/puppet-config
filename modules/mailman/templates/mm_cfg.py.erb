@@ -171,5 +171,11 @@ QRUNNERS = [
     ('RetryRunner',    1), # retry temporarily failed deliveries
     ]
 
+# This is the name used for the mailmanctl master lock file. In a clustered
+# load sharing environment with a shared 'locks' directory, it is desirable
+# to have separate locks for each host mailmanctl. This can be used to enable
+# that.
+MASTER_LOCK_FILE = '<%= @hostname %>-master-qrunner'
+
 # Note - if you're looking for something that is imported from mm_cfg, but you
 # didn't find it above, it's probably in /usr/lib/mailman/Mailman/Defaults.py.

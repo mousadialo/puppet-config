@@ -5,7 +5,6 @@ class mailman {
   require web
   require mail
   
-  $domain = hiera('domain')
   $mount_dir = hiera('nfs-mount-dir')
   
   # This was tested with mailman version 1:2.1.16-2ubuntu0.1. When upgrading
@@ -88,6 +87,16 @@ class mailman {
   file { '/var/lib/mailman/lists':
     ensure  => link,
     target  => "${mount_dir}/mailman/lists",
+    force   => true,
+    owner   => 'root',
+    group   => 'list',
+    require => [Nfs::Client::Mount['mailman'], Package['mailman']],
+    notify  => Service['mailman'],
+  }
+  
+  file { '/var/lib/mailman/locks':
+    ensure  => link,
+    target  => "${mount_dir}/mailman/locks",
     force   => true,
     owner   => 'root',
     group   => 'list',
