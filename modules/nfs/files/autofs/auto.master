@@ -9,7 +9,7 @@
 #/smb /etc/auto.smb
 #/misc  /etc/auto.misc
 #/net /etc/auto.net
-/mnt/tank/home/people /etc/autofs/nfs.people rw,relatime,nosuid,nodev
-/mnt/tank/home/groups /etc/autofs/nfs.groups rw,relatime,nosuid,nodev
-/mnt/tank/home/hcs /etc/autofs/nfs.hcs rw,relatime,nosuid,nodev
-/mnt/tank/home/general /etc/autofs/nfs.general rw,relatime,nosuid,nodev
+/mnt/tank/home/people /etc/autofs/nfs.people nfsvers=3,rw,relatime,nosuid,nodev
+/mnt/tank/home/groups /etc/autofs/nfs.groups nfsvers=3,rw,relatime,nosuid,nodev
+/mnt/tank/home/hcs /etc/autofs/nfs.hcs nfsvers=3,rw,relatime,nosuid,nodev
+/mnt/tank/home/general /etc/autofs/nfs.general nfsvers=3,rw,relatime,nosuid,nodev
