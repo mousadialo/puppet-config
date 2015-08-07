@@ -92,6 +92,19 @@ class nfs ($nfs_home_directory = false) {
         group   => 'list',
       }
     }
+    
+    if $::machine_type == 'lists' or $::machine_type == 'mail' {
+      # Mount transport directory
+      nfs::client::mount { 'transport':
+        server  => $nfs_server,
+        share   => "/${zpool_name}/services/transport",
+        mount   => "${mount_dir}/transport",
+        options => 'nfsvers=3,rw,relatime,nosuid,nodev',
+        atboot  => true,
+        owner   => 'list',
+        group   => 'list',
+      }
+    }
 
     if $nfs_home_directory {
       nfs::client::mount { 'home':
