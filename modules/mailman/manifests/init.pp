@@ -5,6 +5,7 @@ class mailman {
   require web
   require mail
   
+  $secondary_domains = hiera_array('secondary-domains')
   $mount_dir = hiera('nfs-mount-dir')
   
   # This was tested with mailman version 1:2.1.16-2ubuntu0.1. When upgrading
