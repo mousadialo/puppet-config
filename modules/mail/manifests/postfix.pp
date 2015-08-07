@@ -9,20 +9,18 @@ class mail::postfix {
     ensure => installed,
   }
 
+  package { 'postfix-mysql':
+    ensure => installed,
+  }
+
   service { 'postfix':
     ensure  => running,
     enable  => true,
-    require => [Package['postfix'], Package['postfix-cdb']],
+    require => [Package['postfix'], Package['postfix-cdb'], Package['postfix-mysql']],
   }
 
   if $::machine_type == 'mail' {
     require nfs
-
-    package { 'postfix-mysql':
-      ensure => installed,
-    }
-    
-    Package['postfix-mysql'] -> Service['postfix']
   
     # main.cf configuration
     mail::postfix::config { 'main.cf':
@@ -78,6 +76,10 @@ class mail::postfix {
   elsif $::machine_type == 'lists' {
     mail::postfix::config { 'main.cf':
       suffix => '.lists',
+    }
+    $mysql_password = hiera('mysql-password')
+    mail::postfix::config { 'mysql-alias-mailman.cf':
+      template => true,
     }
     mail::postfix::config { 'mynetworks': }
     
