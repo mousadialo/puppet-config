@@ -16,7 +16,7 @@ class mail::postfix {
   }
 
   if $::machine_type == 'mail' {
-    require mount
+    require filesystem
   
     # main.cf configuration
     $secondary_domains = hiera_array('secondary-domains')

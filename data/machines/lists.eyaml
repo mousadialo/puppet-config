@@ -1,6 +1,6 @@
 ---
 classes:
-  - mount
+  - filesystem
   - certs
   - web
   - mail

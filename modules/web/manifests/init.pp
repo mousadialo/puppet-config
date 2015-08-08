@@ -23,7 +23,7 @@ class web {
     package { 'python-ldap': }
     package { 'python-flask': }
     
-    require mount
+    require filesystem
     $mount_dir = hiera('nfs-mount-dir')
 
     # Symlink our web files to appropriate location

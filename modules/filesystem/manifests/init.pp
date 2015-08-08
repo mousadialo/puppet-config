@@ -1,9 +1,8 @@
-# HCS NFS mounts configuration
-class mount {
+# HCS filesystem configuration
+class filesystem {
 
   require base
   require hosts
-  require ldap
 
   $nfs_server = hiera('nfs-server')
   $zpool_name = hiera('zfs::zpool_name')
@@ -132,7 +131,7 @@ class mount {
     # that ldap users are going to be logging in.
     file { '/etc/apt/apt.conf.d/00restartnscd':
       ensure => file,
-      source => 'puppet:///modules/mount/nscd-restart',
+      source => 'puppet:///modules/filesystem/nscd-restart',
       owner  => 'root',
       group  => 'root',
     }
@@ -150,7 +149,7 @@ class mount {
 
     file { '/etc/auto.master':
       ensure  => file,
-      source  => 'puppet:///modules/mount/autofs/auto.master',
+      source  => 'puppet:///modules/filesystem/autofs/auto.master',
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
@@ -165,7 +164,7 @@ class mount {
 
     file { '/etc/autofs/nfs.people':
       ensure  => file,
-      content => template('mount/autofs/nfs.people'),
+      content => template('filesystem/autofs/nfs.people'),
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
@@ -174,7 +173,7 @@ class mount {
 
     file { '/etc/autofs/nfs.groups':
       ensure  => file,
-      content => template('mount/autofs/nfs.groups'),
+      content => template('filesystem/autofs/nfs.groups'),
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
@@ -183,7 +182,7 @@ class mount {
 
     file { '/etc/autofs/nfs.general':
       ensure  => file,
-      content => template('mount/autofs/nfs.general'),
+      content => template('filesystem/autofs/nfs.general'),
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
@@ -192,29 +191,33 @@ class mount {
 
     file { '/etc/autofs/nfs.hcs':
       ensure  => file,
-      content => template('mount/autofs/nfs.general'),
+      content => template('filesystem/autofs/nfs.general'),
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
       require => [Package['autofs'], File['/etc/autofs']],
     }
   }
-      
-  service { 'idmapd':
-    ensure => running,
-    enable => true,
-  }
+  
+  if defined(File['/etc/nsswitch.conf']) {
+    # If nsswitch.conf is defined, then this machine is also an LDAP client.
     
-  # This file is used for mapping user ids and group ids between filer and
-  # clients. It should be identical on clients and server
-  file { '/etc/idmapd.conf':
-    ensure  => file,
-    source  => 'puppet:///modules/mount/idmapd.conf',
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    require => File['/etc/nsswitch.conf'],
-    notify  => Service['idmapd'],
+    service { 'idmapd':
+      ensure => running,
+      enable => true,
+    }
+    
+    # This file is used for mapping user ids and group ids between filer and
+    # clients. It should be identical on clients and server
+    file { '/etc/idmapd.conf':
+      ensure  => file,
+      source  => 'puppet:///modules/filesystem/idmapd.conf',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      require => File['/etc/nsswitch.conf'],
+      notify  => Service['idmapd'],
+    }
   }
 
 }

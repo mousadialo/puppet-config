@@ -1,6 +1,6 @@
 ---
 classes:
-  - mount
+  - filesystem
   - ldap
   - mail # null client config
   - userfacing

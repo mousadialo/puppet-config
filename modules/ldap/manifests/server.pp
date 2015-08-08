@@ -2,7 +2,7 @@
 # Look at the README for instructions on setting up an LDAP server
 class ldap::server {
 
-  require mount
+  require filesystem
   
   $hashed_root_dn_pwd = hiera('hashed_root_dn_pwd')
   $root_dn_pwd = hiera('root_dn_pwd')

@@ -1,6 +1,6 @@
 ---
 classes:
-  - mount
+  - filesystem
   - ldap
 
 hashed_root_dn_pwd: >
