@@ -26,6 +26,8 @@ $final_spam_destiny = D_PASS;
 # Don't quarantine viruses, spam is passed on always with modified headers.
 $QUARANTINEDIR = undef;
 
+$mydomain = "hcs.harvard.edu";
+
 @local_domains_acl = ( ".hcs.harvard.edu"<%= @secondary_domains.map{ |domain| ", \"." + domain + "\"" }.join("") %> );
 
 #------------ Do not modify anything below this line -------------
