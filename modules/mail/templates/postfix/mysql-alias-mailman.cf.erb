@@ -1,5 +1,0 @@
-hosts = mysql.hcs.harvard.edu
-user = postfix
-password = <%= @mysql_password %>
-dbname = postfix
-query = SELECT command FROM mailman WHERE local_part = '%u'

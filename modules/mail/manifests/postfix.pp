@@ -9,14 +9,10 @@ class mail::postfix {
     ensure => installed,
   }
 
-  package { 'postfix-mysql':
-    ensure => installed,
-  }
-
   service { 'postfix':
     ensure  => running,
     enable  => true,
-    require => [Package['postfix'], Package['postfix-cdb'], Package['postfix-mysql']],
+    require => [Package['postfix'], Package['postfix-cdb']],
   }
 
   if $::machine_type == 'mail' {
@@ -27,10 +23,6 @@ class mail::postfix {
       suffix => '.mail',
     }
     mail::postfix::config { 'master.cf':
-      template => true,
-    }
-    $mysql_password = hiera('mysql-password')
-    mail::postfix::config { 'mysql-transport-mailman.cf':
       template => true,
     }
     mail::postfix::config { 'mynetworks': }
@@ -76,10 +68,6 @@ class mail::postfix {
   elsif $::machine_type == 'lists' {
     mail::postfix::config { 'main.cf':
       suffix => '.lists',
-    }
-    $mysql_password = hiera('mysql-password')
-    mail::postfix::config { 'mysql-alias-mailman.cf':
-      template => true,
     }
     mail::postfix::config { 'mynetworks': }
     

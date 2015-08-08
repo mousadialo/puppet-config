@@ -6,17 +6,6 @@ classes:
   - mail
   - mailman
   - scripts
-
-mysql-password: >
-    ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEw
-    DQYJKoZIhvcNAQEBBQAEggEAFKIPTomsr//K+B31PQ4iu3K7n+DsX3jjrD8o
-    iwmioyqR+iXUeiZLSPw/n7mw7LgNkJW7HssyRUQXbECjVZ8CDYhINssU+HzK
-    yM5rwkioM0P951A1s8IOssWgJl6G5nn9OBRia4b3WMc4+h0cFyC331KbRDPZ
-    fjoHHf5lVxz7e83aF1zXatGqqbaIITNm8IPR2saxQU9862QxWGQek+hG/gI/
-    8MCNHwrXwOEeGvahiLEgQBlclEF/RrcnQFVNfwmMda0XeGEq866DyTFutp1p
-    fsrO5nljA0qApeAg5a0xDPd0opUw8R9o6kfE6MEozMf6D9Dfem3D/nmqztWi
-    aRjwXzBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBAkMHbuAiGLplPBOJl9
-    xEFHgCAi5w163cKVLStFVbZR0+Uw4veUb4YGwbRJeLnt9J+f/A==]
   
 hcs_harvard_edu.key: >
     ENC[PKCS7,MIIH/QYJKoZIhvcNAQcDoIIH7jCCB+oCAQAxggEhMIIBHQIBADAFMAACAQEw
