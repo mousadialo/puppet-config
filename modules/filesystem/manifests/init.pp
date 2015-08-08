@@ -8,7 +8,9 @@ class filesystem {
   $zpool_name = hiera('zfs::zpool_name')
   $mount_dir = hiera('nfs-mount-dir')
 
-  include nfs::client
+  if $::machine_type != 'file' {
+    include nfs::client
+  }
   
   if $::machine_type == 'ldap' {
     # Mount backup directory
