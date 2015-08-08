@@ -104,8 +104,6 @@ class gateway {
     port         => '3009',
   }
   
-  $secondary_lists_domains = join(map(hiera_array('secondary-domains')) |$domain| { " lists.${domain}" }, "")
-  
   haproxy::frontend { 'http':
     bind    => {
       '*:80' => [],
@@ -114,7 +112,7 @@ class gateway {
     options => {
       'stick-table'            => 'type ip size 300k expire 30s peers bifrost store gpc0',
       'acl'                    => [
-        'host_lists hdr(host) -i lists.hcs.harvard.edu${secondary_lists_domains}',
+        'host_lists hdr_beg(host) -i lists.',
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
@@ -208,7 +206,7 @@ class gateway {
     mode    => 'http',
     options => {
       'acl'                    => [
-        'host_lists hdr(host) -i lists.hcs.harvard.edu${secondary_lists_domains}',
+        'host_lists hdr_beg(host) -i lists.',
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
