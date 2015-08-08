@@ -54,6 +54,21 @@ class web::apache2 {
     package { 'libapache2-mod-python':
       require => Package['apache2'],
     }
+    
+    # Phusion Passenger (for Ruby on Rails and Node.js webapps)
+    # See: https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#installation
+    apt::key { 'phusion':
+      id      => '561F9B9CAC40B2F7',
+      server  => 'keyserver.ubuntu.com',
+    } ->
+    apt::source { 'phusion_passenger':
+      location => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
+      release  => $::lsbdistcodename,
+      repos    => 'main',
+    } ->
+    package { 'libapache2-mod-passenger':
+      require => Package['apache2'],
+    }
 
     # APACHE CONFIGURATION
 
@@ -95,7 +110,7 @@ class web::apache2 {
     #web::apache2::vhost{ 'secure.hcs.harvard.edu': }
     web::apache2::vhost{ 'user-vhosts': }
 
-    # Mods enabled and disabled
+    # Mods enabled
     web::apache2::mod { 'actions': }
     web::apache2::mod { 'alias': }
     web::apache2::mod { 'authnz_ldap': }
@@ -108,6 +123,9 @@ class web::apache2 {
     web::apache2::mod { 'headers': }
     web::apache2::mod { 'include': }
     web::apache2::mod { 'ldap': }
+    web::apache2::mod { 'passenger':
+      require => Package['libapache2-mod-passenger'],
+    }
     web::apache2::mod { 'python':
       require => Package['libapache2-mod-python'],
     }

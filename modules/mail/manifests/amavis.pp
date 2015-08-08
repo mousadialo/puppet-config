@@ -22,13 +22,13 @@ class mail::amavis {
 
   apt::source { 'ubuntu_archive_multiverse':
     location => 'http://us-east-1.ec2.archive.ubuntu.com/ubuntu/',
-    release  => $lsbdistcodename,
+    release  => $::lsbdistcodename,
     repos    => 'multiverse',
   }
   
   apt::source { 'ubuntu_archive_updates_multiverse':
     location => 'http://us-east-1.ec2.archive.ubuntu.com/ubuntu/',
-    release  => "${lsbdistcodename}-updates",
+    release  => "${::lsbdistcodename}-updates",
     repos    => 'multiverse',
   }
   
