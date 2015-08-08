@@ -58,8 +58,8 @@ class web::apache2 {
     # Phusion Passenger (for Ruby on Rails and Node.js webapps)
     # See: https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#installation
     apt::key { 'phusion':
-      id      => '561F9B9CAC40B2F7',
-      server  => 'keyserver.ubuntu.com',
+      key        => '561F9B9CAC40B2F7',
+      key_server => 'keyserver.ubuntu.com',
     } ->
     apt::source { 'phusion_passenger':
       location => 'https://oss-binaries.phusionpassenger.com/apt/passenger',
