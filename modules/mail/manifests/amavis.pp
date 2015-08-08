@@ -66,8 +66,12 @@ class mail::amavis {
     require => Package['amavisd-new'],
   }
   
+  $secondary_domains = hiera_array('secondary-domains')
+  
   mail::amavis::config { '15-content_filter_mode': }
-  mail::amavis::config { '50-user': }
+  mail::amavis::config { '50-user':
+    template => true,
+  }
   
   package { 'razor':
     ensure  => installed,

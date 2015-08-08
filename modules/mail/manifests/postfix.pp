@@ -19,8 +19,10 @@ class mail::postfix {
     require mount
   
     # main.cf configuration
+    $secondary_domains = hiera_array('secondary-domains')
     mail::postfix::config { 'main.cf':
-      suffix => '.mail',
+      suffix   => '.mail',
+      template => true,
     }
     mail::postfix::config { 'master.cf':
       template => true,
@@ -66,8 +68,10 @@ class mail::postfix {
     }
   }
   elsif $::machine_type == 'lists' {
+    $secondary_domains = hiera_array('secondary-domains')
     mail::postfix::config { 'main.cf':
-      suffix => '.lists',
+      suffix   => '.lists',
+      template => true,
     }
     mail::postfix::config { 'mynetworks': }
     

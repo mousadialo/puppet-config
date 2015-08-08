@@ -1,8 +1,7 @@
 # See /usr/share/postfix/main.cf.dist for a commented, more complete version
 
 
-mydestination = localhost, localhost.localdomain, $myhostname, hcs.harvard.edu, lists.hcs.harvard.edu,
-  $mydomain, lists.$mydomain
+mydestination = localhost, localhost.localdomain, $myhostname, hcs.harvard.edu<%= @secondary_domains.map{ |domain| ", " + domain }.join("") %>, lists.hcs.harvard.edu<%= @secondary_domains.map{ |domain| ", lists." + domain }.join("") %>
 
 # List server should pipe all outgoing messages to mail servers
 relayhost = [hcs.harvard.edu]:10025
