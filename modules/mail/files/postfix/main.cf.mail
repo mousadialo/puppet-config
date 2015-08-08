@@ -21,9 +21,7 @@ alias_maps = cdb:/etc/aliases
 alias_database = cdb:/etc/aliases
 
 # HCS: Forward list traffic correctly
-# This uses a MySQL table that is updated automatically when a list is
-# added or removed.
-transport_maps = mysql:/etc/postfix/mysql-transport-mailman.cf
+transport_maps = cdb:/mnt/tank/transport/transport-mailman
 
 # HCS: need to have local_recipient_maps for transport tables
 local_recipient_maps = proxy:unix:passwd.byname $alias_maps $transport_maps

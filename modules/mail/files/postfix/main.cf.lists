@@ -7,8 +7,8 @@ mydestination = localhost, localhost.localdomain, $myhostname, hcs.harvard.edu, 
 # List server should pipe all outgoing messages to mail servers
 relayhost = [hcs.harvard.edu]:10025
 
-# Route using a MySQL table containing alias to command mappings
-alias_maps = mysql:/etc/postfix/mysql-alias-mailman.cf
+# Route mailman lists
+alias_maps = cdb:/var/lib/mailman/data/aliases
 
 # Only allow connections from local network
 mynetworks = $config_directory/mynetworks
