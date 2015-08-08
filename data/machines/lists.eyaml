@@ -1,6 +1,6 @@
 ---
 classes:
-  - nfs
+  - mount
   - certs
   - web
   - mail

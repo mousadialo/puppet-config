@@ -1,11 +1,9 @@
 ---
 classes:
-  - nfs
+  - mount
   - ldap
   - mail # null client config
   - userfacing
-
-nfs::nfs_home_directory: true
 
 ssh_host_dsa_key: >
     ENC[PKCS7,MIIEDQYJKoZIhvcNAQcDoIID/jCCA/oCAQAxggEhMIIBHQIBADAFMAACAQEw

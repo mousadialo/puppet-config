@@ -1,5 +1,4 @@
 ---
 classes:
-  - nfs
   - zfs
   - ldap

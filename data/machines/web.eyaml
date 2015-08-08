@@ -1,12 +1,10 @@
 ---
 classes:
-  - nfs
+  - mount
   - ldap
   - certs
   - web
   - mail # null client config
-
-nfs::nfs_home_directory: true
 
 rt-database-password: >
     ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEw

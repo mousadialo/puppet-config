@@ -1,7 +1,7 @@
 # mailman configuration
 class mailman {
 
-  require nfs
+  require mount
   require web
   require mail
   
