@@ -28,7 +28,7 @@ $QUARANTINEDIR = undef;
 
 $mydomain = "hcs.harvard.edu";
 
-@local_domains_acl = ( ".hcs.harvard.edu"<%= @secondary_domains.map{ |domain| ", \"." + domain + "\"" }.join("") %> );$mydomain = "hcs.so";
+@local_domains_acl = ( ".hcs.harvard.edu"<%= @secondary_domains.map{ |domain| ", \"." + domain + "\"" }.join("") %> );
 @whitelist_sender_acl = undef;
 
 #------------ Do not modify anything below this line -------------
