@@ -104,8 +104,7 @@ class gateway {
     port         => '3009',
   }
   
-  $secondary_lists_domains_array = map(hiera_array('secondary-domains')) |$domain| { " lists.${domain}" }
-  $secondary_lists_domains = join($secondary_lists_domains_array, "")
+  $secondary_lists_domains = join(map(hiera_array('secondary-domains')) { |$domain| " lists.${domain}" }, "")
   
   haproxy::frontend { 'http':
     bind    => {
