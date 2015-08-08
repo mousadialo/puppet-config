@@ -6,7 +6,8 @@ class ldap::server {
   
   $hashed_root_dn_pwd = hiera('hashed_root_dn_pwd')
   $root_dn_pwd = hiera('root_dn_pwd')
-  $ldap_backup_directory = "${hiera("nfs-mount-dir")}/backup/ldap"
+  $mount_dir = hiera('nfs-mount-dir')
+  $ldap_backup_directory = "${mount_dir}/backup/ldap"
 
   package { '389-ds-base':
     ensure => installed,
