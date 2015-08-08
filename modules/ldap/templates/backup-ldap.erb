@@ -1,0 +1,23 @@
+#!/bin/bash
+
+# directory to backup to
+BACKDIR=<%= @ldap_backup_directory %>
+
+# LDAP directory manager password
+DMPWD=<%= @root_dn_pwd %>
+
+# date format that is appended to filename
+DATE=$(date +'%Y-%m-%d')
+
+# check if the backup directory exists
+if [ ! -e $BACKDIR ]
+then
+ echo Backup directory does not exist!
+ exit 1
+fi
+
+ldapsearch -LLL -x -D "cn=Directory Manager" -w "$DMPWD" | gzip -c > $BACKDIR/$DATE.ldif.gz
+
+ln -s $DATE.ldif.gz $BACKDIR/latest.ldif.gz.temp
+
+mv $BACKDIR/latest.ldif.gz.temp $BACKDIR/latest.ldif.gz

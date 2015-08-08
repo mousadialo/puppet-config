@@ -204,7 +204,7 @@ else
     dmpwd="$DMPWD"
 fi
 
-ldapmodify -x -h localhost -p $ldapport -D "cn=directory manager" -w "$dmpwd" <<EOF
+ldapmodify -x -H ldap://localhost:$ldapport -D "cn=Directory Manager" -w "$dmpwd" <<EOF
 dn: cn=encryption,cn=config
 changetype: modify
 replace: nsSSLClientAuth

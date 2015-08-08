@@ -11,6 +11,20 @@ class mount {
 
   include nfs::client
   
+  if $::machine_type == 'ldap' {
+    # Mount backup directory
+    nfs::client::mount { 'backup':
+      server  => $nfs_server,
+      share   => "/${zpool_name}/services/backup",
+      mount   => "${mount_dir}/backup",
+      options => 'nfsvers=3,rw,relatime,nosuid,nodev',
+      atboot  => true,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0700',
+    }
+  }
+  
   if $::machine_type == 'web' {
     # Mount our web directories
     nfs::client::mount { 'www-hcs.harvard.edu':

@@ -3,6 +3,12 @@
 # Look at the README for instructions on setting up an LDAP server
 class ldap::server {
 
+  require mount
+  
+  $hashed_root_dn_pwd = hiera('hashed_root_dn_pwd')
+  $root_dn_pwd = hiera('root_dn_pwd')
+  $ldap_backup_directory = "${hiera('nfs-mount-dir')}/backup/ldap"
+
   package { '389-ds-base':
     ensure => installed,
   }
@@ -20,8 +26,6 @@ class ldap::server {
     require => Package['389-ds-base'],
   }
   
-  $hashed_root_dn_pwd = hiera('hashed_root_dn_pwd')
-  $root_dn_pwd = hiera('root_dn_pwd')
   file { '/etc/dirsrv/config/setup.inf':
     ensure  => file,
     content => template('ldap/setup.inf.erb'),
@@ -45,19 +49,37 @@ class ldap::server {
     creates => "/etc/dirsrv/slapd-${::hostname}",
     user    => 'root',
     require => File['/etc/dirsrv/config/setup.inf'],
-  } ~>
+    notify  => [Exec['setup-ds-ssl'], Exec['import-backup']],
+  }
+  
   exec { 'setup-ds-ssl':
     command     => "/etc/dirsrv/config/setupssl.sh /etc/dirsrv/slapd-${::hostname}",
     environment => "DMPWD=${root_dn_pwd}",
     refreshonly => true,
     user        => 'root',
-    require     => [File['/etc/dirsrv/config/setupssl.sh'], Package['libnss3-tools']],
+    require     => [File['/etc/dirsrv/config/setupssl.sh'], Package['libnss3-tools'], Service['dirsrv']],
+  }
+  
+  exec { 'import-backup':
+    command     => "/bin/gunzip -c ${ldap_backup_directory}/latest.ldif.gz | /usr/bin/ldapadd -xc -D \"cn=Directory Manager\" -w \"${root_dn_pwd}\" -H ldap://localhost",
+    refreshonly => true,
+    user        => 'root',
+    require     => [Nfs::Client::Mount['backup'], Service['dirsrv']],
   }
   
   service { 'dirsrv':
     ensure  => running,
     enable  => true,
-    require => [Exec['setup-ds'], Exec['setup-ds-ssl']],
+    require => Exec['setup-ds'],
+  }
+  
+  file { '/etc/cron.daily/backup-ldap':
+    ensure => file,
+    content => template('ldap/backup-ldap.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => Nfs::Client::Mount['backup'],
   }
   
   @@haproxy::balancermember { "${::hostname}-ldap":
