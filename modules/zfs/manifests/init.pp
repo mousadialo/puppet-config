@@ -58,7 +58,7 @@ class zfs ($zpool_name = 'tank') {
   # is empty before starting.
   file { '/etc/init.d/nfs-kernel-server':
     ensure => file,
-    source => 'puppet:///modules/nfs/nfs-kernel-server',
+    source => 'puppet:///modules/zfs/nfs-kernel-server',
     owner  => 'root',
     group  => 'root',
     mode   => '0755',

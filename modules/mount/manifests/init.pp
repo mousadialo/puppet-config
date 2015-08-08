@@ -118,7 +118,7 @@ class mount {
     # that ldap users are going to be logging in.
     file { '/etc/apt/apt.conf.d/00restartnscd':
       ensure => file,
-      source => 'puppet:///modules/nfs/nscd-restart',
+      source => 'puppet:///modules/mount/nscd-restart',
       owner  => 'root',
       group  => 'root',
     }
@@ -136,7 +136,7 @@ class mount {
 
     file { '/etc/auto.master':
       ensure  => file,
-      source  => 'puppet:///modules/nfs/autofs/auto.master',
+      source  => 'puppet:///modules/mount/autofs/auto.master',
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
@@ -151,7 +151,7 @@ class mount {
 
     file { '/etc/autofs/nfs.people':
       ensure  => file,
-      content => template('nfs/autofs/nfs.people'),
+      content => template('mount/autofs/nfs.people'),
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
@@ -160,7 +160,7 @@ class mount {
 
     file { '/etc/autofs/nfs.groups':
       ensure  => file,
-      content => template('nfs/autofs/nfs.groups'),
+      content => template('mount/autofs/nfs.groups'),
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
@@ -169,7 +169,7 @@ class mount {
 
     file { '/etc/autofs/nfs.general':
       ensure  => file,
-      content => template('nfs/autofs/nfs.general'),
+      content => template('mount/autofs/nfs.general'),
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
@@ -178,7 +178,7 @@ class mount {
 
     file { '/etc/autofs/nfs.hcs':
       ensure  => file,
-      content => template('nfs/autofs/nfs.general'),
+      content => template('mount/autofs/nfs.general'),
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
@@ -195,7 +195,7 @@ class mount {
   # clients. It should be identical on clients and server
   file { '/etc/idmapd.conf':
     ensure  => file,
-    source  => 'puppet:///modules/nfs/idmapd.conf',
+    source  => 'puppet:///modules/mount/idmapd.conf',
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
