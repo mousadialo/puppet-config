@@ -21,7 +21,7 @@ class mount {
       atboot  => true,
       owner   => 'root',
       group   => 'root',
-      mode    => '0700',
+      perm    => '0700',
     }
   }
   
