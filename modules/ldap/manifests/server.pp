@@ -80,7 +80,7 @@ class ldap::server {
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
-    require => Nfs::Client::Mount['backup'],
+    require => Class['awscli'],
   }
   
   @@haproxy::balancermember { "${::hostname}-ldap":
