@@ -2,6 +2,7 @@
 classes:
   - filesystem
   - ldap
+  - awscli
 
 hashed_root_dn_pwd: >
     ENC[PKCS7,MIIBmQYJKoZIhvcNAQcDoIIBijCCAYYCAQAxggEhMIIBHQIBADAFMAACAQEw
