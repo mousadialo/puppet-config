@@ -16,8 +16,4 @@ then
  exit 1
 fi
 
-ldapsearch -LLL -x -D "cn=Directory Manager" -w "$DMPWD" | gzip -c > $BACKDIR/$DATE.ldif.gz
-
-ln -s $DATE.ldif.gz $BACKDIR/latest.ldif.gz.temp
-
-mv $BACKDIR/latest.ldif.gz.temp $BACKDIR/latest.ldif.gz
+ldapsearch -LLL -x -D "cn=Directory Manager" -w "$DMPWD" | gzip -c | aws s3 cp - s3://hcs-backups/ldap/$DATE.ldif.gz

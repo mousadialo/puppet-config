@@ -61,10 +61,11 @@ class ldap::server {
   }
   
   exec { 'import-backup':
-    command     => "/bin/gunzip -c ${ldap_backup_directory}/latest.ldif.gz | /usr/bin/ldapadd -xc -D \"cn=Directory Manager\" -w \"${root_dn_pwd}\" -H ldap://localhost",
+    #                       list all files in ldap folder             get latest backup         extract filename                                 retrieve file from S3                            decompress file                                       import to LDAP
+    command     => "/usr/local/bin/aws s3 ls s3://hcs-backups/ldap/ | /usr/bin/tail -n 1 | /usr/bin/awk \'{print \$4}\' | /usr/bin/xargs -I % /usr/local/bin/aws s3 cp s3://hcs-backups/ldap/% - | /bin/gunzip -c | /usr/bin/ldapadd -xc -D \"cn=Directory Manager\" -w \"${root_dn_pwd}\" -H ldap://localhost",
     refreshonly => true,
     user        => 'root',
-    require     => [Nfs::Client::Mount['backup'], Service['dirsrv']],
+    require     => [Class['awscli'], Service['dirsrv']],
   }
   
   service { 'dirsrv':

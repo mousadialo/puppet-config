@@ -12,20 +12,6 @@ class filesystem {
     include nfs::client
   }
   
-  if $::machine_type == 'ldap' {
-    # Mount backup directory
-    nfs::client::mount { 'backup':
-      server  => $nfs_server,
-      share   => "/${zpool_name}/services/backup",
-      mount   => "${mount_dir}/backup",
-      options => 'nfsvers=3,rw,relatime,nosuid,nodev',
-      atboot  => true,
-      owner   => 'root',
-      group   => 'root',
-      perm    => '0700',
-    }
-  }
-  
   if $::machine_type == 'web' {
     # Mount our web directories
     nfs::client::mount { 'www-hcs.harvard.edu':
@@ -131,12 +117,12 @@ class filesystem {
     # everytime we do an apt-get so their groups are synced to ldap. This
     # file is going here because if we symlink the home directory it means
     # that ldap users are going to be logging in.
-    file { '/etc/apt/apt.conf.d/00restartnscd':
-      ensure => file,
-      source => 'puppet:///modules/filesystem/nscd-restart',
-      owner  => 'root',
-      group  => 'root',
-    }
+    #file { '/etc/apt/apt.conf.d/00restartnscd':
+    #  ensure => file,
+    #  source => 'puppet:///modules/filesystem/nscd-restart',
+    #  owner  => 'root',
+    #  group  => 'root',
+    #}
     
     package { 'autofs':
       ensure  => installed,
