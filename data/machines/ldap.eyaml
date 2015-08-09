@@ -1,6 +1,5 @@
 ---
 classes:
-  - filesystem
   - ldap
   - awscli
 
