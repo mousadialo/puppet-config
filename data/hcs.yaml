@@ -7,6 +7,7 @@ classes:
 # TODO: audit these
 userfacing_packages:
   # Languages
+  - build-essential
   - ghc
   - ocaml-nox
   - perl
