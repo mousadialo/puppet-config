@@ -1,13 +1,9 @@
 # HCS LDAP server configuration
 # Look at the README for instructions on setting up an LDAP server
 class ldap::server {
-
-  require filesystem
   
   $hashed_root_dn_pwd = hiera('hashed_root_dn_pwd')
   $root_dn_pwd = hiera('root_dn_pwd')
-  $mount_dir = hiera('nfs-mount-dir')
-  $ldap_backup_directory = "${mount_dir}/backup/ldap"
 
   package { '389-ds-base':
     ensure => installed,
