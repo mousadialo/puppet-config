@@ -111,18 +111,6 @@ class filesystem {
       # 2) Ubuntu user is deleted or has a new local home directory
       require => [Nfs::Client::Mount['home'], User['ubuntu']],
     }
-
-    # HACK nscd caches all of the users groups from ldap. Whenever a sudo
-    # user does an apt-get their groups get all screwed up. We restart nscd
-    # everytime we do an apt-get so their groups are synced to ldap. This
-    # file is going here because if we symlink the home directory it means
-    # that ldap users are going to be logging in.
-    #file { '/etc/apt/apt.conf.d/00restartnscd':
-    #  ensure => file,
-    #  source => 'puppet:///modules/filesystem/nscd-restart',
-    #  owner  => 'root',
-    #  group  => 'root',
-    #}
     
     package { 'autofs':
       ensure  => installed,
