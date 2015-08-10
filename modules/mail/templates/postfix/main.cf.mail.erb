@@ -8,7 +8,7 @@ mydestination = localhost, localhost.localdomain, $myhostname, hcs.harvard.edu<%
 relay_domains = $mydestination, eecs.harvard.edu, solarsail.hcs.harvard.edu
 
 # Strip foo.bar.hcs.harvard.edu -> hcs.harvard.edu
-masquerade_domains = hcs.harvard.edu<%= @secondary_domains.map{ |domain| " " + domain }.join("") %> lists.hcs.harvard.edu<%= @secondary_domains.map{ |domain| " lists." + domain }.join("") %>
+masquerade_domains = lists.hcs.harvard.edu<%= @secondary_domains.map{ |domain| " lists." + domain }.join("") %> hcs.harvard.edu<%= @secondary_domains.map{ |domain| " " + domain }.join("") %>
 
 # Don't let people collect valid adresses by polling us.
 disable_vrfy_command = yes
