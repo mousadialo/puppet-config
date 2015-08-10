@@ -1,6 +1,10 @@
 # PHP configuration
 class web::php {
     
+    package { 'libapache2-mod-suphp':
+      require => Package['apache2'],
+    }
+    
     #package { 'libapache2-mod-php5': }
     # Custom PHP configs. Changes include:
     # - Higher file upload size
@@ -22,8 +26,21 @@ class web::php {
     #  require => Package['libapache2-mod-php5'],
     #}
     
-    package { 'libapache2-mod-suphp':
-      require => Package['apache2'],
+    if $::fqdn == hiera('php5-cron-server') {
+      file { '/etc/cron.d/php5':
+        ensure  => file,
+        source  => 'puppet:///modules/web/php5/cron/php5',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        require => Package['libapache2-mod-suphp'],
+      }
+    }
+    else {
+      file { '/etc/cron.d/php5':
+        ensure  => absent,
+        require => Package['libapache2-mod-suphp'],
+      }
     }
     
     # Custom suphp conf which disables checking the Document root. If we don't
