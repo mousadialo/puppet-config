@@ -11,7 +11,7 @@ nfs-mount-dir: '/mnt/tank'
 
 zfs::zpool_name: 'tank'
 
-php5-cron-server: 'web0.hcs.harvard.edu'
+php5-cron-server: 'to be set'
 
 mailman-cron-server: 'lists0.hcs.harvard.edu'
 
