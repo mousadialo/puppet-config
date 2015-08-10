@@ -22,6 +22,7 @@ class filesystem {
       atboot  => true,
       owner   => 'webapps',
       group   => 'hcs',
+      require => Class['ldap'],
     }
 
     nfs::client::mount { 'www-hcs.harvard.edu-ssl':
@@ -32,6 +33,7 @@ class filesystem {
       atboot  => true,
       owner   => 'webapps',
       group   => 'hcs',
+      require => Class['ldap'],
     }
     
     # Mount PHP sessions directory
@@ -58,6 +60,7 @@ class filesystem {
       owner   => 'webapps',
       group   => 'hcs',
       perm    => '0711',
+      require => Class['ldap'],
     }
   }
   
