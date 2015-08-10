@@ -5,7 +5,6 @@ class web::php {
       require => Package['apache2'],
     }
     
-    #package { 'libapache2-mod-php5': }
     # Custom PHP configs. Changes include:
     # - Higher file upload size
     # - Use NFS session directory
@@ -17,14 +16,6 @@ class web::php {
       notify  => Service['apache2'],
       require => Package['libapache2-mod-suphp'],
     }
-    #file {'/etc/php5/apache2/php.ini':
-    #  ensure  => file,
-    #  source  => 'puppet:///modules/web/php5/apache2/php.ini',
-    #  owner   => root,
-    #  group   => root,
-    #  notify  => Service['apache2'],
-    #  require => Package['libapache2-mod-php5'],
-    #}
     
     if $::fqdn == hiera('php5-cron-server') {
       file { '/etc/cron.d/php5':
@@ -55,10 +46,6 @@ class web::php {
       require => Package['libapache2-mod-suphp']
     }
     
-    #web::apache2::mod { 'php5':
-    #  ensure  => disabled,
-    #  require => Package['libapache2-mod-php5'],
-    #}
     web::apache2::mod { 'suphp':
       require => Package['libapache2-mod-suphp'],
     }
