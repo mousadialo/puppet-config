@@ -122,6 +122,7 @@ class web::apache2 {
       require => Package['libapache2-mod-python'],
     }
     web::apache2::mod { 'rewrite': }
+    web::apache2::config { 'mods-available/ssl.conf': } ->
     web::apache2::mod { 'ssl': }
     web::apache2::mod { 'suexec': }
     web::apache2::config { 'mods-available/userdir.conf': } ->
@@ -137,6 +138,7 @@ class web::apache2 {
     web::apache2::mod { 'cgid': }
     web::apache2::mod { 'headers': }
     web::apache2::mod { 'rewrite': }
+    web::apache2::config { 'mods-available/ssl.conf': } ->
     web::apache2::mod { 'ssl': }
     
     # Remove default vhost
