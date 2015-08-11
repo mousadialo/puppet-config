@@ -170,7 +170,7 @@ class filesystem {
 
     file { '/etc/autofs/nfs.hcs':
       ensure  => file,
-      content => template('filesystem/autofs/nfs.general'),
+      content => template('filesystem/autofs/nfs.hcs'),
       owner   => 'root',
       group   => 'root',
       notify  => Service['autofs'],
