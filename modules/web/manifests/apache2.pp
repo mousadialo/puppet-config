@@ -1,5 +1,7 @@
 # Apache2 configuration
 class web::apache2 {
+
+  $ssl_ciphers = hiera('ssl-ciphers')
     
   package { 'apache2':
     ensure => installed,
@@ -133,6 +135,7 @@ class web::apache2 {
     
     web::apache2::mod { 'alias': }
     web::apache2::mod { 'cgid': }
+    web::apache2::mod { 'headers': }
     web::apache2::mod { 'rewrite': }
     web::apache2::mod { 'ssl': }
     

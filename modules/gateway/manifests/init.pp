@@ -201,7 +201,7 @@ class gateway {
 
   haproxy::frontend { 'https':
     bind    => {
-      '*:443' => ['ssl', 'crt', $pem]
+      '*:443' => ['ssl', 'crt', $pem, 'ciphers', hiera('ssl-ciphers'), 'no-sslv3']
     },
     mode    => 'http',
     options => {
