@@ -7,6 +7,47 @@ class gateway {
   apt::ppa { 'ppa:vbernat/haproxy-1.5':
     package_manage => false,
   }
+  
+  class { 'haproxy':
+    global_options => {
+      'log'     => [
+        '/dev/log local0',
+        '/dev/log local1 notice',
+      ],
+      'chroot'                    => '/var/lib/haproxy',
+      'pidfile'                   => '/var/run/haproxy.pid',
+      'maxconn'                   => '4000',
+      'user'                      => 'haproxy',
+      'group'                     => 'haproxy',
+      'daemon'                    => '',
+      'stats'                     => 'socket /var/lib/haproxy/stats.sock',
+      'spread-checks'             => '5',
+      'tune.ssl.default-dh-param' => '2048',
+    },
+    defaults_options => {
+      'log'            => 'global',
+      'option'         => 'redispatch',
+      'retries'        => '3',
+      'timeout'        => [
+        'http-request 5s',
+        'queue        30s',
+        'connect      5s',
+        'client       30s',
+        'client-fin   30s',
+        'server       5m',
+        'check        10s',
+        'tunnel       1h',
+      ],
+      'maxconn'        => '8000',
+      'default-server' => 'inter 30000 fastinter 10000 downinter 3000',
+    },
+    restart_command  => '/usr/sbin/service haproxy reload',
+    require => Apt::Ppa['ppa:vbernat/haproxy-1.5'],
+  }
+  
+  package { 'socat':
+    ensure => installed,
+  }
 
   $pem = '/etc/haproxy/hcs_harvard_edu.pem'
   # PEM file containing everything
@@ -50,7 +91,7 @@ class gateway {
   
   file { '/etc/haproxy/harvard_ips':
     ensure  => file,
-    source  => 'puppet:///modules/gateway/harvard_ips',
+    source  => 'puppet:///modules/gateway/haproxy/harvard_ips',
     owner   => 'haproxy',
     group   => 'haproxy',
     mode    => '0644',
@@ -58,41 +99,13 @@ class gateway {
     before  => Service['haproxy'],
   }
   
-  class { 'haproxy':
-    global_options => {
-      'log'     => [
-        '/dev/log local0',
-        '/dev/log local1 notice',
-      ],
-      'chroot'                    => '/var/lib/haproxy',
-      'pidfile'                   => '/var/run/haproxy.pid',
-      'maxconn'                   => '4000',
-      'user'                      => 'haproxy',
-      'group'                     => 'haproxy',
-      'daemon'                    => '',
-      'stats'                     => 'socket /var/lib/haproxy/stats',
-      'spread-checks'             => '5',
-      'tune.ssl.default-dh-param' => '2048',
-    },
-    defaults_options => {
-      'log'            => 'global',
-      'option'         => 'redispatch',
-      'retries'        => '3',
-      'timeout'        => [
-        'http-request 5s',
-        'queue        30s',
-        'connect      5s',
-        'client       30s',
-        'client-fin   30s',
-        'server       5m',
-        'check        10s',
-        'tunnel       1h',
-      ],
-      'maxconn'        => '8000',
-      'default-server' => 'inter 30000 fastinter 10000 downinter 3000',
-    },
-    restart_command  => '/usr/sbin/service haproxy reload',
-    require => Apt::Ppa['ppa:vbernat/haproxy-1.5'],
+  file { '/etc/cron.daily/update-ocsp-stapling':
+    ensure  => file,
+    source  => 'puppet:///modules/gateway/haproxy/update-ocsp-stapling',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+    require => [Class['haproxy'], Package['socat'], Concat[$pem]],
   }
 
   haproxy::peers { 'bifrost': }
