@@ -247,7 +247,7 @@ class gateway {
     },
   }
   
-  $stats_pwd = hiera('stats_pwd')
+  $stats_password = hiera('stats-password')
   haproxy::backend { 'web-https':
     options => {
       'mode'                => 'http',
@@ -286,7 +286,7 @@ class gateway {
         'realm HAProxy\ Statistics',
         'uri /admin?stats',
         'hide-version',
-        "auth hcs:${stats_pwd}",
+        "auth hcs:${stats_password}",
       ],
     },
   }
