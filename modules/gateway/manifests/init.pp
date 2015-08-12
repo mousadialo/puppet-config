@@ -20,7 +20,7 @@ class gateway {
       'user'                      => 'haproxy',
       'group'                     => 'haproxy',
       'daemon'                    => '',
-      'stats'                     => 'socket /var/lib/haproxy/stats.sock',
+      'stats'                     => 'socket /var/lib/haproxy/stats.sock mode 600 level admin',
       'spread-checks'             => '5',
       'tune.ssl.default-dh-param' => '2048',
     },
