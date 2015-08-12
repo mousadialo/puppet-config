@@ -53,7 +53,11 @@ class web::php {
     # PHP5 modules
     web::php5::mod { 'curl': }
     web::php5::mod { 'gd': }
+    web::php5::mod { 'ldap': }
     web::php5::mod { 'mcrypt': }
+    web::php5::mod { 'memcached': }
     web::php5::mod { 'mysql': }
+    web::php5::mod { 'sqlite': }
+    web::php5::mod { 'tidy': }
     
 }

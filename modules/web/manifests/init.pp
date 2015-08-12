@@ -23,6 +23,13 @@ class web {
     package { 'python-ldap': }
     package { 'python-flask': }
     
+    # Memcached package
+    package { 'memcached': } ->
+    service { 'memcached':
+      ensure => running,
+      enable => true,
+    }
+    
     require filesystem
     $mount_dir = hiera('nfs-mount-dir')
 
