@@ -59,8 +59,7 @@ class gateway {
     mode           => '0400',
     ensure_newline => true,
     require        => Package['haproxy'],
-    before         => Service['haproxy'],
-    notify         => Exec['update-ocsp-stapling'],
+    notify         => [Service['haproxy'], Exec['update-ocsp-stapling']],
   }
   concat::fragment { "${pem}-certificate":
     target => $pem,
