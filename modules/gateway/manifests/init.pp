@@ -105,7 +105,7 @@ class gateway {
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
-    require => [Class['haproxy'], Package['socat'], Concat[$pem]],
+    require => [Package['haproxy'], Package['socat'], Concat[$pem]],
   }
 
   haproxy::peers { 'bifrost': }
