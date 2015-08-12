@@ -15,7 +15,7 @@ OPENSSL_BIN="openssl"
 SOCAT_BIN="socat"
 
 CERT="/etc/haproxy/hcs_harvard_edu.pem"
-VAFILE=""
+VAFILE="/etc/haproxy/hcs_harvard_edu.pem"
 HAPROXY_ADMIN_SOCKET_DEFAULT="/run/haproxy/admin.sock"
 HAPROXY_ADMIN_SOCKET="/var/lib/haproxy/stats.sock"
 GOOD_ONLY=0

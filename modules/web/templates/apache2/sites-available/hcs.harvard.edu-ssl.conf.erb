@@ -17,6 +17,7 @@
   SSLCertificateFile      /etc/ssl/certs/hcs_harvard_edu_cert.cer
   SSLCertificateChainFile /etc/ssl/certs/hcs_harvard_edu_interm.cer
   SSLCertificateKeyFile   /etc/ssl/private/hcs_harvard_edu.key
+  SSLCACertificateFile    /etc/ssl/certs/hcs_harvard_edu_interm.cer
   
   SSLProtocol             all -SSLv2 -SSLv3
   SSLCipherSuite          <%= @ssl_ciphers %>
