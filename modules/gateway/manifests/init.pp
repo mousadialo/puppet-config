@@ -60,6 +60,7 @@ class gateway {
     ensure_newline => true,
     require        => Package['haproxy'],
     before         => Service['haproxy'],
+    notify         => Exec['update-ocsp-stapling'],
   }
   concat::fragment { "${pem}-certificate":
     target => $pem,
@@ -105,7 +106,15 @@ class gateway {
     owner   => 'root',
     group   => 'root',
     mode    => '0755',
-    require => [Package['haproxy'], Package['socat'], Concat[$pem]],
+    notify  => Exec['update-ocsp-stapling'],
+  }
+  
+  exec { 'update-ocsp-stapling':
+    command     => '/etc/cron.daily/update-ocsp-stapling',
+    user        => 'root',
+    refreshonly => true,
+    require     => [File['/etc/cron.daily/update-ocsp-stapling'], Package['socat'], Concat[$pem]],
+    notify      => Service['haproxy'],
   }
 
   haproxy::peers { 'bifrost': }
