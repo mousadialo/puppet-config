@@ -2,8 +2,8 @@
 # Look at the README for instructions on setting up an LDAP server
 class ldap::server {
   
-  $hashed_root_dn_pwd = hiera('hashed_root_dn_pwd')
-  $root_dn_pwd = hiera('root_dn_pwd')
+  $hashed_root_dn_password = hiera('hashed-root-dn-password')
+  $root_dn_password = hiera('root-dn-password')
 
   package { '389-ds-base':
     ensure => installed,
@@ -50,7 +50,7 @@ class ldap::server {
   
   exec { 'setup-ds-ssl':
     command     => "/etc/dirsrv/config/setupssl.sh /etc/dirsrv/slapd-${::hostname}",
-    environment => "DMPWD=${root_dn_pwd}",
+    environment => "DMPWD=${root_dn_password}",
     refreshonly => true,
     user        => 'root',
     require     => [File['/etc/dirsrv/config/setupssl.sh'], Package['libnss3-tools'], Service['dirsrv']],
@@ -58,7 +58,7 @@ class ldap::server {
   
   exec { 'import-backup':
     #                       list all files in ldap folder             get latest backup         extract filename                                 retrieve file from S3                            decompress file                                       import to LDAP
-    command     => "/usr/local/bin/aws s3 ls s3://hcs-backups/ldap/ | /usr/bin/tail -n 1 | /usr/bin/awk \'{print \$4}\' | /usr/bin/xargs -I % /usr/local/bin/aws s3 cp s3://hcs-backups/ldap/% - | /bin/gunzip -c | /usr/bin/ldapadd -xc -D \"cn=Directory Manager\" -w \"${root_dn_pwd}\" -H ldap://localhost",
+    command     => "/usr/local/bin/aws s3 ls s3://hcs-backups/ldap/ | /usr/bin/tail -n 1 | /usr/bin/awk \'{print \$4}\' | /usr/bin/xargs -I % /usr/local/bin/aws s3 cp s3://hcs-backups/ldap/% - | /bin/gunzip -c | /usr/bin/ldapadd -xc -D \"cn=Directory Manager\" -w \"${root_dn_password}\" -H ldap://localhost",
     refreshonly => true,
     user        => 'root',
     require     => [Class['awscli'], Service['dirsrv']],

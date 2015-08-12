@@ -6,10 +6,10 @@ SuiteSpotUserID = dirsrv
 [slapd]
 AddOrgEntries = Yes
 AddSampleEntries = No
-HashedRootDNPwd = {SSHA}<%= @hashed_root_dn_pwd %>
+HashedRootDNPwd = <%= @hashed_root_dn_password %>
 InstallLdifFile = suggest
 RootDN = cn=Directory Manager
-RootDNPwd = <%= @root_dn_pwd %>
+RootDNPwd = <%= @root_dn_password %>
 ServerIdentifier = <%= @hostname %>
 ServerPort = 389
 Suffix = dc=hcs,dc=harvard,dc=edu
