@@ -63,7 +63,8 @@ class web::php {
     web::php5::mod { 'tidy': }
     
     web::php5::mod { 'opcache':
-      ensure => disabled,
+      ensure    => disabled,
+      file_name => '05-opcache',
     }
     
 }
