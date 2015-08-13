@@ -6,34 +6,25 @@ class web {
 
   if $::machine_type == 'web' {
     
-    # PHP
-    include web::php
-
-    # RT
-    include web::request_tracker
+    # suPHP
+    include web::suphp
 
     # Shibboleth
     include web::shibboleth
     
+    # Memcached
+    include web::memcached
+    
     # ModSecurity
     # TODO(fred): Too many false positives, disabling for now.
     #include web::modsecurity
+
+    # RT
+    include web::request_tracker
     
     # Packages needed by helios
     package { 'python-ldap': }
     package { 'python-flask': }
-    
-    # Memcached package
-    package { 'memcached': } ->
-    file_line { 'memcached_memory_cap':
-      path  => '/etc/memcached.conf',
-      line  => '-m 1024',
-      match => '^-m \d+$',
-    } ~>
-    service { 'memcached':
-      ensure => running,
-      enable => true,
-    }
     
     require filesystem
     $mount_dir = hiera('nfs-mount-dir')

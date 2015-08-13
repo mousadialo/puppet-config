@@ -20,6 +20,9 @@ class userfacing {
     require => [Apt::Source['ubuntu_archive_multiverse'], Apt::Source['ubuntu_archive_updates_multiverse']],
   }
   
+  # Set up PHP5 CGI
+  include web::php5
+  
   # Alpine configuration
   file { '/etc/pine.conf':
     ensure  => present,
