@@ -25,6 +25,11 @@ class web {
     
     # Memcached package
     package { 'memcached': } ->
+    file_line { 'memcached_memory_cap':
+      path  => '/etc/memcached.conf',
+      line  => '-m 1024',
+      match => '^-m \d+$',
+    } ~>
     service { 'memcached':
       ensure => running,
       enable => true,
