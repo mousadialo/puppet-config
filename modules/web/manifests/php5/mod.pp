@@ -1,12 +1,12 @@
 # Installs and enables php5 modules.
-define web::php5::mod($ensure = 'enabled') {
+define web::php5::mod($ensure = 'enabled', $package_name = "php5-${title}") {
   
   validate_re($ensure, '^(enabled|disabled)$',
     "${ensure} is not supported for ensure.
     Allowed values are 'enabled' and 'disabled'.")
   
   if $ensure == 'enabled' {
-    package { "php5-${title}":
+    package { $package_name:
       ensure => installed,
       notify => Service['apache2'],
     }

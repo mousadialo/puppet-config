@@ -57,7 +57,13 @@ class web::php {
     web::php5::mod { 'mcrypt': }
     web::php5::mod { 'memcached': }
     web::php5::mod { 'mysql': }
-    web::php5::mod { 'sqlite': }
+    web::php5::mod { 'sqlite3':
+      package_name => 'php5-sqlite',
+    }
     web::php5::mod { 'tidy': }
+    
+    web::php5::mod { 'opcache':
+      ensure => disabled,
+    }
     
 }
