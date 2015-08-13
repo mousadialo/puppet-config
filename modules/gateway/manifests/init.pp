@@ -158,10 +158,10 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 15s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(15s),http_err_rate(15s)',
+      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
       'acl'                 => [
         'high_conn_cur sc1_conn_cur(web-http) gt 10',
-        'high_conn_rate sc1_conn_rate(web-http) gt 20',
+        'high_conn_rate sc1_conn_rate(web-http) gt 50',
         'high_req_rate sc1_http_req_rate(web-http) gt 100',
         'high_err_rate sc1_http_err_rate(web-http) gt 20',
         
@@ -194,10 +194,10 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 15s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(15s),http_err_rate(15s)',
+      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
       'acl'                 => [
         'high_conn_cur sc1_conn_cur(lists-http) gt 10',
-        'high_conn_rate sc1_conn_rate(lists-http) gt 20',
+        'high_conn_rate sc1_conn_rate(lists-http) gt 50',
         'high_req_rate sc1_http_req_rate(lists-http) gt 100',
         'high_err_rate sc1_http_err_rate(lists-http) gt 20',
         
@@ -253,10 +253,10 @@ class gateway {
       'mode'                => 'http',
       'balance'             => 'roundrobin',
       'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 30s peers bifrost store http_req_rate(30s)',
+      'stick-table'         => 'type ip size 300k expire 30s peers bifrost store http_req_rate(30s)',
       'acl'                 => [
         'high_conn_cur sc1_conn_cur(web-http) gt 10',
-        'high_conn_rate sc1_conn_rate(web-http) gt 20',
+        'high_conn_rate sc1_conn_rate(web-http) gt 50',
         'high_req_rate sc1_http_req_rate(web-http) gt 100',
         'high_err_rate sc1_http_err_rate(web-http) gt 20',
         
@@ -298,7 +298,7 @@ class gateway {
       'cookie'              => 'SRV insert indirect nocache',
       'acl'                 => [
         'high_conn_cur sc1_conn_cur(lists-http) gt 10',
-        'high_conn_rate sc1_conn_rate(lists-http) gt 20',
+        'high_conn_rate sc1_conn_rate(lists-http) gt 50',
         'high_req_rate sc1_http_req_rate(lists-http) gt 100',
         'high_err_rate sc1_http_err_rate(lists-http) gt 20',
         
