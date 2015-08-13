@@ -109,6 +109,7 @@ class web::apache2 {
     web::apache2::mod { 'cgid': }
     web::apache2::mod { 'dav': }
     web::apache2::mod { 'dav_fs': }
+    web::apache2::mod { 'expires': }
     web::apache2::mod { 'fcgid':
       require => Package['libapache2-mod-fcgid'],
     }
