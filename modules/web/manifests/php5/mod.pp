@@ -14,7 +14,7 @@ define web::php5::mod($ensure = 'enabled', $package_name = "php5-${title}") {
     exec { "/usr/sbin/php5enmod ${title}" :
       unless  => "/bin/readlink -e /etc/php5/cgi/conf.d/20-${title}.ini 1> /dev/null",
       notify  => Service['apache2'],
-      require => [Package['libapache2-mod-suphp'], Package["php5-${title}"]],
+      require => [Package['libapache2-mod-suphp'], Package[$package_name]],
     }
   }
   else {
