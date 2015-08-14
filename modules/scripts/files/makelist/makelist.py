@@ -271,7 +271,7 @@ stderr:
     message += ''.join([chr(pad_size) for x in xrange(0, pad_size)])
 
     token = cryptor.encrypt(message)
-    confirmurl = "http://www.hcs.harvard.edu/make-list?%s" % \
+    confirmurl = "https://www.hcs.harvard.edu/make-list?%s" % \
       urllib.urlencode(
           { 't' : base64.urlsafe_b64encode(token),
             'm' : base64.urlsafe_b64encode(self.computeMAC(message)) })
@@ -342,7 +342,7 @@ stderr:
     message += ''.join([chr(pad_size) for x in xrange(0, pad_size)])
 
     token = cryptor.encrypt(message)
-    confirmurl = "http://www.hcs.harvard.edu/reset-list-password?%s" % \
+    confirmurl = "https://www.hcs.harvard.edu/reset-list-password?%s" % \
       urllib.urlencode(
           { 't' : base64.urlsafe_b64encode(token),
             'm' : base64.urlsafe_b64encode(self.computeMAC(message)) })
