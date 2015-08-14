@@ -23,8 +23,10 @@ class web {
     include web::request_tracker
     
     # Packages needed by helios
-    package { 'python-ldap': }
+    package { 'python-crypto': }
+    package { 'python-ecdsa': }
     package { 'python-flask': }
+    package { 'python-ldap': }
     
     require filesystem
     $mount_dir = hiera('nfs-mount-dir')
