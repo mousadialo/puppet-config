@@ -16,8 +16,16 @@ class sshd {
     enable => true,
   }
 
-  # Install SSH host keys.
   if $::machine_type == 'login' {
+    # Install server banner.
+    file { '/etc/banner':
+      ensure => file,
+      source => 'puppet:///modules/sshd/banner.login',
+      owner  => 'root',
+      group  => 'root',
+    }
+    
+    # Install SSH host keys.
     file { '/etc/ssh/ssh_host_dsa_key':
       ensure  => file,
       content => hiera('ssh_host_dsa_key'),
