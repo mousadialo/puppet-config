@@ -64,7 +64,7 @@ class filesystem {
     }
   }
   
-  if $::machine_type == 'lists' {
+  if $::machine_type == 'mailman' {
     # Mount mailman directory
     nfs::client::mount { 'mailman':
       server  => $nfs_server,
