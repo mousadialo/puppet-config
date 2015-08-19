@@ -17,7 +17,7 @@ import urllib
 import xmlrpclib
 
 def mail(to, message):
-  mailServer = smtplib.SMTP('localhost', '10025')
+  mailServer = smtplib.SMTP('hcs.harvard.edu', '10025')
   mailServer.sendmail('systems@hcs.harvard.edu', to, message)
   mailServer.quit()
 
@@ -93,7 +93,7 @@ Subject: Automatic mailing list creation failed for unknown reason
 Date: %(date)s
 Message-ID: %(messageid)s
 
-Unknown error while trying to create list with hcs.harvard.edu/make-list:
+Unknown error while trying to create list with trajan.hcs.harvard.edu/makelist:
 List name: %(listname)s
 Password: %(password)s
 List admin: %(listadmin)s
@@ -300,14 +300,14 @@ stderr:
       return out[1].strip().split(', ')
 
   def is_user_or_alias(self, listname):
-    s = smtplib.SMTP('localhost', '10025')
+    s = smtplib.SMTP('hcs.harvard.edu', '10025')
     s.putcmd("VRFY %s@hcs.harvard.edu" % listname)
     reply = s.getreply()
     s.quit()
     # We return true if we get a code in the 200s, not 400+ (error)
     # (for some reason, we get 252 for 'user exists', and 400+ else, even though
     #  the rfc says 252 means 'Cannot VRFY user but will accept')
-    return reply[0] < 400
+    return reply[0] <= 400
 
   def xmlrpc_isnameinuse(self, name):
     return self.islist(name) or self.is_user_or_alias(name)

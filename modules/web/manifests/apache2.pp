@@ -26,7 +26,6 @@ class web::apache2 {
 
   if $::machine_type == 'web' {
     require certs
-    require mailman
     
     # PACKAGES
     
@@ -99,8 +98,6 @@ class web::apache2 {
     #web::apache2::vhost{ 'default': }
     web::apache2::vhost{ 'hcs.harvard.edu': }
     web::apache2::vhost{ 'hcs.harvard.edu-ssl': }
-    web::apache2::vhost{ 'lists.hcs.harvard.edu': }
-    web::apache2::vhost{ 'lists.hcs.harvard.edu-ssl': }
     #web::apache2::vhost{ 'mail.hcs.harvard.edu': }
     #web::apache2::vhost{ 'secure.hcs.harvard.edu': }
     web::apache2::vhost{ 'user-vhosts': }

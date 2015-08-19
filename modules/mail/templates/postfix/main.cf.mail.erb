@@ -16,8 +16,14 @@ disable_vrfy_command = yes
 #HCS: rewrite @fas to the correct address
 canonical_maps = cdb:/etc/postfix/canonical
 
-alias_maps = cdb:/etc/aliases cdb:/var/lib/mailman/data/aliases
+alias_maps = cdb:/etc/aliases
 alias_database = cdb:/etc/aliases
+
+# HCS: Forward list traffic correctly
+transport_maps = cdb:/mnt/tank/transport/transport-mailman
+
+# HCS: need to have local_recipient_maps for transport tables
+local_recipient_maps = proxy:unix:passwd.byname $alias_maps $transport_maps
 
 home_mailbox = .inbox
 forward_path = $home/.forward

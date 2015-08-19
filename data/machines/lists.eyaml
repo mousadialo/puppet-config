@@ -1,11 +1,11 @@
 ---
 classes:
-#  - filesystem
-#  - certs
-#  - web
-#  - mail
-#  - mailman
-#  - scripts
+  - filesystem
+  - certs
+  - web
+  - mail
+  - mailman
+  - scripts
   
 hcs_harvard_edu.key: >
     ENC[PKCS7,MIIH/QYJKoZIhvcNAQcDoIIH7jCCB+oCAQAxggEhMIIBHQIBADAFMAACAQEw

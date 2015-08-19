@@ -5,7 +5,6 @@ classes:
   - certs
   - web
   - mail # null client config
-  - mailman
 
 rt-database-password: >
     ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEw

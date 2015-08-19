@@ -1,7 +1,7 @@
 # Configures various HCS acctserv scripts.
 class scripts {
 
-  if $::machine_type == 'mail' {
+  if $::machine_type == lists {
     package { 'python-twisted-web':
       ensure => installed,
     }
