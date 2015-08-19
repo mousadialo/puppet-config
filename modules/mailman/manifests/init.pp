@@ -2,6 +2,8 @@
 class mailman {
 
   require filesystem
+  require web
+  require mail
   
   $secondary_domains = hiera_array('secondary-domains')
   $mount_dir = hiera('nfs-mount-dir')
