@@ -96,11 +96,11 @@ DEFAULT_SEND_REMINDERS = 0
 # /usr/share/doc/mailman/README.Debian first.
 MTA = 'Postfix'
 
-# HCS Postfix Transport Map Settings
-# See /usr/lib/mailman/Mailman/MTA/Postfix.py for usages.
-HCS_TRANSPORT_DIR = '/mnt/tank/transport'
-HCS_LIST_DOMAINS = ['lists.hcs.harvard.edu'<%= @secondary_domains.map{ |domain| ", 'lists." + domain + "'"}.join("") %>, 'hcs.harvard.edu'<%= @secondary_domains.map{ |domain| ", '" + domain + "'"}.join("") %>]
-HCS_LIST_DESTINATION = 'smtp:[hcs.harvard.edu]:2525'
+# SMTP host and port, when DELIVERY_MODULE is 'SMTPDirect'.  Make sure the
+# host exists and is resolvable (i.e., if it's the default of "localhost" be
+# sure there's a localhost entry in your /etc/hosts file!)
+SMTPHOST = 'localhost'
+SMTPPORT = 10025
 
 #-------------------------------------------------------------
 # Uncomment if you want to filter mail with SpamAssassin. For

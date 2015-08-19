@@ -133,7 +133,6 @@ class gateway {
     options => {
       'stick-table'            => 'type ip size 300k expire 30s peers bifrost store gpc0',
       'acl'                    => [
-        'host_lists hdr_beg(host) -i lists.',
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
@@ -148,7 +147,6 @@ class gateway {
         'tarpit if throttled',
       ],
       'monitor-uri'            => '/health',
-      'use_backend'            => 'lists-http if host_lists',
       'default_backend'        => 'web-http',
     },
   }
@@ -188,37 +186,6 @@ class gateway {
       ],
     },
   }
-  
-  haproxy::backend { 'lists-http':
-    options => {
-      'mode'                => 'http',
-      'balance'             => 'roundrobin',
-      'cookie'              => 'SRV insert indirect nocache',
-      'stick-table'         => 'type ip size 200k expire 10s peers bifrost store conn_cur,conn_rate(3s),http_req_rate(10s),http_err_rate(10s)',
-      'acl'                 => [
-        'high_conn_cur sc1_conn_cur(lists-http) gt 10',
-        'high_conn_rate sc1_conn_rate(lists-http) gt 50',
-        'high_req_rate sc1_http_req_rate(lists-http) gt 100',
-        'high_err_rate sc1_http_err_rate(lists-http) gt 20',
-        
-        'throttle sc0_inc_gpc0(http) gt 0',
-      ],
-      'tcp-request content' => [
-        'reject if high_conn_cur',
-        'reject if high_conn_rate',
-        'track-sc1 src table lists-http',
-      ],
-      'http-request'        => [
-        'deny if high_req_rate throttle',
-        'deny if high_err_rate throttle',
-      ],
-      'option'              => [
-        'forwardfor',
-        'httpchk',
-        'httplog',
-      ],
-    },
-  }
 
   haproxy::frontend { 'https':
     bind    => {
@@ -227,7 +194,6 @@ class gateway {
     mode    => 'http',
     options => {
       'acl'                    => [
-        'host_lists hdr_beg(host) -i lists.',
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
@@ -242,7 +208,6 @@ class gateway {
         'tarpit if throttled',
       ],
       'monitor-uri'            => '/health',
-      'use_backend'            => 'lists-https if host_lists',
       'default_backend'        => 'web-https',
     },
   }
@@ -287,36 +252,6 @@ class gateway {
         'uri /admin?stats',
         'hide-version',
         "auth hcs:${stats_password}",
-      ],
-    },
-  }
-  
-  haproxy::backend { 'lists-https':
-    options => {
-      'mode'                => 'http',
-      'balance'             => 'roundrobin',
-      'cookie'              => 'SRV insert indirect nocache',
-      'acl'                 => [
-        'high_conn_cur sc1_conn_cur(lists-http) gt 10',
-        'high_conn_rate sc1_conn_rate(lists-http) gt 50',
-        'high_req_rate sc1_http_req_rate(lists-http) gt 100',
-        'high_err_rate sc1_http_err_rate(lists-http) gt 20',
-        
-        'throttle sc0_inc_gpc0(http) gt 0',
-      ],
-      'tcp-request content' => [
-        'reject if high_conn_cur',
-        'reject if high_conn_rate',
-        'track-sc1 src table lists-http',
-      ],
-      'http-request'        => [
-        'deny if high_req_rate throttle',
-        'deny if high_err_rate throttle',
-      ],
-      'option'              => [
-        'forwardfor',
-        'httpchk',
-        'httplog',
       ],
     },
   }
@@ -373,20 +308,6 @@ class gateway {
       'acl'         => 'mynetworks src 10.0.0.0/8',
       'tcp-request' => 'connection reject if !mynetworks',
       'option'      => [
-        'smtpchk',
-        'tcplog',
-      ],
-    },
-  }
-  
-  haproxy::listen { 'lists-smtp':
-    bind    => {
-      '*:2525' => [],
-    },
-    mode    => 'tcp',
-    options => {
-      'balance' => 'leastconn',
-      'option'  => [
         'smtpchk',
         'tcplog',
       ],

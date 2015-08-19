@@ -21,11 +21,22 @@ class mailman {
     notify      => Service['mailman'],
   }
   
-  service { 'mailman':
-    ensure  => running,
-    enable  => true,
-    status  => '/bin/ps auxww | /bin/grep mailmanctl | /bin/grep -v grep 1> /dev/null',
-    require => Package['mailman'],
+  if $::machine_type == 'web' {
+    # Web machines don't need mailman to be running. They only require the CGI binaries.
+    service { 'mailman':
+      ensure  => stopped,
+      enable  => false,
+      status  => '/bin/ps auxww | /bin/grep mailmanctl | /bin/grep -v grep 1> /dev/null',
+      require => Package['mailman'],
+    }
+  }
+  else {
+    service { 'mailman':
+      ensure  => running,
+      enable  => true,
+      status  => '/bin/ps auxww | /bin/grep mailmanctl | /bin/grep -v grep 1> /dev/null',
+      require => Package['mailman'],
+    }
   }
   
   # This is the patch for mailman that will apply HCS customizations.

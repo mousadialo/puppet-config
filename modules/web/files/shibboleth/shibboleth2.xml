@@ -1,8 +1,7 @@
 <SPConfig xmlns="urn:mace:shibboleth:2.0:native:sp:config" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     clockSkew="1800">
 
-    <ApplicationDefaults entityID="https://hcs.harvard.edu/hcs/login/sp"
-        REMOTE_USER="eppn">
+    <ApplicationDefaults entityID="https://hcs.harvard.edu/hcs/login/sp" REMOTE_USER="eppn">
 
         <!-- You should use secure cookies if at all possible.  See cookieProps in this Wiki article. -->
         <!-- https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPSessions -->
@@ -42,10 +41,9 @@
         <Errors supportContact="help@hcs.harvard.edu" logoLocation="/shibboleth-sp/logo.jpg"
                 styleSheet="/shibboleth-sp/main.css"/>
 
-        <!-- Loads and trusts a metadata file that describes only the Testshib IdP and how to communicate with it. -->
-
-     <MetadataProvider type="XML" uri="https://fed.huit.harvard.edu/idp/profile/Metadata/SAML"
-             backingFilePath="huit-idp-metadata.xml" reloadInterval="180000" />
+        <!-- Loads and trusts a metadata file that describes only the Harvard IdP and how to communicate with it. -->
+        <MetadataProvider type="XML" uri="https://fed.huit.harvard.edu/idp/profile/Metadata/SAML"
+                          backingFilePath="huit-idp-metadata.xml" reloadInterval="180000" />
 
         <!-- Attribute and trust options you shouldn't need to change. -->
         <AttributeExtractor type="XML" validate="true" path="attribute-map.xml"/>
@@ -53,7 +51,7 @@
         <AttributeFilter type="XML" validate="true" path="attribute-policy.xml"/>
 
         <!-- Your SP generated these credentials.  They're used to talk to IdP's. -->
-    <CredentialResolver type="File" key="/etc/ssl/private/hcs_harvard_edu.key" certificate="/etc/ssl/certs/hcs_harvard_edu_cert.cer"/>
+        <CredentialResolver type="File" key="/etc/ssl/private/hcs_harvard_edu.key" certificate="/etc/ssl/certs/hcs_harvard_edu_cert.cer"/>
 
     </ApplicationDefaults>
 

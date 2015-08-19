@@ -17,6 +17,7 @@ class mail::postfix {
 
   if $::machine_type == 'mail' {
     require filesystem
+    require mailman
   
     # main.cf configuration
     $secondary_domains = hiera_array('secondary-domains')
@@ -25,6 +26,7 @@ class mail::postfix {
       template => true,
     }
     mail::postfix::config { 'master.cf':
+      suffix   => '.mail',
       template => true,
     }
     mail::postfix::config { 'mynetworks': }
