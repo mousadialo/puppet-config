@@ -49,6 +49,7 @@
 
   # Get static files from main web servers
   Redirect permanent /static https://www.hcs.harvard.edu/static
+  Redirect permanent /favicon.ico https://www.hcs.harvard.edu/favicon.ico
   
   # With mailman modifications, misses won't bring down the server
   RedirectMatch ^/(?!pipermail/)(?!mailman/)(?!icons/)(?!static)(?!robots.txt)(?!favicon.ico)(?!index.html)(.*) https://lists.hcs.harvard.edu/mailman/listinfo/$1
