@@ -25,6 +25,7 @@ class mail::postfix {
       template => true,
     }
     mail::postfix::config { 'master.cf':
+      suffix   => '.mail',
       template => true,
     }
     mail::postfix::config { 'mynetworks': }
