@@ -35,6 +35,13 @@ class mailman {
       status  => '/bin/ps auxww | /bin/grep mailmanctl | /bin/grep -v grep 1> /dev/null',
       require => Package['mailman'],
     }
+    
+    # Unfortunately, the Ubuntu mailman package depends on Apache2, but we don't actually need it.
+    service { 'apache2':
+      ensure  => stopped,
+      enable  => false,
+      require => Package['mailman'],
+    }
   }
   
   # This is the patch for mailman that will apply HCS customizations.
