@@ -41,6 +41,8 @@
 
   # HSTS (15768000 seconds = 6 months)
   Header always set Strict-Transport-Security "max-age=15768000"
+  # Upgrade all requests to HTTPS
+  Header always set Content-Security-Policy "upgrade-insecure-requests"
   
   Alias /pipermail/ /var/lib/mailman/archives/public/
   ScriptAlias /mailman/ /usr/lib/cgi-bin/mailman/
