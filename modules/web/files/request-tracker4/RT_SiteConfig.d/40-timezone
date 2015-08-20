@@ -1,1 +1,1 @@
-Set($Timezone, 'America/New York');
+Set($Timezone, 'America/New_York');
