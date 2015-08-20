@@ -231,15 +231,11 @@ wkj-manager: wkj+manager@eecs.harvard.edu
 # AcctServ
 # The acctserv account is spam filtered, so you need to modify
 # the procmail recipe if you need to update settings.
-#acctserv: "|/usr/bin/procmail -m /etc/request-tracker4/procmail/general"
-#acctserv-comment: "|/usr/bin/rt-mailgate --queue general --action comment --url https://www.hcs.harvard.edu/rt"
-acctserv: systems
-acctserv-comment: systems
+acctserv: "|/usr/bin/procmail -m /etc/request-tracker4/procmail/general"
+acctserv-comment: "|/usr/bin/rt-mailgate --queue general --action comment --url https://www.hcs.harvard.edu/rt"
 acctserv-notickets: systems
-#security-tix: "|/usr/bin/procmail -m /etc/request-tracker4/procmail/security"
-#security-tix-comment: "|/usr/bin/rt-mailgate --queue security --action comment --url https://www.hcs.harvard.edu/rt"
-security-tix: systems
-security-tix-comment: systems
+security-tix: "|/usr/bin/procmail -m /etc/request-tracker4/procmail/security"
+security-tix-comment: "|/usr/bin/rt-mailgate --queue security --action comment --url https://www.hcs.harvard.edu/rt"
 
 # # # System-required
 MAILER-DAEMON: postmaster
