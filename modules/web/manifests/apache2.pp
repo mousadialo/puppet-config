@@ -105,6 +105,8 @@ class web::apache2 {
     web::apache2::mod { 'actions': }
     web::apache2::mod { 'alias': }
     web::apache2::mod { 'authnz_ldap': }
+    web::apache2::mod { 'cache': } ->
+    web::apache2::mod { 'cache_disk': }
     web::apache2::mod { 'cgid': }
     web::apache2::mod { 'dav': }
     web::apache2::mod { 'dav_fs': }
@@ -135,6 +137,8 @@ class web::apache2 {
     require certs
     
     web::apache2::mod { 'alias': }
+    web::apache2::mod { 'cache': } ->
+    web::apache2::mod { 'cache_disk': }
     web::apache2::mod { 'cgid': }
     web::apache2::mod { 'headers': }
     web::apache2::mod { 'rewrite': }

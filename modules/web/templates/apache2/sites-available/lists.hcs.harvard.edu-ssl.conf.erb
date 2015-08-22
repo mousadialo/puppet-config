@@ -58,7 +58,7 @@
     Require all granted
   </Directory>
 
-  # This is the directory seen as pipermail, which everyone whould be able to see.
+  # This is the directory seen as pipermail, which everyone would be able to see.
   # Note that it is actually the stuff down one more directory level that is seen.
   #
   <Directory "/var/lib/mailman/archives/public">
@@ -67,12 +67,21 @@
     Require all granted
   </Directory>
 
+  # Cache configuration
+  CacheIgnoreHeaders Set-Cookie
+  CacheLock on
+  CacheLockMaxAge 300
+  
   # We want to prevent outside sites from seeing the list of publicly available
   # lists, as spammers will abuse it if they can see it.
   #
   <LocationMatch "^/mailman/(listinfo|admin)/?$">
     ErrorDocument 403 "<html><head><title>403 Forbidden</title></head><body><h1>Forbidden</h1><p>To prevent spam, the public lists index can only be accessed within the Harvard network or through the <a href=\"https://vpn.harvard.edu/\">Harvard VPN</a>.</p></body></html>"
     Require ip 140.247.0.0/16 128.103.0.0/16 65.112.10.0/23 65.112.8.0/23 67.134.206.0/24
+    # Cache the listinfo page since it takes a long time to load
+    CacheEnable disk
+    # Expire in 30 minutes
+    CacheDefaultExpire 1800
   </LocationMatch>
 </VirtualHost>
 
