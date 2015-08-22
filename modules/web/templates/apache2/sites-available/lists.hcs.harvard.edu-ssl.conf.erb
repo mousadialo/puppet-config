@@ -84,8 +84,8 @@
     Require ip 140.247.0.0/16 128.103.0.0/16 65.112.10.0/23 65.112.8.0/23 67.134.206.0/24
     # Cache the listinfo page since it takes a long time to load
     CacheEnable disk
-    # Expire in 15 minutes
-    CacheDefaultExpire 900
+    # Expire in 1 hour
+    CacheDefaultExpire 3600
   </LocationMatch>
 </VirtualHost>
 
