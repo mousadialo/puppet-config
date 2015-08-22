@@ -52,7 +52,8 @@
   Redirect permanent /favicon.ico https://www.hcs.harvard.edu/favicon.ico
   
   # With mailman modifications, misses won't bring down the server
-  RedirectMatch ^/(?!pipermail/)(?!mailman/)(?!icons/)(?!static)(?!robots.txt)(?!favicon.ico)(?!index.html)(.*) https://lists.hcs.harvard.edu/mailman/listinfo/$1
+  RedirectMatch ^/(?:(?:pipermail|mailman)/?)?$ https://lists.hcs.harvard.edu/mailman/listinfo
+  RedirectMatch ^/(?!pipermail|mailman|icons|static|robots\.txt|favicon\.ico|index\.html)(.+) https://lists.hcs.harvard.edu/mailman/listinfo/$1
 
   <Directory "/var/www/">
     Require all granted
@@ -68,6 +69,9 @@
   </Directory>
 
   # Cache configuration
+  CacheQuickHandler off
+  CacheIgnoreCacheControl on
+  CacheIgnoreNoLastMod on
   CacheIgnoreHeaders Set-Cookie
   CacheLock on
   CacheLockMaxAge 300
@@ -80,8 +84,8 @@
     Require ip 140.247.0.0/16 128.103.0.0/16 65.112.10.0/23 65.112.8.0/23 67.134.206.0/24
     # Cache the listinfo page since it takes a long time to load
     CacheEnable disk
-    # Expire in 30 minutes
-    CacheDefaultExpire 1800
+    # Expire in 15 minutes
+    CacheDefaultExpire 900
   </LocationMatch>
 </VirtualHost>
 
