@@ -2582,3 +2582,12 @@
   SuexecUserGroup joe people
   Include /etc/apache2/hcs-conf/directories.conf
 </VirtualHost>
+
+<VirtualHost *:80>
+  Servername hsmbb.org
+  ServerAlias www.hsmbb.org
+  ServerAdmin hsmbb@hcs.harvard.edu
+  DocumentRoot /home/groups/hsmbb/web
+  SuexecUserGroup hsmbb basic
+  Include /etc/apache2/hcs-conf/directories.conf
+</VirtualHost>
