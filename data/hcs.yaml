@@ -15,7 +15,9 @@ userfacing_packages:
   - texlive
 
   # PHP
+  - php-db
   - php-mail
+  - php-mail-mime
   - php-pear
 
   # Python
