@@ -10,7 +10,9 @@ userfacing_packages:
   - build-essential
   - ghc
   - ocaml-nox
+  - openjdk-7-jdk
   - perl
+  - texlive
 
   # PHP
   - php-mail
@@ -19,16 +21,24 @@ userfacing_packages:
   # Python
   - ipython
   - python
+  - python-crypto
   - python-dev
   - python-django
   - python-elixir
   - python-flask
+  - python-gd
   - python-gevent
+  - python-imaging
+  - python-ldap
+  - python-matplotlib
   - python-mysqldb
   - python-numpy
   - python-pip
+  - python-scipy
   - python-setuptools
   - python-sqlalchemy
+  - python-twisted
+  - python-tz
   - python-virtualenv
   - python-yaml
   - python3
@@ -61,7 +71,7 @@ userfacing_packages:
   - subversion
 
   # Editors
-  - emacs23-nox
+  - emacs24-nox
   - vim
   
   # File compression
@@ -87,8 +97,10 @@ userfacing_packages:
   - finger
   - gdb
   - gnupg
+  - lynx-cur
   - mutt
   - mysql-client
+  - tin
 
   # Resolve package ambiguities
   - ledit
