@@ -40,7 +40,7 @@ Set($ExternalSettings,      {
                             # Should the service be used for information?
                             'info'                      =>  1,
                             # The server hosting the service
-                            'server'                    =>  'hcs.harvard.edu',
+                            'server'                    =>  'ldap.hcs.harvard.edu',
                             ## SERVICE-SPECIFIC SECTION
                             # If you can bind to your LDAP server anonymously you should
                             # remove the user and pass config lines, otherwise specify them here:
@@ -71,7 +71,7 @@ Set($ExternalSettings,      {
                             # The list of RT attributes that uniquely identify a user
                             'attr_match_list'           => [    'ExternalContactInfoId',
                                                                 'Name',
-                                                                'RealName'
+                                                                'EmailAddress'
                                                             ],
                             # The mapping of RT attributes on to LDAP attributes
                             'attr_map'                  =>  {   'Name' => 'uid',
