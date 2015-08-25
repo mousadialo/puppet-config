@@ -111,6 +111,8 @@ class web::apache2 {
     web::apache2::mod { 'cgid': }
     web::apache2::mod { 'dav': }
     web::apache2::mod { 'dav_fs': }
+    web::apache2::config { 'mods-available/deflate.conf': } ->
+    web::apache2::mod { 'deflate': }
     web::apache2::mod { 'expires': }
     web::apache2::mod { 'fcgid':
       require => Package['libapache2-mod-fcgid'],
@@ -118,6 +120,7 @@ class web::apache2 {
     web::apache2::mod { 'headers': }
     web::apache2::mod { 'include': }
     web::apache2::mod { 'ldap': }
+    web::apache2::mod { 'mime': }
     web::apache2::mod { 'passenger':
       require => Package['libapache2-mod-passenger'],
     }
