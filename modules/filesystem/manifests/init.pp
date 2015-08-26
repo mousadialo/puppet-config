@@ -35,18 +35,6 @@ class filesystem {
       group   => 'hcs',
       require => Class['ldap'],
     }
-    
-    # Mount PHP sessions directory
-    nfs::client::mount { 'sessions':
-      server  => $nfs_server,
-      share   => "/${zpool_name}/services/sessions",
-      mount   => "${mount_dir}/sessions",
-      options => 'nfsvers=3,rw,relatime,nosuid,nodev',
-      atboot  => true,
-      owner   => 'root',
-      group   => 'root',
-      perm    => '1733',
-    }
   }
   
   if $::machine_type == 'web' or $::machine_type == 'login' {

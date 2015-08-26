@@ -13,26 +13,6 @@ class web::php5 {
     group   => root,
     require => Package['php5-cgi'],
   }
-  
-  if $::machine_type == 'web' {
-    # Set up PHP session clearing cron on one server only since sessions are stored on NFS.
-    if $::fqdn == hiera('php5-cron-server') {
-      file { '/etc/cron.d/php5':
-        ensure  => file,
-        source  => 'puppet:///modules/web/php5/cron/php5',
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        require => Package['php5-cgi'],
-      }
-    }
-    else {
-      file { '/etc/cron.d/php5':
-        ensure  => absent,
-        require => Package['php5-cgi'],
-      }
-    }
-  }
 
   # PHP5 modules
   web::php5::mod { 'curl': }

@@ -11,8 +11,6 @@ nfs-mount-dir: '/mnt/tank'
 
 zfs::zpool_name: 'tank'
 
-php5-cron-server: 'web0.hcs.harvard.edu'
-
 mailman-cron-server: 'lists0.hcs.harvard.edu'
 
 HCS-password-hash: '$6$0uaOzhoY$UpDttMyo/X40L0bhxsQ6v.tQAIiBSs0e4vi8zsPRfu8Ga6wZOoZJL1TfCSxfN5b4r0B8CHla4HaYH/M3AbyV/.'
