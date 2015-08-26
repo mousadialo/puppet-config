@@ -1,7 +1,9 @@
 # PHP5 configuration
 class web::php5 {
 
-  package { 'php5-cgi': }
+  package { 'php5-cgi':
+    ensure => installed,
+  }
   
   # Custom PHP configs. Changes include:
   # - Higher file upload size
@@ -9,6 +11,14 @@ class web::php5 {
   file {'/etc/php5/cgi/php.ini':
     ensure  => file,
     source  => 'puppet:///modules/web/php5/cgi/php.ini',
+    owner   => root,
+    group   => root,
+    require => Package['php5-cgi'],
+  }
+  
+  file {'/etc/php5/cli/php.ini':
+    ensure  => file,
+    source  => 'puppet:///modules/web/php5/cli/php.ini',
     owner   => root,
     group   => root,
     require => Package['php5-cgi'],
