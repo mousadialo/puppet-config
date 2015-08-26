@@ -8,7 +8,7 @@ class web::php5 {
   # Custom PHP configs. Changes include:
   # - Higher file upload size
   # - Use NFS session directory
-  file {'/etc/php5/cgi/php.ini':
+  file { '/etc/php5/cgi/php.ini':
     ensure  => file,
     source  => 'puppet:///modules/web/php5/cgi/php.ini',
     owner   => root,
@@ -16,7 +16,7 @@ class web::php5 {
     require => Package['php5-cgi'],
   }
   
-  file {'/etc/php5/cli/php.ini':
+  file { '/etc/php5/cli/php.ini':
     ensure  => file,
     source  => 'puppet:///modules/web/php5/cli/php.ini',
     owner   => root,
