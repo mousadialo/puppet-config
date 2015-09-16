@@ -995,6 +995,24 @@
 </VirtualHost>
 
 <VirtualHost *:80>
+  Servername davidgrossmanfund.com
+  ServerAlias www.davidgrossmanfund.com
+  ServerAdmin hlab@hcs.harvard.edu
+  DocumentRoot /home/groups/hlab/web/davidgrossmanfund.com
+  SuexecUserGroup hlab basic
+  Include /etc/apache2/hcs-conf/directories.conf
+</VirtualHost>
+
+<VirtualHost *:80>
+  Servername davidgrossmanfund.org
+  ServerAlias www.davidgrossmanfund.org
+  ServerAdmin hlab@hcs.harvard.edu
+  DocumentRoot /home/groups/hlab/web/davidgrossmanfund.org
+  SuexecUserGroup hlab basic
+  Include /etc/apache2/hcs-conf/directories.conf
+</VirtualHost>
+
+<VirtualHost *:80>
   Servername harvardlist.org
   ServerAdmin textbooks@hcs.harvard.edu
   DocumentRoot /home/groups/textbooks/web
