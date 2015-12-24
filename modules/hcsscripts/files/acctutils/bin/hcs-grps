@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import sys
+from subprocess import call
 from acctutils.models import Group
 from hcs import passwords
 from optparse import OptionParser
@@ -16,11 +17,13 @@ def main():
     (options, args) = parser.parse_args()
     if not len(args) == 1:
         parser.error("incorrect number of arguments")
-    # Not root
+    
+    # Check if root
     try:
         passwords.get('ldap')
     except passwords.PasswordNotFound:
         parser.error("you must run this script as root")
+    
     group = args[0]
     g = Group.find_by_name(group)
     orig_members = list(g.members)
@@ -28,13 +31,19 @@ def main():
     # Todo: make this more efficient?
     for m in options.ruser or []:
         g.members.remove(m)
+    
+    save_group = False
     if not options.force:
         print 'Original: %s' % ','.join(orig_members)
         print 'New: %s' % ','.join(g.members)
         if confirm('Do you want to save your changes?'):
-            g.save()
+            save_group = True
     else:
+        save_group = True
+        
+    if save_group:
         g.save()
+        call(['nscd', '-i', 'group'])
 
 def confirm(prompt=None, resp=False):
     """http://code.activestate.com/recipes/541096/
