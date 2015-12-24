@@ -25,6 +25,13 @@ class hcsscripts::scylla {
       mode    => '0444',
       require => File['/etc/hcs-scylla'],
     }
+    
+    file { '/etc/hcs/scylla_services':
+      ensure  => directory,
+      owner   => 'root',
+      group   => 'root',
+      require => File['/etc/hcs'],
+    }
   
     file { '/usr/lib/python2.7/scylla':
       ensure  => directory,
@@ -47,14 +54,7 @@ class hcsscripts::scylla {
       ],
     }
     
-    if $::machine_type == 'file' {
-      file { '/etc/hcs/scylla_services':
-        ensure  => directory,
-        owner   => 'root',
-        group   => 'root',
-        require => File['/etc/hcs'],
-      }
-      
+    if $::machine_type == 'file' {      
       exec { '/usr/bin/new-cert -s zfsquota':
         creates => '/etc/hcs/scylla_services/zfsquota_cert.pem',
         require => [
