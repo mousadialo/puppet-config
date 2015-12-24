@@ -36,26 +36,17 @@ class hcsscripts::acctutils {
       require => File['/etc/hcs'],
     }
     
-    define script($file_name = $title) {
-      file { "/usr/bin/$file_name":
-        ensure  => file,
-        source  => "puppet:///modules/hcsscripts/acctutils/bin/$file_name",
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0755',
-      }
-    }
-    script { 'hcs-adduser': }
-    script { 'hcs-buildmentorshipemails': }
-    script { 'hcs-chsh': }
-    script { 'hcs-deluser': }
-    script { 'hcs-expiry': }
-    script { 'hcs-grps': }
-    script { 'hcs-k5login2ldap': }
-    script { 'hcs-passwords': }
-    script { 'hcs-puppetpull': }
-    script { 'hcs-resetpassword': }
-    script { 'hcs-sqladmin': }
+    hcsscripts::acctutils_script { 'hcs-adduser': }
+    hcsscripts::acctutils_script { 'hcs-buildmentorshipemails': }
+    hcsscripts::acctutils_script { 'hcs-chsh': }
+    hcsscripts::acctutils_script { 'hcs-deluser': }
+    hcsscripts::acctutils_script { 'hcs-expiry': }
+    hcsscripts::acctutils_script { 'hcs-grps': }
+    hcsscripts::acctutils_script { 'hcs-k5login2ldap': }
+    hcsscripts::acctutils_script { 'hcs-passwords': }
+    hcsscripts::acctutils_script { 'hcs-puppetpull': }
+    hcsscripts::acctutils_script { 'hcs-resetpassword': }
+    hcsscripts::acctutils_script { 'hcs-sqladmin': }
     
   }
 }
