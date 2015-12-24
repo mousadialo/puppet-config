@@ -8,6 +8,10 @@ class hcsscripts::zfsquota {
       ensure => installed,
     }
     
+    package { 'python-ldap':
+      ensure => installed,
+    }
+    
     file { '/sbin/safezfs':
       ensure => file,
       source => 'puppet:///modules/hcsscripts/zfsquota/bin/safezfs',
@@ -41,6 +45,7 @@ class hcsscripts::zfsquota {
       status  => '/bin/ps auxww | /bin/grep hcs-zfsquota | /bin/grep -v grep 1> /dev/null',
       require => [
         Package['python-twisted-web'],
+        Package['python-ldap'],
         File['/sbin/safezfs'],
         File['/usr/lib/zfsquota'],
         File['/etc/init.d/hcs-zfsquota'],
