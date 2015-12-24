@@ -1,0 +1,39 @@
+Hi $name,
+
+#if $mode == 'little'
+We've just finished calculating the mapping between Harvard Computer
+Society big sibs and little sibs.  Without further ado, we are pleased
+to announce that your big sib is $user.name, whom you can contact at
+$user.username@hcs.harvard.edu.  $big_sib_first is an excellently
+knowledgeable individual, and I think you will have a lot to learn
+from each other.
+
+Anyway, we're excited that you're interested in getting involved with
+HCS!  Hopefully you'll be at the hackathon (www.hcs.harvard.edu/events
+| http://www.facebook.com/event.php?eid=129293119430), at which point
+you can meet $big_sib_first in person.  If you can't make it, or have cooler
+things to do on Saturday afternoon (although what could be cooler than
+a hackathon?), feel free to email $big_sib_first with any questions you may
+have.  Alternatively, $big_sib_first should be contacting you in a few days
+about meeting up in person.
+#else
+We've just finished calculating the mapping between Harvard Computer
+Society big sibs and little sibs.  Without further ado, we are pleased
+to announce that your little sibs are the following:
+
+$littlesib_rep
+
+Anyway, hopefully your sibs will be at the hackathon.  You should make
+a special effort to find your sib (say, email them now and set up a
+meeting point?).  You have the opportunity to make the transition into
+HCS awesome for someone, so please do your best to take advantage of
+that!  In any case, if you don't find your sibs at the hackathon, make
+sure to send an email within the next couple of days saying a bit
+about yourself and asking if they'd like to meet so you can talk about
+projects, being involved with HCS, etc..
+#end if
+
+Sincerely,
+
+HCS Systems Bot
+systems@hcs.harvard.edu

@@ -1,7 +1,7 @@
-# Configures various HCS acctserv scripts.
-class scripts {
+# Configures makelist server script.
+class hcsscripts::makelist {
 
-  if $::machine_type == lists {
+  if $::machine_type == 'lists' {
     package { 'python-twisted-web':
       ensure => installed,
     }
@@ -13,7 +13,7 @@ class scripts {
     file { '/usr/lib/makelist':
       ensure  => directory,
       recurse => remote,
-      source  => 'puppet:///modules/scripts/makelist',
+      source  => 'puppet:///modules/hcsscripts/makelist/lib/makelist',
       owner   => 'root',
       group   => 'root',
       notify  => Service['hcs-makelist'],
@@ -21,7 +21,7 @@ class scripts {
     
     file { '/etc/init.d/hcs-makelist':
       ensure => file,
-      source => 'puppet:///modules/scripts/hcs-makelist',
+      source => 'puppet:///modules/hcsscripts/makelist/init/hcs-makelist',
       owner  => 'root',
       group  => 'root',
       mode   => '0755',

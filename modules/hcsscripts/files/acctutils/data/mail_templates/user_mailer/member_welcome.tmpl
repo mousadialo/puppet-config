@@ -1,0 +1,55 @@
+#import datetime
+#set $expiry = (datetime.date.today() + datetime.timedelta(weeks=1)).strftime("%A, %B %d, %Y")
+Greetings,
+
+== Some info
+
+You have just been granted a brand new Harvard Computer Society
+account.
+
+#if $user.state('set_random_password')
+Username: $user.username
+Password: $user.password
+Host: hcs.harvard.edu
+
+You must change this passsword before 11:59PM on $expiry (just SSH to
+$user.username@hcs.harvard.edu and run `passwd`).  If you don't, we'll
+lock the account for security reasons (just email us if you want it
+unlocked).
+#else
+Username: $user.username
+Password: <You should have this>
+Host: hcs.harvard.edu
+#end if
+
+== Some more info
+
+This account gives you the powers of an HCS member, including but not
+limited to:
+
+* Email ($user.username@hcs.harvard.edu)
+* Web hosting (PHP, Ruby on Rails, Django, or even static HTML)
+* SSH access to our servers
+
+This member account is good for the duration of your undergraduate
+career.  Once you complete a project, you will keep your account for
+life.
+
+We've set up email forwarding from your account (check the .forward
+file in your home directory).  You can also use IMAP with the server
+imap.hcs.harvard.edu with SSL enabled.
+
+For documentation and how-tos, please visit our website,
+http://www.hcs.harvard.edu.  For the world's knowledge at your
+fingertips at http://www.hcs.harvard.edu/wiki/.
+
+Finally, feel free to email our Membership Coordinator, E.J. Bensing
+<ebensing@hcs.harvard.edu>, with any questions.
+
+Sincerely,
+
+Carl Jackson, Prez
+Michael Chen, Entrepreneurial Envoy
+Jeremy Cushman, Lord of Projects
+E.J. Bensing, Membership Captain
+Siddarth Chandrasekaran, Communications Expert

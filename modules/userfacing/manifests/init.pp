@@ -37,6 +37,15 @@ class userfacing {
     target  => '/usr/bin/alpine',
     require => Package['alpine'],
   }
+  
+  # Scripts
+  file { '/usr/bin/fixwebfiles':
+    ensure  => present,
+    source  => 'puppet:///modules/userfacing/fixwebfiles',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0755',
+  }
     
   @@haproxy::balancermember { "${::hostname}-login-ssh":
     listening_service => 'login-ssh',

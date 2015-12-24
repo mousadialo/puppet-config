@@ -1,0 +1,92 @@
+#!/usr/bin/python
+
+"""
+Simple wrapper for account creation
+"""
+
+from acctutils.settings import mode
+from acctutils.models import User
+from acctutils.commandline_interface import Requestor
+from acctutils.mysql import Mysql
+from acctutils import mailinglist
+import re, os, sys
+user_re = re.compile(r'^[a-z][a-z0-9-]{2,15}$')
+if os.getuid():
+    print 'You must run this script as root'
+    sys.exit(1)
+
+def main():
+    new_user = User()
+    print "Welcome to HCS User Account creation"
+    type = None
+    while type not in ['member', 'group']:
+        type = Requestor.request('What type of user are you trying to create? [member|group]:')
+    new_user.type = type
+
+    username = None
+    while not username:
+        username = Requestor.request('Please pick the desired %s username:' % type).lower()
+        if User.username_exists(username):
+            print 'There is already a user with that name!  Try again.'
+            username = None
+        elif mailinglist.isnameinuse(username):
+            print 'There is already a mailing list with that name!  Try again.'
+            username = None
+        elif not user_re.search(username):
+            print 'Invalid username'
+            username = None
+    new_user.username = username
+
+    name = None
+    while not name:
+        name = Requestor.request("Please enter the %s's actual name:" % type)
+    new_user.name = name
+
+
+
+    if type == 'member':
+        password = None
+        while not password:
+            password = Requestor.getpass("Set %s's password:" % type)
+        else:
+            new_user.password = password
+        if Requestor.request_opt('Do you want to provide a non-HCS email (for .forward and welcome)?', default=True):
+            new_user.outside_email = Requestor.request_attribute('outside_email', "Please enter the person's non-HCS email:")
+            if not Requestor.request_opt('Send welcome email?', default=True):
+                new_user.setstate('no_welcome_email', True)
+    elif type == 'group':
+        print 'Enter FAS usernames for access list.  Enter one at a time, or separate by commas.  Leave a line empty to end.'
+        while True:
+            access = Requestor.request('FAS Username(s):')
+            if not access:
+                break
+            for user in access.split(','):
+                email = user.strip() + '@fas.harvard.edu'
+                new_user.access_list.add_email(email)
+        print 'Enter Harvard email addresses for access list.  Enter one at a time, or separate by commas.  Leave a line empty to end.'
+        while True:
+            access = Requestor.request('Harvard email(s):')
+            if not access:
+                break
+            for user in access.split(','):
+                new_user.access_list.add_email(user.strip())
+
+    print "Saving your new user..."
+    new_user.save()
+
+    if type == 'group':
+        if Requestor.request_opt('Do you want to set up MySQL?', default=True):
+            password = Requestor.request('MySQL password [blank for random]:')
+            database = owner = user = new_user.username
+            Mysql().create(user, password, database, owner)
+
+if __name__ == '__main__':
+    try:
+        ret = main()
+    except KeyboardInterrupt:
+        print '\nInterrupted'
+        ret = 8
+    except EOFError:
+        print '\nEOFed'
+        ret = 9
+    sys.exit(ret)

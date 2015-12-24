@@ -495,4 +495,20 @@ class gateway {
     },
   }
   
+  haproxy::listen { 'zfsquota':
+    bind    => { 
+      '*:8081' => [],
+    },
+    mode    => 'tcp',
+    options => {
+      'balance'     => 'leastconn',
+      'acl'         => 'mynetworks src 127.0.0.0/8 10.0.0.0/8',
+      'tcp-request' => 'connection reject if !mynetworks',
+      'option'      => [
+        'tcp-check',
+        'tcplog',
+      ],
+    },
+  }
+  
 }

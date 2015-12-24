@@ -1,0 +1,29 @@
+#!/usr/bin/python
+
+import yaml, models, mailers, sys
+sibs = yaml.load(open('sibs.yml'))
+
+if len(sys.argv) > 1 and sys.argv[1] == 'real':
+    mode = 'real'
+else:
+    mode = 'test'
+
+# (user, sibs, mode, send_to=None, send_from=None)    
+
+def generate_message(*args, **kwargs):
+    msg = mailers.OneoffMailer.create_sibs_welcome(*args, **kwargs)
+    print 'Preparing to send the following to %s as %s' % (msg.send_to, msg.send_from)
+    print '"""'
+    print msg.msg
+    print '"""'
+    print
+    if mode == 'real':
+        print 'Sending...'
+        mailers.OneoffMailer.deliver_sibs_welcome(*args, **kwargs)
+
+for sibdata in sibs:
+    user = models.User.find_by_username(sibdata['big']['username'])
+    littlesibs = sibdata['little']
+    generate_message(user, littlesibs, 'big', send_from='systems@hcs.harvard.edu')
+    for littlesib in littlesibs:
+        generate_message(user, littlesibs, 'little', littlesib, send_from='systems@hcs.harvard.edu')

@@ -1,0 +1,77 @@
+#!/usr/bin/python
+
+import os
+import pwd
+import sys
+from getpass import getpass
+from subprocess import call
+from acctutils.models import User
+from acctutils.custom_exceptions import ObjectNotFound
+
+VERSION = 0.1
+
+def fail(message, status=1):
+    print 'Error:', message
+    sys.exit(status)
+
+def expire_cache():
+    print '+ nscd -i passwd'
+    r = call(['nscd', '-i', 'passwd'])
+    if r == 0:
+        return True
+
+# get list of shells, excluding commented/nonexistent files, from /etc/shells
+shells = []
+f = open('/etc/shells', 'r')
+for line in f:
+    line = line.strip()
+    if line.startswith('#'):
+        continue
+    if os.path.exists(line):
+        shells.append(line)
+
+# warn if this machine may not be in ldap-client-root
+if not os.path.exists('/etc/ldap.secret'):
+    print 'Warning: /etc/ldap.secret does not exist. Is rootbinddn disabled?'
+
+def change_shell(username):
+    print 'Changing the login shell for', username
+
+    try:
+        user = User.find_by_username(username)
+    except ObjectNotFound:
+        fail('user does not exist.', 3)
+
+    print 'Enter the new value, or press ENTER to make no change'
+    sh = raw_input('\tLogin Shell [%s]: ' % user.shell)
+
+    if not sh:
+        return
+
+    if sh not in shells:
+        print "Valid shells:", shells
+        fail("'%s' is not in /etc/shells." % sh, 4)
+
+    user.shell = sh
+    return user.save()
+
+if __name__ == '__main__':
+    # require root
+    if os.getuid() != 0:
+        fail('This script must be run as root.')
+
+    # get username
+    if len(sys.argv) > 1:
+        username = sys.argv[1]
+    else:
+        if os.getenv('SUDO_USER'):
+            # running under sudo
+            username = os.getenv('SUDO_USER')
+        else:
+            # default to current user
+            username = pwd.getpwuid(os.getuid()).pw_name
+    
+    change_shell(username)
+
+    if os.getuid() == 0:
+        expire_cache()

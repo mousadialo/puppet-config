@@ -1,0 +1,153 @@
+#!/usr/bin/env python
+import os, sys, getpass
+
+from OpenSSL import crypto
+from scylla import utils
+
+CA_CERT = utils.CA_CERT
+CA_KEY = os.path.join('/etc/hcs-scylla/ca.key')
+SERIAL = os.path.join(utils.SERVICE_KEY_DIR, 'serial')
+
+class Types:
+  """Types of keys that new-certs can generate"""
+  USER = "user"
+  SERVICE = "service"
+
+def __CreateKeyPair(type=crypto.TYPE_RSA, bits=2048):
+  """Create a public/private key pair"""
+  pkey = crypto.PKey()
+  pkey.generate_key(type, bits)
+  return pkey
+
+def __CreateCertRequest(pkey, digest="sha1", **name):
+  """Create a certificate request."""
+  req = crypto.X509Req()
+  subj = req.get_subject()
+
+  for key,value in name.items():
+    setattr(subj, key, value)
+
+  req.set_pubkey(pkey)
+  req.sign(pkey, digest)
+  return req
+
+def __LoadCAKey():
+  file = open(CA_KEY, 'r')
+  key = crypto.load_privatekey(crypto.FILETYPE_PEM, file.read())
+  file.close()
+  return key
+
+def __LoadCACert():
+  file = open(CA_CERT, 'r')
+  cert = crypto.load_certificate(crypto.FILETYPE_PEM, file.read())
+  file.close()
+  return cert
+
+def __CreateCertificate(req, issuerCert, issuerKey, serial,
+    notAfter=60*60*24*365, digest="sha1"):
+  cert = crypto.X509()
+  cert.set_serial_number(serial)
+  cert.gmtime_adj_notBefore(0)
+  cert.gmtime_adj_notAfter(notAfter)
+  cert.set_issuer(issuerCert.get_subject())
+  cert.set_subject(req.get_subject())
+  cert.set_pubkey(req.get_pubkey())
+  cert.sign(issuerKey, digest)
+  return cert
+
+def __GetNextSerialNumber():
+  if not os.path.exists(SERIAL):
+    file = open(SERIAL, 'w')
+    file.write("%02d" % 0)
+    file.close()
+
+  file = open(SERIAL, 'r')
+  next = int(file.read())
+  file.close()
+  return next
+
+def __UpdateSerialNumber(new):
+  os.rename(SERIAL, SERIAL + ".old")
+  file = open(SERIAL, 'w')
+  file.write("%02d" % new)
+  file.close()
+
+def GenCerts(principal, type=Types.USER):
+  if type != Types.USER and type != Types.SERVICE:
+    raise ValueError('Invalid type: %s' % type)
+
+  if type == Types.USER:
+    uid, gid = utils.GetUidAndGid(user=principal)
+  elif type == Types.SERVICE:
+    uid, gid = 0, 0
+
+  key = __CreateKeyPair()
+  req = __CreateCertRequest(key, C='US', ST='Massachusetts',
+      L='Cambridge', O='Harvard Computer Society', CN=principal)
+  serial = __GetNextSerialNumber()
+  cert = __CreateCertificate(req, __LoadCACert(), __LoadCAKey(), serial)
+
+  # Initialize the user's key directory if it doesn't already exist
+  if type == Types.USER:
+    keydir = utils.GetKeyDir(user=principal)
+
+    if not os.path.isdir(keydir):
+      os.mkdir(keydir)
+      os.chmod(keydir, 0755)
+      os.chown(keydir, uid, gid)
+
+  keyfilename = None
+  keydump = crypto.dump_privatekey(crypto.FILETYPE_PEM, key)
+
+  if type == Types.USER:
+    keyfilename = utils.GetKeyPath(user=principal)
+  elif type == Types.SERVICE:
+    keyfilename = utils.GetServerKeyPath(service=principal)
+
+  keyfile = open(keyfilename, 'w')
+  os.chmod(keyfilename, 0600)
+  keyfile.write(keydump)
+  keyfile.close()
+  os.chown(keyfilename, uid, gid)
+
+  certfilename = None
+  certdump = crypto.dump_certificate(crypto.FILETYPE_PEM, cert)
+  if type == Types.USER:
+    certfilename = utils.GetCertificatePath(user=principal)
+  elif type == Types.SERVICE:
+    certfilename = utils.GetServerCertificatePath(service=principal)
+
+  certfile = open(certfilename, 'w')
+  os.chmod(certfilename, 0644)
+  certfile.write(certdump)
+  certfile.close()
+  os.chown(certfilename, uid, gid)
+  # Increment by 100 to allow up to 100 cert creation servers, each
+  # with a unique serial number mod 100
+  __UpdateSerialNumber(serial + 100)
+
+def main(argv):
+  def usage():
+    sys.stderr.write('usage: %s (-s <service> | -u <user>)\n' %
+        os.path.basename(argv[0]))
+
+  if len(argv) != 3:
+    usage()
+    return 1
+
+  try:
+    if argv[1] == "-u":
+      GenCerts(argv[2], type=Types.USER)
+      return 0
+    elif argv[1] == "-s":
+      GenCerts(argv[2], type=Types.SERVICE)
+      return 0
+    else:
+      usage()
+      return 1
+  except Exception, e:
+    sys.stderr.write('ERROR: %s\n' % e)
+    return 1
+
+if __name__ == "__main__":
+  sys.exit(main(sys.argv))

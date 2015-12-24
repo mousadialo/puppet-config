@@ -1,0 +1,43 @@
+Your HCS Web Site
+----------------
+
+With your HCS account comes a web site.  We support a variety of
+languages and database-driven apps: PHP, Wordpress, and Ruby on Rails,
+just to name a few.  If you want to keep it simple, your static HTML
+site is welcome as well.
+
+Your site's URL, which you might tell to people interested in your
+group, is
+     http://www.hcs.harvard.edu/$user.username
+
+On your fas.harvard.edu account, you publish your website by putting
+it in a directory called `public_html'; on HCS, we call this directory
+`web'.  To create such a directory, type "mkdir web" at the prompt.
+
+Once you've created the web directory, you may want to populate it
+with some web pages. You can upload files to hcs using sftp, in the
+same way that you upload files to FAS (for Windows users this means
+using SecureFX or WinSCP, for Mac users probably Cyberduck). First, 
+however, because HCS accounts do not have passwords you'll need
+to create a temporary one.
+
+To do this, connect to your hcs account and type the command "sftppasswd."
+You'll be prompted for a password, which you should use to connect through
+sftp. At 4AM every morning, these sftp passwords are reset.
+
+The details for connecting to the account through sftp are:
+
+hostname: hcs.harvard.edu
+username: $user.username
+password: the password you just set
+
+Finally, you'll need to make sure the permissions on the files for your
+site are correct.  We have a script set up to make this easy - 
+just type "fixwebfiles" at the prompt.
+
+We're happy to provide basic help getting started: simply send your
+questions to acctserv@hcs.harvard.edu, or stop by our office hours
+(schedule at http://www.hcs.harvard.edu/events). You can also read our
+tutorials at www.hcs.harvard.edu/tutorials.
+
+Best of luck with your new web site!

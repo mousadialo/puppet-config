@@ -1,0 +1,46 @@
+#!/usr/bin/python
+
+from acctutils.commandline_interface import Requestor
+from acctutils import mysql
+import hcs.utils
+import sys
+
+def __main__():
+    if len(sys.argv) == 1:
+        print 'Usage: %s (change-password|create)' % sys.argv[0]
+        return 1
+
+    action = sys.argv[1]
+    
+    m = mysql.Mysql()
+    if action == 'change-password':
+        user = Requestor.request('Name of MySQL User? ')
+        owner = Requestor.request('Account name of owner [%s] [N for no email]? ' % user)
+        password = Requestor.request('New password [blank for random]? ')
+        if not owner:
+            owner = user
+        elif owner == 'N' or owner == 'n':
+            owner = None
+        m.change_password(user, password, owner)
+    elif action == 'create':
+        user = Requestor.request('Desired MySQL username? ')
+        database = Requestor.request('Desired database name [%s]? ' % user)
+        owner = Requestor.request('Account name of owner [%s] [N for no email]? ' % user)
+        password = Requestor.request('Password [blank for random]? ')
+        if not owner:
+            owner = user
+        elif owner == 'N' or owner == 'n':
+            owner = None
+        if not database:
+            database = user
+        if not m.exists(database):
+            m.create(user, password, database, owner)
+        else:
+            print 'Database %s already exists' % database
+            return 1
+    else:
+        raise ArgumentError, 'Invalid argument'
+    return 0
+
+if __name__ == '__main__':
+    sys.exit(__main__())

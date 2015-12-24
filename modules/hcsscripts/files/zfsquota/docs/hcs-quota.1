@@ -1,0 +1,92 @@
+.TH HCS-QUOTA 1 "Spring 2011" "Harvard Computer Society"
+.SH NAME
+hcs-quota \- display HCS disk quota and limits
+.SH SYNOPSIS
+\fBhcs-quota\fR [\fBget\fR]
+.br
+\fBhcs-quota\fR \fBget\fR|\fBset\fR|\fBset-hard\fR|\fBset-soft\fR|\fBcreate\fR ...
+.SH DESCRIPTION
+.I Quota
+displays and sets a user's disk usage limits on remote ZFS file systems. If a
+user is specified,
+.I quota
+will return information on disk usage and limits for that user. Normal users
+can only check their own quotas. Members of group
+.I acctserfs
+may manage quotas for any user.
+.PP
+.I Quota
+obtains its information from a corresponding quota server, communicating over
+XML-RPC. The client authenticates using the HCS
+.I scylla
+package, which reads SSL client certificates from \fI~/.hcskeys/\fP. The server
+performs authorization based on LDAP group membership.
+
+.SH "COMMANDS"
+.PP
+The main commands all take a username to determine the filesystem.
+The quota values are specified in a format that follows what
+.BR zfs(8)
+uses. Quotas should be given as a number (of bytes) with an optional binary
+prefix at the end, so 1G denotes 2^30 bytes == 1 GiB. This should not be
+confused with the more standard SI prefixes described by
+.BR units(7) .
+
+.TP 5
+\fBget\fR [\fIusername\fR]
+Displays quota information for the given user. Note that the values are
+truncated with a crude approximation of significant figures for display. If you
+need exact values, use the underlying client library.
+.TP
+\fBset\fR \fIusername hardquota\fR [\fIsoftquota\fR]
+Sets user hard quota and optional soft quota (soft limit).
+.TP
+\fBset-hard\fR \fIusername hardquota\fR
+Sets user hard quota.
+.TP
+\fBset-soft\fR \fIusername softquota\fR
+Sets user soft quota.
+.TP
+\fBcreate\fR \fIusername\fR [\fIhardquota\fR [\fIsoftquota\fR]]
+Creates a new ZFS filesystem with the given hard and soft quotas. The specified
+user must already exist on the client system, and the new file system will be
+owned by that user. This command can take a while to finish. The
+.BR hcs-adduser(8)
+script calls quota with this command for home directory creation.
+
+.SS Unexposed Library Functions
+.PP
+A few functions supported by the
+.I zfsquota.quotaclient
+library are not exposed here.
+.TP 5
+.BI destroy_filesystem()
+This functionality is exposed by
+.BR hcs-deluser(8) .
+.TP
+.BI get_all_quotas()
+Initially developed for a new \fIwarnquota\fR style script to email users who
+have exceeded their quotas, this function does not complete in any reasonable
+amount of time on the server. ZFS does not actually scale very well to the
+thousands of file system that HCS uses, and the server appears to hang when
+this function is run.
+
+.SH "BUGS"
+.PP
+The quota server is synchronous in spite of being written with \fItwisted\fR.
+In practice, this is not a problem because ZFS itself will run commands in
+serial. Don't be surprised if your command takes a long time to return if
+someone else has called quota create.
+.PP
+The quota client and server are designed to work with users' home directories.
+It recognizes \fIgeneral\fR, \fIgroups\fR, and \fIpeople\fR as valid prefixes.
+If you want to get or set quotas for other ZFS file systems, you'll need to do
+so on the filer itself.
+
+.SH SEE ALSO
+hcs-adduser(8), hcs-deluser(8), zfs(8)
+.SH AUTHORS
+.nf
+Andy Brody <abrody@hcs.harvard.edu>
+Grant Dasher <gdasher@hcs.harvard.edu>
+.fi

@@ -1,0 +1,121 @@
+#!/usr/bin/bash
+
+# A limited wrapper around /sbin/zfs
+# Good for granting access to run only certain zfs-related commands as root
+# Copyright 2009 HCS
+
+# regexes for validation of input
+FS_PREFIX='^tank/home/(people|general|groups|hcs)/[a-z0-9\-]+$'
+CHOWN_PATHS='^/tank/home/(people|general|groups|hcs)/[a-z0-9\-]+$'
+
+SET_PROPERTIES='^(refquota|hcs:softquota)=[0-9]*$'
+INHERIT_PROPERTIES='^(refquota|hcs:softquota)$'
+
+# don't allow anything to be chowned to root
+CHOWNABLE_IDS='^0*[1-9][0-9]*:0*[1-9][0-9]*$'
+
+# command names
+safezfs=$(basename $0)
+zfs=/sbin/zfs
+
+function check_fs {
+	if [[ "$*" =~ $FS_PREFIX ]]; then
+		return 0
+	else
+		echo "$safezfs will not touch that filesystem"
+		exit 7
+	fi
+}
+
+# cross-platform readlink within bash
+function canonicalize_dir {
+	if [[ -n "$2" ]]; then
+		echo "$0: extra operand $2"
+		echo "Usage is similar to GNU readlink, but works only on directories"
+		exit 20
+	fi
+	
+	pushd -- "$1" > /dev/null &&
+	echo $(pwd -P) &&
+	popd > /dev/null
+}
+
+function check_chown {
+	
+	if [[ ! -d "$1" ]]; then
+		echo "$safezfs will only chown directories"
+		exit 11
+	fi
+	
+	realpath=$(canonicalize_dir $1)
+	
+	if [[ ! "$realpath" =~ $CHOWN_PATHS ]]; then
+		echo "$safezfs will not chown that path"
+		exit 11
+	fi
+	
+	return 0
+}
+
+case "$1" in
+	set)
+		# only allow setting of refquota and hcs:softquota
+		if [[ "$2" =~ $SET_PROPERTIES ]]; then
+			check_fs $3
+			
+			$zfs set $2 $3
+			exit $?
+		else
+			echo "$safezfs refuses to run that command"
+			exit 5
+		fi
+	;;
+	
+	inherit)
+		# only allow setting of refquota and hcs:softquota
+		if [[ "$2" =~ $INHERIT_PROPERTIES ]]; then
+			check_fs $3
+			$zfs inherit $2 $3
+			exit $?
+		else
+			echo "$safezfs refuses to run that command"
+			exit 5
+		fi
+	;;
+	
+	create)
+		check_fs $2
+		
+		$zfs create $2
+		exit $?
+	;;
+	
+	destroy)
+		check_fs $3
+		
+		if [[ "$2" != "-r" ]]; then
+			echo "$safezfs expects to do zfs destroy -r foo"
+			exit 11
+		fi
+		
+		$zfs destroy $2 $3
+		exit $?
+	;;
+	
+	chown)
+		if [[ "$2" =~ $CHOWNABLE_IDS ]]; then
+			check_chown $3
+			
+			chown $2 $3
+			exit $?
+		else
+			echo "$safezfs will not chown files to that user/group"
+			exit 9
+		fi
+	;;
+	
+	*)
+		echo "$safezfs cannot run that command"
+		exit 3
+	;;
+esac

@@ -1,0 +1,20 @@
+#!/usr/bin/python
+
+import acctutils.models, logging, sys
+
+def main():
+    if len(sys.argv) == 2 and sys.argv[1] == 'prod':
+        MODE = 'prod'
+    else:
+        MODE = 'dev'
+    for user in acctutils.models.User.find_all(gid=2000):
+        user.objectClass = user.default_objectClass()
+        user.access_list.load_fas_from_file()
+        # user.access_list.write = False # Don't write k5login
+        logging.debug("Access list: %r and ldap list: %r" % (user.access_list, user.access_list.fas_usernames))
+        logging.info("User %s: lifting the access list %r to ldap" % (user.username, user.access_list.fas_usernames)) 
+        if MODE == 'prod':
+            user.save()
+
+if __name__ == '__main__':
+    main()

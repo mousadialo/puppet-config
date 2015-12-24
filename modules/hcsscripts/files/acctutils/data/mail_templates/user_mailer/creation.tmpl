@@ -1,0 +1,42 @@
+Hello,
+
+Congratulations!  Your brand new HCS group account has been created as
+"$user.username".  We are using "ssh" access; to use the account,
+simply type ssh $user.username@hcs.harvard.edu from the prompt on any
+fas.harvard.edu server.
+
+The following FAS users have ssh access to the account:
+#for $person in $user.access_list.fas_emails
+ + $person
+#end for
+
+The following email addresses have access to the account through Harvard
+PIN authentication:
+#for $email in $user.access_list.emails
+ + $email
+#end for
+
+If you have PIN access, you can view email for your account by visiting
+https://mail.hcs.harvard.edu/ and pressing the PIN System login button.
+
+To give other people access to the account or to stop their access to
+the account, simply log into your account and type "access" at the
+prompt, and follow the instructions (you'll probably want option E).
+
+The newly created account has been emailed two introductory documents;
+one desribes account policies and such, and the other describes how to
+use your account to serve Web pages.  If you requested a mySQL database,
+a third email containing your username, database name, and password has
+also been sent to your account.  We'd also like to point your
+attention to the Account Services FAQ at http://www.hcs.harvard.edu/faq
+and our introductory tutorials at http://www.hcs.harvard.edu/tutorials.
+In particular, see the tutorials for information on checking your
+account's e-mail.
+
+If you ever have any questions, comments, or problems regarding any of
+our services, feel free to contact the HCS Account Services team at
+acctserv@hcs.harvard.edu.  They'll be happy to assist you and/or make
+suggestions on how your group can take full advantage of the services
+we offer.
+
+Thank you for using HCS!

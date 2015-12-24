@@ -1,11 +1,11 @@
 #! /bin/sh
 ### BEGIN INIT INFO
-# Provides:          hcs-pkg-base
+# Provides:          hcs-makelist
 # Required-Start:    $local_fs $remote_fs
 # Required-Stop:     $local_fs $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: hcs-pkg mysql daemon backend
+# Short-Description: hcs-makelist daemon backend
 # Description:       
 ### END INIT INFO
 
@@ -13,7 +13,7 @@
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
-DESC="The hcs makelist server"
+DESC="The HCS Make List Server"
 NAME=hcs-makelist
 DAEMON=/usr/bin/twistd
 DNAME=`basename $DAEMON` # can't stop with exec b/c python invokes twistd

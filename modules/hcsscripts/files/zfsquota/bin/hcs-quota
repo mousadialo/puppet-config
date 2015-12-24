@@ -1,0 +1,129 @@
+#!/usr/bin/env python
+
+"""
+quota COMMAND ARGS
+
+Display or set user quotas.
+
+examples:
+    quota get [username]
+    
+    quota set username hardquota [softquota]
+    quota set-hard username hardquota
+    quota set-soft username softquota
+    
+    quota create uname [hardquota [softquota]]
+"""
+
+import sys
+import os
+import pwd
+import socket
+import xmlrpclib
+from zfsquota.quotaclient import QuotaClient, parse_num, humanize, printValue
+
+def usage(errmsg=None):
+    if errmsg:
+        sys.stderr.write("ERROR: " + errmsg + "\n\n")
+    sys.stderr.write(__doc__.strip() + '\n')
+    
+    if errmsg == 0:
+        sys.exit()
+    else:
+        sys.exit(2)
+
+def main(argv):
+    # defaults
+    cmd = 'get'
+    username = None
+    args = []
+
+    # get arguments
+    try:
+        cmd = argv[1]
+        username = argv[2]
+        args = argv[3:]
+    except IndexError:
+        pass
+
+    if cmd in ['help', '--help', '-h']:
+        usage(0)
+    
+    # all commands require a user; get specified user (or current user if none)
+    if username:
+        try:
+            pwrec = pwd.getpwnam(username)
+        except KeyError:
+            usage('No such user: "%s".' % username)
+    else:
+        uid = os.getuid()
+        if uid < 1000:
+            usage("Is uid %d a person/group? Please specify a user." % uid)
+        pwrec = pwd.getpwuid(uid)
+    
+    user = pwrec.pw_name
+    type = pwrec.pw_dir.split('/')[2]
+    
+    c = QuotaClient(user, type)
+    
+    # run actual command
+    if cmd == 'get':
+        # returns a tuple: used, free, limit (soft), quota (hard)
+        (used, free, limit, quota) = c.get_quota()
+
+        print "free\tused\tlimit\tquota"
+        print "\t".join(map(printValue, (free, used, limit, quota)))
+        return 0
+        
+    elif cmd == 'set':
+        if not args:
+            usage(cmd + ' requires an argument')
+        args = map(parse_num, args)
+        c.set_quota(*args)
+        return 0
+        
+    elif cmd == 'set-hard':
+        if not args:
+            usage(cmd + ' requires an argument')
+        c.set_quota(hard=parse_num(args[0]))
+        return 0
+        
+    elif cmd == 'set-soft':
+        if not args:
+            usage(cmd + ' requires an argument')
+        c.set_quota(soft=parse_num(args[0]))
+        return 0
+        
+    elif cmd == 'create':
+        uid = pwrec.pw_uid
+        gid = pwrec.pw_gid
+        extra = map(parse_num, args[:2])
+        
+        c.create_filesystem(uid, gid, *extra)
+    
+    elif cmd == 'destroy':
+        print "Not implemented in this script. Try hcs-deluser or this code:"
+        print ""
+        print "$ sudo python"
+        print ">>> from zfsquota.quotaclient import QuotaClient"
+        print ">>> user, utype = 'someuser', 'groups'"
+        print ">>> c = QuotaClient(user, utype)"
+        print ">>> c.destroy_filesystem()"
+        return 9
+
+    else:
+        usage('Unrecognized command "%s".' % cmd)
+
+if __name__ == "__main__":
+    try:
+        sys.exit(main(sys.argv))
+    
+    except xmlrpclib.Fault, f:
+        print "ERROR:", f.faultString
+        sys.exit(3)
+    except socket.error, e:
+        print "ERROR:", e[1]
+        sys.exit(5)
+    except Exception, e:
+        print "ERROR:", e
+        sys.exit(7)

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [[ ! -d $HOME/web ]]; then
+  cat <<END
+You haven't made a website yet.
+\`$0' will fix the permission settings of a site once you make it;
+but first you'll want to create a directory named \`~/web'
+and put a web page there.
+END
+  exit
+fi
+
+find $HOME/web -type d -print0 | xargs -0 chmod 755
+chmod 711 $HOME/web
+find $HOME/web -type f -print0 | xargs -0 chmod 644
+find $HOME/web -type f -name "*.php" -print0 | xargs -0r chmod 600

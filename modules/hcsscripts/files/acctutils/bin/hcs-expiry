@@ -1,0 +1,116 @@
+#!/usr/bin/python
+
+"""
+HCS Account Expiry Utility
+Nov 2009, keito@hcs.harvard.edu
+"""
+
+from acctutils.models import User
+import datetime
+import re, os, pwd, sys
+
+iso_re = re.compile(r'^([12][90][0-9][0-9])-([01][0-9])-([0123][0-9])$')
+us_date = "%B %d, %Y"
+
+def _print_expiry(username):
+  try:
+    u = User.find_by_username(username)
+    dt = u.expiry_date
+  except:
+    print "%s: Failed to find expiry date" % username
+    return False
+
+  if dt is None:
+    print "%s does not expire" % username
+  else:
+    print "%s expires %s" % (username, dt.strftime(us_date))
+
+def cmd_getown():
+  username = pwd.getpwuid(os.getuid())[0]
+  _print_expiry(username)
+
+def cmd_get():
+  for username in sys.argv[2:len(sys.argv)]:
+    _print_expiry(username)
+
+def cmd_set():
+  if os.getuid():
+    print "You must be root to set expiry dates"
+    return False
+
+  if len(sys.argv) < 4:
+    print "You must specify an expiry date and a list of usernames"
+    return False
+
+  isomatch = iso_re.match(sys.argv[2])
+  if (sys.argv[2] != "None") and (isomatch is None):
+    print "Invalid date %s. Specify a date in ISO format: 1989-01-29 or None" % sys.argv[2]
+    return False
+
+  if sys.argv[2] == "None":
+    exp_date = None
+    print "Removing expiry date(s)"
+  else:
+    exp_date = datetime.datetime.strptime(sys.argv[2], "%Y-%m-%d").date()
+    print "Setting expiry date(s) to %s" % exp_date.strftime(us_date)
+
+  # Now set all the expiry dates
+  for username in sys.argv[3:len(sys.argv)]:
+    try:
+      u = User.find_by_username(username)
+      old_dt = u.expiry_date
+    except:
+      print "%s: Unknown user" % username
+      continue
+
+    if old_dt == exp_date:
+      print "%s: No modifications necessary" % username
+    else:
+      try:
+        u.expiry_date = exp_date
+        print "%s: SUCCESS" % username
+      except:
+        print "%s: FAILED" % username
+
+def cmd_show():
+  if sys.argv[2] == "expired":
+    thisday = datetime.date.today().toordinal() - datetime.date(1970,1,1).toordinal()
+    for user in User.find_ldapfilter('(&(shadowExpire<=%d)(shadowExpire>=0))' % thisday):
+      _print_expiry(user.username)
+  else:
+    print "Cannot \"show\" you %s" % (sys.argv[2])
+
+def main():
+  """HCS Account Expiry Utility
+Expiring your users with ease since 2009
+
+Usage:
+  hcs-expiry
+    Displays the current user's expiry date
+  hcs-expiry get USERNAME1 [USERNAME2 [USERNAME3 ...]]
+    Displays expiry date for USERNAMEs
+  hcs-expiry set DATE USERNAME1 [USERNAME2 [USERNAME3 ...]]
+    Sets the expiry date for specified USERNAMEs to DATE (in ISO format: 1989-01-29 or None)
+  hcs-expiry show expired
+    Lists all expired accounts on the system"""
+
+  if len(sys.argv) == 1:
+    if not os.getuid():
+      print "You must not be root to get your own expiry date"
+      sys.exit(1)
+    else:
+      return cmd_getown()
+
+  if (len(sys.argv) < 3) or (sys.argv[1] not in ["get", "set", "show"]):
+    print main.__doc__
+    sys.exit()
+
+  if sys.argv[1] == "get":
+    return cmd_get()
+  elif sys.argv[1] == "set":
+    return cmd_set()
+  elif sys.argv[1] == "show":
+    return cmd_show()
+
+if __name__ == '__main__':
+  main()

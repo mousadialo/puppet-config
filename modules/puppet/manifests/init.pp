@@ -18,6 +18,12 @@ class puppet {
       puppetdb_server => $::fqdn,
       restart_puppet  => false,
     }
+    
+    # Clean up old reports
+    tidy { "/var/lib/puppet/reports":
+      age     => "1w",
+      recurse => true,
+    }
   }
 
   $puppetmaster_server = hiera('puppetmaster-server')

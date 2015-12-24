@@ -1,0 +1,83 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          hcs-zfsquota
+# Required-Start:    $local_fs $remote_fs
+# Required-Stop:     $local_fs $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: hcs-zfsquota
+# Description:       
+### END INIT INFO
+
+# Script copied from SIP Xen Project <sipb-xen@mit.edu>
+
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="The HCS ZFS Quota Server"
+NAME=hcs-zfsquota
+DAEMON=/usr/bin/twistd
+DNAME=`basename $DAEMON` # can't stop with exec b/c python invokes twistd
+PIDFILE=/var/run/$USER/$NAME.pid
+LOGFILE=/var/log/$NAME.log
+DAEMON_ARGS="-y /usr/lib/zfsquota/zfsquota.tac --pidfile $PIDFILE -l $LOGFILE"
+SCRIPTNAME=/etc/init.d/$NAME
+USER=list
+GROUP=list
+
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+
+# Read configuration variable file if it is present
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
+. /lib/lsb/init-functions
+
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+  # Make log file and pid file owned by proper user
+  touch $LOGFILE && chown $USER:$GROUP $LOGFILE
+  piddir=`dirname $PIDFILE`
+  [ -d $piddir ] || mkdir $piddir
+  chown $USER:$GROUP $piddir
+  start-stop-daemon --start --quiet --pidfile $PIDFILE -c $USER -g $GROUP  \
+    --oknodo --exec $DAEMON -- $DAEMON_ARGS
+}
+
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+  start-stop-daemon --stop --quiet --pidfile $PIDFILE \
+      --oknodo --retry 60 --name $DNAME
+}
+
+case "$1" in
+  start)
+  log_daemon_msg "Starting $DESC" "$NAME"
+  do_start
+  log_end_msg $? 
+  ;;
+  stop)
+  log_daemon_msg "Stopping $DESC" "$NAME"
+  do_stop
+  log_end_msg $?
+  ;;
+  reload|force-reload|restart)
+  log_daemon_msg "Restarting $DESC" "$NAME"
+  do_stop
+  do_start
+  log_end_msg $?
+  ;;
+  *)
+  echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+  exit 3
+  ;;
+esac
+
+:
