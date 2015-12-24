@@ -72,7 +72,7 @@ class UserMailer(Mailer):
                 username = user.username
             except AttributeError:
                 username = user
-            # Someone editng vhosts
+            # Someone editing vhosts
             display_action = 'Vhost administration for %s' % username
         elif action == 'vhosts_pull':
             # Vhosts were pulled

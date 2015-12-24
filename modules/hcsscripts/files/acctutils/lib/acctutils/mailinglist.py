@@ -9,7 +9,7 @@ group-add.sh to prevent name collisions.  Returns 0 if it is a list,
 """
 
 def isnameinuse(listname):
-  server = ServerProxy("http://trajan.internal.hcs.harvard.edu:8080/")
+  server = ServerProxy("http://hcs.harvard.edu:8080/")
   return server.isnameinuse(listname)
 
 def main(argv):

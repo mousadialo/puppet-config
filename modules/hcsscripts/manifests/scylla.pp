@@ -63,6 +63,20 @@ class hcsscripts::scylla {
         ],
       }
     }
+    elsif $::machine_type == 'login' {
+      file { '/usr/bin/new-user-certs':
+        ensure  => file,
+        source  => 'puppet:///modules/hcsscripts/scylla/bin/new-user-certs',
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0755',
+        require => [
+          File['/etc/hcs-scylla/ca.key'],
+          File['/etc/hcs-scylla/ca.pem'],
+          File['/usr/lib/python2.7/scylla'],
+        ],
+      }
+    }
   }
 
 }

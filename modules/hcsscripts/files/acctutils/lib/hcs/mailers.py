@@ -2,7 +2,7 @@
 import logging, time
 import smtplib, utils, os, re, sys
 from email.MIMEText import MIMEText
-from email.Utils import formatdate
+from email.Utils import formatdate, make_msgid
 import settings.mail, settings.log
 logger = logging.getLogger('mailers')
 
@@ -169,4 +169,5 @@ class Mailer(object):
         msg['To'] = send_to
         msg['CC'] = cc
         msg['Date'] = formatdate(localtime=True)
+        msg['Message-ID'] = make_msgid()
         return msg

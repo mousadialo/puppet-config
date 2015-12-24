@@ -4,7 +4,7 @@ dir = os.path.dirname(__file__)
 full_formatter = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 
 try:
-    LOG_FILENAME = '/var/log/hcs/python-hcs.log'
+    LOG_FILENAME = '/var/log/hcs/hcs.log'
     open(LOG_FILENAME, 'a')
     # set up logging to file - see previous section for more details
     logging.basicConfig(level=logging.INFO,

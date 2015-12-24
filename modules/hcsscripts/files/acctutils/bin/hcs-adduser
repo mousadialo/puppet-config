@@ -55,14 +55,15 @@ def main():
             if not Requestor.request_opt('Send welcome email?', default=True):
                 new_user.setstate('no_welcome_email', True)
     elif type == 'group':
-        print 'Enter FAS usernames for access list.  Enter one at a time, or separate by commas.  Leave a line empty to end.'
-        while True:
-            access = Requestor.request('FAS Username(s):')
-            if not access:
-                break
-            for user in access.split(','):
-                email = user.strip() + '@fas.harvard.edu'
-                new_user.access_list.add_email(email)
+        # Deprecate FAS usernames
+        #print 'Enter FAS usernames for access list.  Enter one at a time, or separate by commas.  Leave a line empty to end.'
+        #while True:
+        #    access = Requestor.request('FAS Username(s):')
+        #    if not access:
+        #        break
+        #    for user in access.split(','):
+        #        email = user.strip() + '@fas.harvard.edu'
+        #        new_user.access_list.add_email(email)
         print 'Enter Harvard email addresses for access list.  Enter one at a time, or separate by commas.  Leave a line empty to end.'
         while True:
             access = Requestor.request('Harvard email(s):')
