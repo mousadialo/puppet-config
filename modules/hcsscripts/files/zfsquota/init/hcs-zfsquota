@@ -21,8 +21,8 @@ PIDFILE=/var/run/$USER/$NAME.pid
 LOGFILE=/var/log/$NAME.log
 DAEMON_ARGS="-y /usr/lib/zfsquota/zfsquota.tac --pidfile $PIDFILE -l $LOGFILE"
 SCRIPTNAME=/etc/init.d/$NAME
-USER=list
-GROUP=list
+USER=root
+GROUP=root
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
