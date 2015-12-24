@@ -43,6 +43,7 @@ def main():
         
     if save_group:
         g.save()
+        # Flush LDAP group cache
         call(['nscd', '-i', 'group'])
 
 def confirm(prompt=None, resp=False):
