@@ -8,7 +8,7 @@ import utils
 class XmlRpcTransport(xmlrpclib.Transport):
   def make_connection(self, host):
     host, extra_headers, x509 = self.get_host_info(host)
-    return httplib.HTTPS(host, None,
+    return httplib.HTTPSConnection(host, None,
         key_file=utils.GetKeyPath(),
         cert_file=utils.GetCertificatePath())
 
@@ -21,11 +21,11 @@ class ClientCertXMLRPC(xmlrpc.XMLRPC):
           ).get_subject().commonName
 
     request.content.seek(0, 0)
-    args, functionPath = xmlrpclib.loads(request.content.read())
+    args, procedurePath = xmlrpclib.loads(request.content.read())
     args = list(args)
     args.insert(0, user)
     try:
-      function = self._getFunction(functionPath)
+      function = self.lookupProcedure(procedurePath)
     except xmlrpclib.Fault, f:
       self._cbRender(f, request)
     else:
