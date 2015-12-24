@@ -4,7 +4,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 import scylla.ssl
 
-from zfsquota import quotaserver
+import quotaserver
 from twisted.application import service, internet
 from twisted.web import server
 
