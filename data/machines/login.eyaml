@@ -4,6 +4,7 @@ classes:
   - ldap
   - mail # null client config
   - userfacing
+  - hcsscripts
 
 ssh_host_dsa_key: >
     ENC[PKCS7,MIIEDQYJKoZIhvcNAQcDoIID/jCCA/oCAQAxggEhMIIBHQIBADAFMAACAQEw

@@ -3,6 +3,7 @@ classes:
   - zfs
   - filesystem
   - ldap
+  - hcsscripts
 
 scylla_ca.key: >
     ENC[PKCS7,MIIH/QYJKoZIhvcNAQcDoIIH7jCCB+oCAQAxggEhMIIBHQIBADAFMAACAQEw

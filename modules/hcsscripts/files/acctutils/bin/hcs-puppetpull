@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh -A -t hcs@puppetmaster.hcs.harvard.edu sudo -E git -C /etc/puppet pull
