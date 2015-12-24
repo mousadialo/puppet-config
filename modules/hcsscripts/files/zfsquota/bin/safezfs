@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # A limited wrapper around /sbin/zfs
 # Good for granting access to run only certain zfs-related commands as root

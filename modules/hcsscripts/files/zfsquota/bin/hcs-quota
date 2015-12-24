@@ -6,11 +6,11 @@ quota COMMAND ARGS
 Display or set user quotas.
 
 examples:
-    quota get [username]
+    hcs-quota get [username]
     
-    quota set username hardquota [softquota]
-    quota set-hard username hardquota
-    quota set-soft username softquota
+    hcs-quota set username hardquota [softquota]
+    hcs-quota set-hard username hardquota
+    hcs-quota set-soft username softquota
     
     quota create uname [hardquota [softquota]]
 """
