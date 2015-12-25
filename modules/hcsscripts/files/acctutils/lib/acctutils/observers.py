@@ -24,12 +24,12 @@ class UserObserver(object):
                 group.members = [user.username]
         group.save()
         logging.info("Creating filesystem %s" % user.home)
-        driver.run(['/usr/bin/quota', 'create', user.username, user.quota])
+        driver.run(['/usr/bin/hcs-quota', 'create', user.username, user.quota])
         if not os.path.exists(user.home):
             logger.error("Homedir doesn't look right here. NFS issue?")
             raise AssertionError
         user.take_file(user.home)
-        driver.run(['new-certs', '-u', user.username])
+        driver.run(['/usr/bin/new-cert', '-u', user.username])
         user.create_initial_files()
         logging.debug("Created initial files, user.type = %s" % user.type)
         # Let the cache on the mailservers get up to speed
