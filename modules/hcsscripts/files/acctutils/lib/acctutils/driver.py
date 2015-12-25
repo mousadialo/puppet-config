@@ -334,7 +334,7 @@ class LDAPDriver(object):
 
 class LDAPUser(LDAPDriver):
     attr_mapping = {'username':'uid', 'uid':'uidNumber', 'gid':'gidNumber', 'home':'homeDirectory', 'shell':'loginShell', 'name':'gecos',
-                    'access_list_fas_usernames':'hcsGroupAccountMember'}
+                    'access_list_emails':'uniqueMember'}
     ldap_key = 'uid'
     base_dn_str = 'ou=People,%s' % LDAPDriver.base_dn_str
     filter = ['objectClass=posixAccount']
