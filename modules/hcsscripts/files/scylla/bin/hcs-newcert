@@ -9,7 +9,7 @@ CA_KEY = os.path.join('/etc/hcs-scylla/ca.key')
 SERIAL = os.path.join(utils.SERVICE_KEY_DIR, 'serial')
 
 class Types:
-  """Types of keys that new-certs can generate"""
+  """Types of keys that hcs-newcert can generate"""
   USER = "user"
   SERVICE = "service"
 

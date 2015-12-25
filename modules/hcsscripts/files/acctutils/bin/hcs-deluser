@@ -20,7 +20,7 @@ def rm_from_group(uname, group):
 
 def remove_from_groups(uname, verbose=False):
     p = Popen(['groups', uname], stdout=PIPE)
-    groups = p.communicate()[0].split()
+    groups = p.communicate()[0].split()[2:]
 
     if verbose:
         print "Removing from LDAP groups:", groups

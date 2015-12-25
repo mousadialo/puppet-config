@@ -41,9 +41,9 @@ class hcsscripts::scylla {
       group   => 'root',
     }
     
-    file { '/usr/bin/new-cert':
+    file { '/usr/bin/hcs-newcert':
       ensure  => file,
-      source  => 'puppet:///modules/hcsscripts/scylla/bin/new-cert',
+      source  => 'puppet:///modules/hcsscripts/scylla/bin/hcs-newcert',
       owner   => 'root',
       group   => 'root',
       mode    => '0755',
@@ -55,18 +55,18 @@ class hcsscripts::scylla {
     }
     
     if $::machine_type == 'file' {      
-      exec { '/usr/bin/new-cert -s zfsquota':
+      exec { '/usr/bin/hcs-newcert -s zfsquota':
         creates => '/etc/hcs/scylla_services/zfsquota_cert.pem',
         require => [
-          File['/usr/bin/new-cert'],
+          File['/usr/bin/hcs-newcert'],
           File['/etc/hcs/scylla_services'],
         ],
       }
     }
     elsif $::machine_type == 'login' {
-      file { '/usr/bin/new-user-certs':
+      file { '/usr/bin/hcs-newusercerts':
         ensure  => file,
-        source  => 'puppet:///modules/hcsscripts/scylla/bin/new-user-certs',
+        source  => 'puppet:///modules/hcsscripts/scylla/bin/hcs-newusercerts',
         owner   => 'root',
         group   => 'root',
         mode    => '0755',

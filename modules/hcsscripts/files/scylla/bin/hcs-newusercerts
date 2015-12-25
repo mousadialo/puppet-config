@@ -2,7 +2,7 @@
 
 echo Regenerating user certs
 for user in $( getent passwd | cut -d : -f 1 | sort ); do
-    sudo new-cert -u $user
+    sudo hcs-newcert -u $user
     if [[ $? != 0 ]]; then
         echo User: $user
     fi
