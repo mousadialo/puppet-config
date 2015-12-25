@@ -1,6 +1,6 @@
 import hcs.passwords
 
-ldap_uri = 'ldaps://hcs.harvard.edu:389'
+ldap_uri = 'ldaps://hcs.harvard.edu'
 try:
     ldap_directory_manager = 'cn=Directory Manager'
     ldap_password = hcs.passwords.get('ldap')
