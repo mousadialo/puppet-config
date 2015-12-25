@@ -7,6 +7,9 @@ import warnings
 
 logger = logging.getLogger('driver')
 
+# TODO: Verify LDAPS certificate. This just ignores it.
+ldap.set_option(ldap.OPT_X_TLS_REQUIRE_CERT, ldap.OPT_X_TLS_NEVER)
+
 def run(cmd, arg=None):
     """ Run a shell command and log output """
     if isinstance(cmd, str):
@@ -387,13 +390,13 @@ class LDAPUser(LDAPDriver):
         # TODO: make this detect password changes, rather than just being not none
         if self.password is not None:
             logger.debug("Setting password for %s" % self.username)
-            # TODO: put this into LDAP.  Right now, ldap.passwd kills Python with some sort of pointer exception
             if not self.password:
                 logger.info('Password set to empty value; randomly generating password and expiring password')
                 # For deactivated accounts.  Possibly also for setting the password and emailing it to people.
                 self.password = utils.randstring(10)
                 self.setstate('expire-password', True)
-            run(['passwd', self.username], '%s\n%s\n' % (self.password, self.password))
+            # run(['passwd', self.username], '%s\n%s\n' % (self.password, self.password))
+            self.con.passwd_s(self.id, None, self.password)
         self.reload(attr='shadowLastChange')
         if self.state('expire-password'):
             self.do_expire_password()
