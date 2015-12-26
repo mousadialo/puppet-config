@@ -181,15 +181,12 @@ class User(model.Model, driver.LDAPUser):
 
     def default_cn(self):
         return self.name
-        
-    def default_mail(self):
-        return '%s@hcs.harvard.edu' % self.username
 
     def default_objectClass(self):
         if self.type == 'group':
-            return ['account', 'posixAccount', 'shadowAccount', 'inetOrgPerson', 'top', 'groupOfUniqueNames']
+            return ['account', 'posixAccount', 'shadowAccount', 'top', 'groupofuniquenames']
         else:
-            return ['account', 'posixAccount', 'shadowAccount', 'inetOrgPerson', 'top']
+            return ['account', 'posixAccount', 'shadowAccount', 'top']
 
     def defaultShadowLastChange(self):
         if self.password:
@@ -252,7 +249,6 @@ class User(model.Model, driver.LDAPUser):
 
     username = model.stringField(default=model.Model._require_assignment)
     cn = model.stringField(default=default_cn)
-    mail = model.stringField(default=default_mail)
     name = model.stringField()
     shell = model.stringField(default='/bin/bash')
     home = model.stringField(default=default_home)
@@ -276,19 +272,19 @@ class User(model.Model, driver.LDAPUser):
     @property
     def neededForCreation(self):
         if self.type in ['member', 'general']:
-            return model.attributesForCreation('username', 'uid', 'gid', 'home', 'shell', 'objectClass', 'home', 'cn', 'mail')
+            return model.attributesForCreation('username', 'uid', 'gid', 'home', 'shell', 'objectClass', 'home', 'cn')
         else:
-            return model.attributesForCreation('username', 'uid', 'gid', 'home', 'shell', 'objectClass', 'home', 'cn', 'mail', 'access_list_emails')
+            return model.attributesForCreation('username', 'uid', 'gid', 'home', 'shell', 'objectClass', 'home', 'cn', 'access_list_emails')
 
     @property
     def tracking(self):
         if self.type in ['member', 'general']:
             return model.persistentAttributes('username', 'uid', 'gid', 'home', 'shell', 'objectClass',
-                                              'home', 'cn', 'mail', 'shadowMin', 'shadowMax', 'shadowWarning', 'shadowInactive',
+                                              'home', 'cn', 'shadowMin', 'shadowMax', 'shadowWarning', 'shadowInactive',
                                               'shadowExpire', 'shadowFlag', 'name', 'shadowLastChange', 'userPassword')
         else:
             return model.persistentAttributes('username', 'uid', 'gid', 'home', 'shell', 'objectClass',
-                                              'home', 'cn', 'mail', 'shadowMin', 'shadowMax', 'shadowWarning', 'shadowInactive',
+                                              'home', 'cn', 'shadowMin', 'shadowMax', 'shadowWarning', 'shadowInactive',
                                               'shadowExpire', 'shadowFlag', 'name', 'shadowLastChange', 'userPassword',
                                               'access_list_emails')
 
