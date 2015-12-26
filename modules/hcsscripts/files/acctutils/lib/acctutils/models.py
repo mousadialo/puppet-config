@@ -187,9 +187,9 @@ class User(model.Model, driver.LDAPUser):
 
     def default_objectClass(self):
         if self.type == 'group':
-            return ['account', 'posixAccount', 'shadowAccount', 'top', 'groupofuniquenames']
+            return ['account', 'posixAccount', 'shadowAccount', 'inetOrgPerson', 'top', 'groupOfUniqueNames']
         else:
-            return ['account', 'posixAccount', 'shadowAccount', 'top']
+            return ['account', 'posixAccount', 'shadowAccount', 'inetOrgPerson', 'top']
 
     def defaultShadowLastChange(self):
         if self.password:
