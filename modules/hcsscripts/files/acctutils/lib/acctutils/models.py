@@ -276,19 +276,19 @@ class User(model.Model, driver.LDAPUser):
     @property
     def neededForCreation(self):
         if self.type in ['member', 'general']:
-            return model.attributesForCreation('username', 'uid', 'gid', 'home', 'shell', 'objectClass', 'home', 'cn')
+            return model.attributesForCreation('username', 'uid', 'gid', 'home', 'shell', 'objectClass', 'home', 'cn', 'mail')
         else:
-            return model.attributesForCreation('username', 'uid', 'gid', 'home', 'shell', 'objectClass', 'home', 'cn', 'access_list_emails')
+            return model.attributesForCreation('username', 'uid', 'gid', 'home', 'shell', 'objectClass', 'home', 'cn', 'mail', 'access_list_emails')
 
     @property
     def tracking(self):
         if self.type in ['member', 'general']:
             return model.persistentAttributes('username', 'uid', 'gid', 'home', 'shell', 'objectClass',
-                                              'home', 'cn', 'shadowMin', 'shadowMax', 'shadowWarning', 'shadowInactive',
+                                              'home', 'cn', 'mail', 'shadowMin', 'shadowMax', 'shadowWarning', 'shadowInactive',
                                               'shadowExpire', 'shadowFlag', 'name', 'shadowLastChange', 'userPassword')
         else:
             return model.persistentAttributes('username', 'uid', 'gid', 'home', 'shell', 'objectClass',
-                                              'home', 'cn', 'shadowMin', 'shadowMax', 'shadowWarning', 'shadowInactive',
+                                              'home', 'cn', 'mail', 'shadowMin', 'shadowMax', 'shadowWarning', 'shadowInactive',
                                               'shadowExpire', 'shadowFlag', 'name', 'shadowLastChange', 'userPassword',
                                               'access_list_emails')
 
