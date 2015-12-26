@@ -180,7 +180,10 @@ class User(model.Model, driver.LDAPUser):
         return 'cato.hcs.harvard.edu %s\ncaesar.hcs.harvard.edu %s\n' % (self.username, self.username)
 
     def default_cn(self):
-        return self.username
+        return self.name
+        
+    def default_mail(self):
+        return '%s@hcs.harvard.edu' % self.username
 
     def default_objectClass(self):
         if self.type == 'group':
@@ -249,6 +252,7 @@ class User(model.Model, driver.LDAPUser):
 
     username = model.stringField(default=model.Model._require_assignment)
     cn = model.stringField(default=default_cn)
+    mail = model.stringField(default=default_mail)
     name = model.stringField()
     shell = model.stringField(default='/bin/bash')
     home = model.stringField(default=default_home)
