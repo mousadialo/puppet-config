@@ -50,6 +50,19 @@ class filesystem {
       perm    => '0711',
       require => Class['ldap'],
     }
+    
+    # Mount vhosts directory
+    nfs::client::mount { 'vhosts':
+      server  => $nfs_server,
+      share   => "/${zpool_name}/services/vhosts",
+      mount   => "${mount_dir}/vhosts",
+      options => 'nfsvers=3,rw,relatime,nosuid,nodev',
+      atboot  => true,
+      owner   => 'webapps',
+      group   => 'hcs',
+      perm    => '0700',
+      require => Class['ldap'],
+    }
   }
   
   if $::machine_type == 'lists' {
