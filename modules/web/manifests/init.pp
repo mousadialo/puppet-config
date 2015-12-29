@@ -27,6 +27,7 @@ class web {
     package { 'python-ecdsa': }
     package { 'python-flask': }
     package { 'python-ldap': }
+    package { 'python-yaml': }
     
     require filesystem
     $mount_dir = hiera('nfs-mount-dir')
