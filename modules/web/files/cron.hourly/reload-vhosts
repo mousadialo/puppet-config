@@ -24,7 +24,7 @@ def read_status_file():
     with open(status_file, 'r') as f:
         data = yaml.load(f.read())
 
-def str_to_datetime(s):
+def str_to_dt(s):
     return datetime.strptime(s, format_updated_at)
     
 hostname = socket.getfqdn()
