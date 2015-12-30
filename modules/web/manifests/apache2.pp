@@ -101,7 +101,7 @@ class web::apache2 {
     }
 
     # HCS configurations for non-secure pages
-    web::apache2::config { 'redirects':
+    web::apache2::config { 'nonsecure-redirects':
       directory => 'hcs-nonsecure-conf/',
     }
 
