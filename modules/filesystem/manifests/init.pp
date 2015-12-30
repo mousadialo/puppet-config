@@ -45,7 +45,7 @@ class filesystem {
       atboot  => true,
       owner   => 'webapps',
       group   => 'hcs',
-      perm    => '0700',
+      perm    => '0755',
       require => Class['ldap'],
     }
   }
