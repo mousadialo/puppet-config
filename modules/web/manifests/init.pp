@@ -73,11 +73,12 @@ class web {
     
     # Python script to reload user vhosts
     file { '/etc/cron.hourly/reload-vhosts':
-      ensure => file,
-      source => 'puppet:///modules/web/cron.hourly/reload-vhosts',
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755',
+      ensure  => file,
+      source  => 'puppet:///modules/web/cron.hourly/reload-vhosts',
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755',
+      require => Nfs::Client::Mount['vhosts'],
     }
     
     ## Compatibility stuff ##
