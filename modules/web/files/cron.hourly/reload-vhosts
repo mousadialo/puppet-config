@@ -32,10 +32,12 @@ read_status_file()
 needs_reload = hostname not in data or str_to_dt(data[hostname]) <= str_to_dt(data['last_change'])
 
 if needs_reload:
+    reload_time = datetime.now()
+
     run('/etc/init.d/apache2', 'reload')
     
     # Reload status file in case it was edited
     read_status_file()
-    data[hostname] = datetime.now().strftime(format_updated_at)
+    data[hostname] = reload_time.strftime(format_updated_at)
     with open(status_file, 'w') as f:
         f.write(yaml.dump(data))
