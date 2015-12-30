@@ -11,8 +11,9 @@ class web::modsecurity {
     require => Package['libapache2-modsecurity'],
   }
     
-  web::apache2::config { 'mods-available/security2.conf':
-    require => [Package['libapache2-modsecurity'], Package['modsecurity-crs']],
+  web::apache2::config { 'security2':
+    directory => 'mods-available/',
+    require   => [Package['libapache2-modsecurity'], Package['modsecurity-crs']],
   }
   web::apache2::mod { 'security2':
     require => Package['libapache2-modsecurity'],

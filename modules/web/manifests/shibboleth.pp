@@ -6,8 +6,9 @@ class web::shibboleth {
       require => Package['apache2'],
     }
     
-    web::apache2::config { 'mods-available/shib2.conf':
-      require => Package['libapache2-mod-shib2'],
+    web::apache2::config { 'shib2':
+      directory => 'mods-available/',
+      require   => Package['libapache2-mod-shib2'],
     } ->
     web::apache2::mod { 'shib2':
       require => Package['libapache2-mod-shib2'],

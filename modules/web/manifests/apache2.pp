@@ -19,10 +19,13 @@ class web::apache2 {
 
   # This is the main apache configuration file. It sets high level directives
   # and includes sites-enabled and conf-enabled
-  web::apache2::config { 'apache2.conf': }
+  web::apache2::config { 'apache2': }
     
   # Security configurations to limit exposing ServerTokens and ServerSignature.
-  web::apache2::config { 'conf-available/security.conf': }
+  web::apache2::config { 'security':
+    ensure    => enabled,
+    directory => 'conf-available/',
+  }
 
   if $::machine_type == 'web' {
     require certs
@@ -33,7 +36,10 @@ class web::apache2 {
     package { 'apache2-suexec-custom':
       require => Package['apache2'],
     } ->
-    web::apache2::config { 'suexec/www-data': }
+    web::apache2::config { 'www-data':
+      directory => 'suexec/',
+      extension => '',
+    }
 
     package { 'libapache2-mod-fcgid':
       require => Package['apache2'],
@@ -72,21 +78,43 @@ class web::apache2 {
       require => Package['apache2'],
     }
 
+    # Enable user vhosts
+    web::apache2::config { 'user-vhosts':
+      ensure    => enabled,
+      directory => 'conf-available/',
+    }
+    
     # These do spiffy HCS specific things like redirects for special people,
     # hosting from user directories and removing the tilde. These are applied to
     # secure and non-secure pages.
-    web::apache2::config { 'hcs-conf/directories.conf': }
-    web::apache2::config { 'hcs-conf/redirects.conf': }
-    web::apache2::config { 'hcs-conf/tilde-rewrites.conf': }
-    web::apache2::config { 'hcs-conf/userdir.conf': }
+    web::apache2::config { 'directories':
+      directory => 'hcs-conf/',
+    }
+    web::apache2::config { 'redirects':
+      directory => 'hcs-conf/',
+    }
+    web::apache2::config { 'tilde-rewrites':
+      directory => 'hcs-conf/',
+    }
+    web::apache2::config { 'userdir':
+      directory => 'hcs-conf/',
+    }
 
     # HCS configurations for non-secure pages
-    web::apache2::config { 'hcs-nonsecure-conf/redirects.conf': }
+    web::apache2::config { 'redirects':
+      directory => 'hcs-nonsecure-conf/',
+    }
 
     # HCS configurations for secure pages
-    web::apache2::config { 'hcs-ssl-conf/helios.conf': }
-    web::apache2::config { 'hcs-ssl-conf/phpmyadmin.conf': }
-    web::apache2::config { 'hcs-ssl-conf/rt.conf': }
+    web::apache2::config { 'helios':
+      directory => 'hcs-ssl-conf/',
+    }
+    web::apache2::config { 'phpmyadmin':
+      directory => 'hcs-ssl-conf/',
+    }
+    web::apache2::config { 'rt':
+      directory => 'hcs-ssl-conf/',
+    }
     
     # Remove default vhost
     web::apache2::vhost{ '000-default':
@@ -94,12 +122,8 @@ class web::apache2 {
     }
 
     # HCS enabled virtual hosts.
-    #web::apache2::vhost{ 'default': }
     web::apache2::vhost{ 'hcs.harvard.edu': }
     web::apache2::vhost{ 'hcs.harvard.edu-ssl': }
-    #web::apache2::vhost{ 'mail.hcs.harvard.edu': }
-    #web::apache2::vhost{ 'secure.hcs.harvard.edu': }
-    web::apache2::vhost{ 'user-vhosts': }
 
     # Mods enabled
     web::apache2::mod { 'actions': }
@@ -111,7 +135,9 @@ class web::apache2 {
     web::apache2::mod { 'cgid': }
     web::apache2::mod { 'dav': }
     web::apache2::mod { 'dav_fs': }
-    web::apache2::config { 'mods-available/deflate.conf': } ->
+    web::apache2::config { 'deflate':
+      directory => 'mods-available/',
+    } ->
     web::apache2::mod { 'deflate': }
     web::apache2::mod { 'expires': }
     web::apache2::mod { 'fcgid':
@@ -128,10 +154,14 @@ class web::apache2 {
       require => Package['libapache2-mod-python'],
     }
     web::apache2::mod { 'rewrite': }
-    web::apache2::config { 'mods-available/ssl.conf': } ->
+    web::apache2::config { 'ssl':
+      directory => 'mods-available/',
+    } ->
     web::apache2::mod { 'ssl': }
     web::apache2::mod { 'suexec': }
-    web::apache2::config { 'mods-available/userdir.conf': } ->
+    web::apache2::config { 'userdir':
+      directory => 'mods-available/',
+    } ->
     web::apache2::mod { 'userdir': }
     web::apache2::mod { 'wsgi':
       require => Package['libapache2-mod-wsgi'],
@@ -146,7 +176,9 @@ class web::apache2 {
     web::apache2::mod { 'cgid': }
     web::apache2::mod { 'headers': }
     web::apache2::mod { 'rewrite': }
-    web::apache2::config { 'mods-available/ssl.conf': } ->
+    web::apache2::config { 'ssl':
+      directory => 'mods-available/',
+    } ->
     web::apache2::mod { 'ssl': }
     
     # Remove default vhost
@@ -171,7 +203,9 @@ class web::apache2 {
     group  => 'www-data',
     mode   => '0755',
   } ->
-  web::apache2::config { 'mods-available/httpbl.conf': } ->
+  web::apache2::config { 'httpbl':
+    directory => 'mods-available/',
+  } ->
   web::apache2::mod_source { 'httpbl': } ->
   web::apache2::mod { 'httpbl': }
   
