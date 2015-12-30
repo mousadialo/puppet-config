@@ -1,5 +1,10 @@
 #!/usr/bin/python
 
+'''
+A script that checks status.yaml to see if apache2 should be reloaded,
+and reloads it if needed.
+'''
+
 import socket
 import yaml
 from datetime import datetime

@@ -71,6 +71,15 @@ class web {
       options           => ['send-proxy', 'check', 'ssl verify none'],
     }
     
+    # Python script to reload user vhosts
+    file { '/etc/cron.hourly/reload-vhosts':
+      ensure => file,
+      source => 'puppet:///modules/web/cron.hourly/reload-vhosts',
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
+    
     ## Compatibility stuff ##
     
     # Some groups use /nfs/home instead of /home. Point to new NFS mount location.
