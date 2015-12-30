@@ -97,9 +97,6 @@ class web::apache2 {
     web::apache2::config { 'tilde-rewrites':
       directory => 'hcs-conf/',
     }
-    web::apache2::config { 'userdir':
-      directory => 'hcs-conf/',
-    }
 
     # HCS configurations for non-secure pages
     web::apache2::config { 'nonsecure-redirects':
