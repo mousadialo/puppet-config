@@ -82,6 +82,7 @@ class web::apache2 {
     web::apache2::config { 'user-vhosts':
       ensure    => enabled,
       directory => 'conf-available/',
+      require   => Nfs::Client::Mount['vhosts'],
     }
     
     # These do spiffy HCS specific things like redirects for special people,
