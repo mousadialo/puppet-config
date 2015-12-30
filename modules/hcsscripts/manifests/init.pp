@@ -9,6 +9,7 @@ class hcsscripts {
 
   include hcsscripts::acctutils
   include hcsscripts::makelist
+  include hcsscripts::reloadvhosts
   include hcsscripts::scylla
   include hcsscripts::zfsquota
 

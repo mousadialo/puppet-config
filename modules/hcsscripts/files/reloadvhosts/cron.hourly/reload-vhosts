@@ -1,0 +1,36 @@
+#!/usr/bin/python
+
+import socket
+import yaml
+from datetime import datetime
+from subprocess import Popen, PIPE
+
+status_file = '/mnt/tank/vhosts/status.yaml'
+format_updated_at = '%Y-%m-%d %H:%M:%S'
+
+def run(*args, **kwargs):
+  if 'stdin' in kwargs:
+    return Popen(args, stdout=PIPE, stdin=PIPE, stderr=PIPE).communicate(kwargs['stdin'])
+  else:
+    return Popen(args, stdout=PIPE, stderr=PIPE).communicate()
+
+def read_status_file():
+    global data
+    with open(status_file, 'r') as f:
+        data = yaml.load(f.read())
+
+def str_to_datetime(s):
+    return datetime.strptime(s, format_updated_at)
+    
+hostname = socket.getfqdn()
+read_status_file()
+needs_reload = hostname not in data or str_to_dt(data[hostname]) <= str_to_dt(data['last_change'])
+
+if needs_reload:
+    run('/etc/init.d/apache2', 'reload')
+    
+    # Reload status file in case it was edited
+    read_status_file()
+    data[hostname] = datetime.now().strftime(format_updated_at)
+    with open(status_file, 'w') as f:
+        f.write(yaml.dump(data))
