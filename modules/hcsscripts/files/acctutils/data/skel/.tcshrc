@@ -1,9 +1,5 @@
 # USER'S LOCAL CSHRC FILE
 
-if (-f /etc/hcs.tcshrc) then
-  source /etc/hcs.tcshrc
-endif
-
 # Interactive settings follow below
 if !($?prompt && $?term) exit
 
@@ -33,6 +29,10 @@ eval `dircolors`
 # read in alias file in user's home dir if there.
 if (-f ~/.aliases) then
     source ~/.aliases
+endif
+
+if (-f /etc/hcs.tcshrc) then
+  source /etc/hcs.tcshrc
 endif
 
 # EOF
