@@ -24,7 +24,7 @@ endif
 alias ls ls --color=auto -F
 alias ll ls -alF
 alias c clear
-eval `dircolors`
+eval `dircolors --csh`
 
 # read in alias file in user's home dir if there.
 if (-f ~/.aliases) then
