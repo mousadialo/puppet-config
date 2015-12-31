@@ -1,0 +1,38 @@
+# USER'S LOCAL CSHRC FILE
+
+if (-f /etc/hcs.tcshrc) then
+  source /etc/hcs.tcshrc
+endif
+
+# Interactive settings follow below
+if !($?prompt && $?term) exit
+
+# Make nano the default editor
+setenv EDITOR nano
+setenv VISUAL nano
+
+# shell history settings
+set history=100
+set savehist=100
+
+# tcsh completion magic
+if ${?tcsh} then
+    # Some things are only useful for directories
+    complete cd 'p/1/d/'
+    complete pushd 'p/1/d/'
+    complete popd 'p/1/d/'
+    complete rmdir 'p/1/d/'
+endif
+
+# beautify ls's output
+alias ls ls --color=auto -F
+alias ll ls -alF
+alias c clear
+eval `dircolors`
+
+# read in alias file in user's home dir if there.
+if (-f ~/.aliases) then
+    source ~/.aliases
+endif
+
+# EOF

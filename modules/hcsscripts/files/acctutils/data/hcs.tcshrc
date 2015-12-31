@@ -1,0 +1,34 @@
+# HCS's GLOBAL .cshrc FILE
+# MODIFIED: Feb 27, 2008
+# csh configuration for all shell invocations.
+
+# Make files owner-only by default.
+umask 077
+
+# Get the system name
+setenv HOSTNAME `/bin/hostname -s`
+
+# allow logouts with CTRL-D
+unset ignoreeof
+
+# allow tab-completion in tcsh
+set autolist=ambiguous
+set filec
+
+# have grep display line numbers
+alias grep grep -n
+
+# disable auto-logout
+unset autologout
+
+# Prevent overwriting files with shell output redirection
+set noclobber
+
+# Set the prompt to hcs because there are potentially multiple 
+# login boxes.
+set prompt="%Uhcs%u:%B%~%b%# "
+
+# resource limits, and other settings
+limit coredumpsize unlimited
+
+# EOF
