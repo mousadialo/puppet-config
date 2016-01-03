@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import yaml, models, mailers, sys
-sibs = yaml.load(open('sibs.yml'))
+sibs = yaml.load(open('sibs.yaml'))
 
 if len(sys.argv) > 1 and sys.argv[1] == 'real':
     mode = 'real'

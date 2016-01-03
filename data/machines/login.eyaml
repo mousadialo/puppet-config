@@ -126,3 +126,171 @@ scylla_ca.key: >
     C4RGgZrMKtEaPkoHoA+y0YkfJWzWXLIu2Fh/G6IebOdEs7cT5lgA9xfRMv7n
     pXYr4F9J1UpmR0Y6r7UDI8Rt/9JhYjKha8m9Zh709aP/H5J2tDZ0J0u2FtI6
     pVEKtz98qdluXYSDyO+Wuo7GyDmQq/od]
+
+hcs_passwords:
+    acctserfs:
+        gapps:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEAoGpJfPLw8l16I3hr/2YMCHMuDaVRzJUZ7KZJ
+                yeK7EicSGw3Qs71Mo+BZpzeiSqxwAdwgwzErE+ENvgfkssVR79Tv4vJ93J0u
+                etoSd4ttF+p6dKizu1rxjFTRE2bOeHlYSrwIprah5ti6gRoSEiEaVfI4pQ8V
+                e3GLe8ceXcL2qKrlWZNRO9uoKysTP9fYDpmujXOobGrn6RSJKCOcSlScCuYG
+                VBEPBZL3cxXhQiCa+PLDiLcyPI83oCUozFdHWsHXw0VHrjtuWVZie/Dojooh
+                QoDu92x/r7QVQa9DICmbirBlmoNwfUwu/sWQkb7d4yzG+67a4szT7m3hkmH3
+                RXBTEjA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBB7l44ByyWCDxZBSDGh
+                FbOAgBCy76wz9UUjX/iHeu7GRR/M]
+            info: Password for Google Apps API
+            
+        mailman:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEASovEtgvcJR5s2PQCCeywnwehOgHwxNpOFacb
+                gPNRvuS4YwLJOOyJvXUmyopOxG8WmAKEJn1SMkc71PoTKmfUpqc7SNTV0L2Y
+                CR+su4kTAkcbPAqZOOrRiVblAVRD9GkdaLi2gGtXd6g1quXTXzHIew1wJaen
+                LVoP6xfXuB/oRcx1oQ941cU6feUffmoBTAbHWCnoaONmJi3yhwjBm1E7ahkN
+                wWfSJINiU56DxxDTA3+hif5o5w3H1z8y073KfpM0nnEtQaa3l/HBUY9Wdm6Z
+                bHYU0mEoMrRGIfXjATJytpScPlzjfdyqoPubhY6LWgkxBfhq2LB1n84Xf+hx
+                oTguczA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBBRFFtKYXeEz7xIrI21
+                ofurgBAH5NF4HHsmUp+8gl5ybBow]
+            info: Mailman root password
+            
+        mysql:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEARMUf1O45GWCsM2nxm/uytK257emhqLDxvPLI
+                FWFQup5grT77EOvo3oUhN1sMlB0yyv2gFkWjZ/dStHkC0dtkHsBTTYrzEoOs
+                l0K3HhyogxwmCULV2iXagWzJi4zz8wtPFvYZFbSXp1DPeZezcwgpUnCRpNgo
+                vuW7zZ0YDSjuuyR4JYY5Rqqla9zRrjy/qQ9K0PduBdGlqtVtgHJv415v7fQ9
+                KoPDDYQ8zZIUOnQ3pk9bRCj89rnwMxJDoKV9BPZ2Zd8o1TpsbbiK1q5qBMb8
+                mX4QNAB2rUMRnlcaZr2C6GuiD+KsepIKHYhRARv0f6nvftCCx/7Y1qsd0Dq6
+                oFbSAzA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBAnsXQAnCiEbb5TqjJT
+                4OVSgBDVuBIjQ3QJiT5Y9n1uh36E]
+            info: MySQL root password
+            
+        rt:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEAiJ5HpOYba5aJ2rbnHRm+ha8NiS9xagAJAUCs
+                dbVd6zbJPMBTaaC3RUE5jQHzvmqi+KfOqGP7l1J/eg4GpemQdwPxQAP9a3p8
+                ScOWaesP8BIiF2Mo7qGXl/beIVoqyzIN/kvkkqGuXROdXWSIriRNVkmAFIHx
+                v1z5OT0fgneJbgatiTv/6Qg9elISIKKf5GIoojYXkTE2zWUWNNS1AlZBV7Nn
+                dCM12Kc091diBxoa9stb/Kfh5cm+TLjF3bKWpJSxVGMh3Zcha62I0sp9IS95
+                BsY5IW10glIwqeG6WAWDJOJOqKGpAKtJP4Vgk4/PhYIr7N+sY/OtHMUssINB
+                a53xPDA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCh72RsIOkCzro5szD9
+                v02jgBBQBFh8iJq0Oo9WKfYQ/XWA]
+            info: RT root password
+            
+        rt_nag_user:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEAQ4baJQuZBLxBb8iTLwrUmiQ+Qx/6GP29BneF
+                NiSZ4xlm/UyC0062Lj7mAS7pL8kcM4HQgfDsAQ/l0+T+q1zEBzBbTeNdfk99
+                mo50zvytQDUZDCrJFWYPqNG+ujwKMtepGmUkxoS8BFvMAOh3iYfJ6n2YnojP
+                xweKqYK2H/d9OvjkT09sW/ZJ0BXq0bKVp0PE0JH5o3oS18DZg7SQgP8T+iph
+                sfce84qBUS9/Zk4n8vhhN2ML9cej5sdYeyJHU+iee0k1fdQXOkeY3qUTC3V5
+                AC3w/7pKpAq0nWHPHMMLW1t16oIOlCTjKqM8DrSFspVfC7NGhaRn9mROuBs+
+                LDfNcTA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBA7Y2iEZrz+qLJS6LWL
+                1P/RgBC2AKbrUXfQIObRCzomPLc9]
+            info: Password for the user that emails you about your open tickets
+            
+    hvirt:
+        hvirt-devroot:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEAVK5Q9IT84TRzZ58wIEKN7gOW6lc4gD9FgQk5
+                Ax06jrW5o5rDP+LlvBo1JjzWpxaI5m1OLm/fzhEWRuhAmZQSMo41Ak+57F0W
+                j3kETIf1ptb+Ysxhzy3BiW4U8w/Dlb+3Wl/uVwcEYLqdMHM7VpUI1fHIl75P
+                /EglMwc3phbGb50bgoY9BSdzOgFQFSW8wN3pSNC38sszslgE7YuNDtyifIAO
+                NEn29CsD4DMLkAGXMo3PJZxTBGf+F0nnJ2dt1eJez26XGR8n05Dw86epXWdz
+                XL28Rdb4ZALyGPHiETMX7ZcOCb3fls+/GCIo4ZfDgh2MqoNl/mAJZ+1u4To2
+                2AiaFzA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCSANDztAAHRVaYi/3W
+                RtOzgBDyxiWVaOnvAVET0aDkBGwS]
+            
+    root:
+        ldap:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEAOcMByXKvmXE24Rxf2DUB8OiIxdD6cWpd0nJz
+                5FalRPCisadw+N0A9WDidrIC/9yVArAbEdDovCOoCfJb9flOu7R+xz6fYnYd
+                M4yqJU0fKJMKZmePwjt0IuKURtP/3sJjjtnOQHkxxcMUAVfnZBXXOPr+kj9g
+                5HZ514mboDu8r7bMhph8gj37xEbn00nUP+VPIpqfL4/R2wTCDxLTH/0N9H14
+                r5pvEfkJYIVLJbDMXV2bDUw/U6D+envRm3D1B0TOy3zZpbTfeYB8ANszLVIo
+                Z/5uQIpz4V9MS0ljyi6lk8Ah6qsTZBjvFNVeqa43Rh9bV8uACCWEE57npaTp
+                qcuJjTA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCWnSJxfBJHS1xC3G9G
+                zPPhgBANlZQu00jaIDn0Kru3AHTB]
+                
+        acctpanel-mysql:
+            password: >
+                ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEAiDUQF/PUYYN127ISD9n1jhqkWGh2hyfxr50J
+                /d4rUpjtIxPHNzujirGMV7f5WrKutUF2x0OKWFS+VyXr91pKFZEbtTA5EfTL
+                59/5RJDlyxE/1sWfH/jKDuU21w5tzjjsE8SLaI7Fn3XceKgxwR0AYkpsWaSs
+                TYKpgNUxpZfXAZe7UsSEFdYUrZ5f0MiY1rhhRNB+4Z4ez52ChPWzh7C12Vz9
+                Cefgtez/JqjItZChnBkI8MfNLA0kZk03Wd7FDOqL/xU/TVYDj4tzHurPx/24
+                EexmcZPo1sl1zzgZTc9oioPJaIQqC/TmUdXtuWWa865nMA3NpZE4trWsqdUV
+                t0QReDBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBBKV6GSgNt/c23tjcN+
+                TEMagCDMLLMzl+TNHTasTHPEtAoe8VnWZ8vxiBL8wWiEQopvmw==]
+
+        acctpanel-web:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEAjKOsI0xVfUwHM5JzTc0NWizrfTCPNnhpKmGC
+                gqVOhe19G6AnF90QSXRfuJlSsC0ZWJozTjiE2pJroeLhBZv4UJJvmfC+KgI7
+                cwCIIjtO2HmlGbdjJV75kUsjnfPNKkNEg4lcxYmSqW54adiCD2XjZFoiNodb
+                ERkUgwJ/H2KWbyVq7MorpwxQD3bBaxkDvzvl6GBlwBk2QfJbBQO40MAvFofR
+                7l706b27yOWAn/ms2R3tJInMdWAK3mfp0gbkcNbEk2GqDA51wRnsP4Wzvk8V
+                FFmEhv5GGvX1bby5lErLUo02qtzV0Vt5FXEFwy5XRpq0788O4opO5x3bZh30
+                KhA1FzA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBCide8lSF86f8OJh5yi
+                Q6wHgBBMApmJA4Zvug9h9EoH6Kaa]
+    
+        scylla-cache:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEAN88dK4PdttcXhYST8QRUZV67MyzEUXmF0EVa
+                u+1BF7TbaRyjUl1ZWhSftsMbStORFc56pExkcnm4Ngkj+0C93rd4VidJhBI7
+                mzFef2DRYag92eedyQcAZf1Om6QrigMmZuAVgYK+gW2DJXoTMwzynHHk3+Z0
+                xUaqSu8Zxo4Y1JYT5xMDhKJOhHzTMq7Lcl4liqnMa78tWS6V61YeNVYzuRD8
+                FNGK6OQYYVSLGy8ceMHbpCnRq7d+F0mZ6iYsJI0rES7n+r0eStgg5CAtGFBu
+                U+2CR2Z59O65d+PQTlKsAmKzLl2p8EXbv1xc9eI2iDcN+7R9tZ8s4m352Aoe
+                nVYCpzA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBAa2zwAa6GFrxg1zbMa
+                pko0gBAldBE1bdAOyQOwltF5hIzf]
+    
+    systems:
+        bootstrap:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEAZAibF7zZyRZCU1DAWR+GFqy9spzW4ywgwBNp
+                NCPsk7p84/5y4SKORRPygJsmBE+cW4VnVKhSit6ZWhHqUTkMTn9/VETY3p9S
+                GDaZ4nKJ8NQyfvOX4b9lapdBgyKk5uBhviquvy8MlXCs6OH7RyzAqlZm2Ydu
+                QiKkt5ylSiIKrfbWlQHkgPIEDd86+j8sQg0aZ2lpx9af9kjCSL1psG3fVNvs
+                tryX4zgV7wA9pF0goiOYjFyyJ9jCuxti4lTvdIWd8q23emV7sanWt2ieYEPP
+                h/NNCJ/nf8YxrG34cp88SpXtHKd0ppWuxMa7KRamq0YCbDmGsJwN5dyPq6z3
+                47qzljA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBD+9S3aZsF8V/mPu0MW
+                OcrugBCO+XgC05zRK5Sw8Cql09O8]
+
+        mergepull:
+            password: >
+                ENC[PKCS7,MIIBeQYJKoZIhvcNAQcDoIIBajCCAWYCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEAciUAFLdsCtoTEDg4VytdIk7oQ5anHfOH/3Sr
+                BlYTEqgA5K1itHTJ39Q+CmC4zueMYUwTx/3oTM9ONShN4Szmu+h1qRnUxfEC
+                Ii3cCtuyP13ywBHZm/H0Q2t7ROEQIcHt7v6oAGgoKVMY8dJIqHZQYuYwAs+L
+                OQf8NIrU0Tx6Ctzmn1VoIMqjkIT0fr624xPFRROrGW1m5rSOl5c7oBQMEWIm
+                vYhsZkHzZzx6VMZf7W0zQoDZzEiC0GEBX1DfDVvCyW2gS24qtjTmeDxjwDBD
+                c/4o/WPnSiQpM9PwY9lsn2OQkse1YLlSZqtlWk/CMNoFkvozuQBcriU6jATc
+                iROJATA8BgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBBcDXOELHbNMtZ6wgDc
+                aBixgBBYzJTrrLmsDanYCgYFZ2+J]
+                
+        kspliceweb:
+            password: >
+                ENC[PKCS7,MIIB6wYJKoZIhvcNAQcDoIIB3DCCAdgCAQAxggEhMIIBHQIBADAFMAACAQEw
+                DQYJKoZIhvcNAQEBBQAEggEApp/cyJ+1s/SNo2FsJiiuExVawCgX6bBpO5ox
+                Eg1C1J+PRTSc+Ie3o3eaV7PHAf2zEClag4XrOtev9/mEwTScMZpfIbYihSa8
+                Mul0pQkm3PWgA14Xqt1EwJaV6LfPb5daDvOKbi63V1YPc7i5O9wmq9RonHM+
+                3OI8ct1qIPwdI4yvVZt0GQKBmMm13AK27/znUQ8GkkSChkfr3T8HrWGBLgUX
+                0KH2I//0qC0Cqc3Q7Fxzff2PwAJBIpwgF7Qhbw+flgX7GhrvM1teGy1fmx+A
+                AHEd5T+5FaFxx6syzbfxD0au9guaR8+YsySk9tfls1+ww0vgbjHV7la5YvUD
+                xrZ7rjCBrQYJKoZIhvcNAQcBMB0GCWCGSAFlAwQBKgQQutU5elnnl++TRw+Z
+                DZlE3ICBgIbvJav0eKj6HPqXbyn1PBAcS08iOtSe1vKq+SKwIFc+0nKSOHu4
+                S3wsmGJ0zEodtIOQf0UMAMiwCDyzptxxnApXlq+ycGLunQ7/yZXG5ujs9j4Z
+                xq2CRENAGhHnV8+aH4I9yqXoQ1RXANV/bp1WlXkHnKghm1J70jCtCN1Urchf]

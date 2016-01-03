@@ -44,6 +44,14 @@ class hcsscripts::acctutils {
       group   => 'root',
     }
     
+    file { '/etc/hcs/info.yaml':
+      ensure  => file,
+      source  => 'puppet:///modules/hcsscripts/acctutils/data/info.yaml',
+      owner   => 'root',
+      group   => 'root',
+      require => File['/etc/hcs'],
+    }
+    
     file { '/etc/hcs/mail_templates':
       ensure  => directory,
       recurse => remote,
@@ -53,12 +61,45 @@ class hcsscripts::acctutils {
       require => File['/etc/hcs'],
     }
     
-    file { '/etc/hcs/info.yml':
-      ensure  => file,
-      source  => 'puppet:///modules/hcsscripts/acctutils/data/info.yml',
+    file { '/etc/hcs/passwords':
+      ensure  => directory,
       owner   => 'root',
       group   => 'root',
       require => File['/etc/hcs'],
+    }
+    
+    $hcs_passwords = hiera_hash('hcs_passwords')
+    file { '/etc/hcs/passwords/acctserfs.yaml':
+      ensure  => file,
+      content => $hcs_passwords['acctserfs'].to_yaml,
+      owner   => 'root',
+      group   => 'acctserfs',
+      mode    => '0640',
+      require => File['/etc/hcs/passwords'],
+    }
+    file { '/etc/hcs/passwords/hvirt.yaml':
+      ensure  => file,
+      content => $hcs_passwords['hvirt'].to_yaml,
+      owner   => 'root',
+      group   => 'hvirt',
+      mode    => '0640',
+      require => File['/etc/hcs/passwords'],
+    }
+    file { '/etc/hcs/passwords/systems.yaml':
+      ensure  => file,
+      content => $hcs_passwords['systems'].to_yaml,
+      owner   => 'root',
+      group   => 'systems',
+      mode    => '0640',
+      require => File['/etc/hcs/passwords'],
+    }
+    file { '/etc/hcs/passwords/root.yaml':
+      ensure  => file,
+      content => $hcs_passwords['root'].to_yaml,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0600',
+      require => File['/etc/hcs/passwords'],
     }
     
     hcsscripts::acctutils_script { 'hcs-adduser': }

@@ -26,7 +26,7 @@ def setup():
         for key, value in attrs.iteritems():
             setattr(cls, key, value)
 
-_info_file = '/etc/hcs/info.yml'
+_info_file = '/etc/hcs/info.yaml'
 _loaded_data = yaml.load(open(_info_file).read())
 
 class OfficeHours(object):

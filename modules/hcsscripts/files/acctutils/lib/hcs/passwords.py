@@ -16,7 +16,7 @@ def load():
     data = []
     files = os.listdir(_passwords_folder)
     for file in files:
-        if not re.search('\.yml$', file):
+        if not re.search('\.yaml$', file):
             continue
         try:
             filedata = open(os.path.join(_passwords_folder, file)).read()
