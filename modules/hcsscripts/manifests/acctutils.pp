@@ -71,7 +71,7 @@ class hcsscripts::acctutils {
     $hcs_passwords = hiera_hash('hcs_passwords')
     file { '/etc/hcs/passwords/acctserfs.yaml':
       ensure  => file,
-      content => $hcs_passwords['acctserfs'].to_yaml,
+      content => inline_template('<%= @hcs_passwords["acctserfs"].to_yaml %>'),
       owner   => 'root',
       group   => 'acctserfs',
       mode    => '0640',
@@ -79,7 +79,7 @@ class hcsscripts::acctutils {
     }
     file { '/etc/hcs/passwords/hvirt.yaml':
       ensure  => file,
-      content => $hcs_passwords['hvirt'].to_yaml,
+      content => inline_template('<%= @hcs_passwords["hvirt"].to_yaml %>'),
       owner   => 'root',
       group   => 'hvirt',
       mode    => '0640',
@@ -87,7 +87,7 @@ class hcsscripts::acctutils {
     }
     file { '/etc/hcs/passwords/systems.yaml':
       ensure  => file,
-      content => $hcs_passwords['systems'].to_yaml,
+      content => inline_template('<%= @hcs_passwords["systems"].to_yaml %>'),
       owner   => 'root',
       group   => 'systems',
       mode    => '0640',
@@ -95,7 +95,7 @@ class hcsscripts::acctutils {
     }
     file { '/etc/hcs/passwords/root.yaml':
       ensure  => file,
-      content => $hcs_passwords['root'].to_yaml,
+      content => inline_template('<%= @hcs_passwords["root"].to_yaml %>'),
       owner   => 'root',
       group   => 'root',
       mode    => '0600',
