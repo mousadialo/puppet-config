@@ -13,19 +13,16 @@ class PasswordNotFound(PasswordError):
 def load():
     global _loaded_data, _loaded
     _loaded = True
-    data = []
-    files = os.listdir(_passwords_folder)
-    for file in files:
+    for file in os.listdir(_passwords_folder):
         if not re.search('\.yaml$', file):
             continue
         try:
-            filedata = open(os.path.join(_passwords_folder, file)).read()
-            data.append(filedata)
+            with open(os.path.join(_passwords_folder, file)) as f:
+                data = yaml.load(f.read())
+                _loaded_data.update(data)
         except IOError:
             # This will happen if you don't have perms
             pass
-    data = '\n'.join(data)
-    _loaded_data = yaml.load(data)
 
 def get(name):
     if not _loaded:
