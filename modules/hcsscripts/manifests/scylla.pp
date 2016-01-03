@@ -56,7 +56,8 @@ class hcsscripts::scylla {
     
     if $::machine_type == 'file' {      
       exec { '/usr/bin/hcs-newcert -s zfsquota':
-        creates => '/etc/hcs/scylla_services/zfsquota_cert.pem',
+        # Ensures that key and cert exists, and that the cert has not expired yet.
+        unless  => '/bin/bash -c "[ -f /etc/hcs/scylla_services/zfsquota_key.pem ] && [ -f /etc/hcs/scylla_services/zfsquota_cert.pem ] && /usr/bin/openssl x509 -in /etc/hcs/scylla_services/zfsquota_cert.pem -noout -checkend 0"',
         require => [
           File['/usr/bin/hcs-newcert'],
           File['/etc/hcs/scylla_services'],
