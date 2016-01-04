@@ -70,7 +70,7 @@ with mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, con
   p.stdin.close()
 
   # log to sql
-  cur.execute("INSERT INTO safesendmail (user, to) VALUES (%s, %s)", (user, to))
+  cur.execute("INSERT INTO safesendmail (user, header_to) VALUES (%s, %s)", (user, to))
 
   # gc - delete old records
   if random() < gc_prob:
