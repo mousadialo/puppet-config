@@ -10,7 +10,7 @@ class web::php5 {
   # - Use NFS session directory
   file { '/etc/php5/cgi/php.ini':
     ensure  => file,
-    source  => 'puppet:///modules/web/php5/cgi/php.ini',
+    source  => "puppet:///modules/web/php5/cgi/php.ini.${::machine_type}",
     owner   => root,
     group   => root,
     require => Package['php5-cgi'],
@@ -18,7 +18,7 @@ class web::php5 {
   
   file { '/etc/php5/cli/php.ini':
     ensure  => file,
-    source  => 'puppet:///modules/web/php5/cli/php.ini',
+    source  => "puppet:///modules/web/php5/cli/php.ini.${::machine_type}",
     owner   => root,
     group   => root,
     require => Package['php5-cgi'],
