@@ -77,4 +77,6 @@ with mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, con
     cur.execute("DELETE FROM safesendmail WHERE time < NOW() - INTERVAL %s HOUR", (gc_delete,))
     sys.stderr.write("%s [safesendmail] GC was run (probability: %s; %s rows older than %s hours deleted)\n" % (dt, gc_prob, cur.rowcount, gc_delete))
 
+  cur.commit()
+    
   sys.exit(p.wait())
