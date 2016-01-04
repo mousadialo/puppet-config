@@ -459,7 +459,7 @@ memory_limit = 128M
 ; Development Value: E_ALL
 ; Production Value: E_ALL & ~E_DEPRECATED & ~E_STRICT
 ; http://php.net/error-reporting
-error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
+error_reporting = E_ALL
 
 ; This directive controls whether or not and where PHP will output errors,
 ; notices and warnings too. Error output is very useful during development, but
@@ -476,7 +476,7 @@ error_reporting = E_ALL & ~E_DEPRECATED & ~E_STRICT
 ; Development Value: On
 ; Production Value: Off
 ; http://php.net/display-errors
-display_errors = Off
+display_errors = On
 
 ; The display of errors which occur during PHP's startup sequence are handled
 ; separately from display_errors. PHP's default behavior is to suppress those
@@ -487,7 +487,7 @@ display_errors = Off
 ; Development Value: On
 ; Production Value: Off
 ; http://php.net/display-startup-errors
-display_startup_errors = Off
+display_startup_errors = On
 
 ; Besides displaying errors, PHP can also log errors to locations such as a
 ; server-specific log, STDERR, or a location specified by the error_log
@@ -531,7 +531,7 @@ report_memleaks = On
 ; Development Value: On
 ; Production Value: Off
 ; http://php.net/track-errors
-track_errors = Off
+track_errors = On
 
 ; Turn off normal error reporting and emit XML-RPC error XML
 ; http://php.net/xmlrpc-errors
@@ -1324,7 +1324,7 @@ bcmath.scale = 0
 [Session]
 ; Handler used to store/retrieve data.
 ; http://php.net/session.save-handler
-session.save_handler = memcached
+session.save_handler = files
 
 ; Argument passed to save_handler.  In the case of files, this is the path
 ; where data files are stored. Note: Windows users have to change this
@@ -1353,7 +1353,7 @@ session.save_handler = memcached
 ; where MODE is the octal representation of the mode. Note that this
 ; does not overwrite the process's umask.
 ; http://php.net/session.save-path
-session.save_path = '127.0.0.1:11211'
+;session.save_path = "/var/lib/php5"
 
 ; Whether to use strict session mode.
 ; Strict session mode does not accept uninitialized session ID and regenerate
@@ -1458,7 +1458,7 @@ session.gc_maxlifetime = 1440
 ; Development Value: On
 ; Production Value: Off
 ; http://php.net/session.bug-compat-42
-session.bug_compat_42 = Off
+session.bug_compat_42 = On
 
 ; This setting controls whether or not you are warned by PHP when initializing a
 ; session value into the global space. session.bug_compat_42 must be enabled before
@@ -1467,7 +1467,7 @@ session.bug_compat_42 = Off
 ; Development Value: On
 ; Production Value: Off
 ; http://php.net/session.bug-compat-warn
-session.bug_compat_warn = Off
+session.bug_compat_warn = On
 
 ; Check HTTP Referer to invalidate externally stored URLs containing ids.
 ; HTTP_REFERER has to contain this substring for the session to be
