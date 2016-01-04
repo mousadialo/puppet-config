@@ -50,7 +50,9 @@ if user in minutes_limit:
 else:
   user_limit = minutes_limit['default']
 
-with mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, connect_timeout=2) as cur:
+db = mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, connect_timeout=2)
+with db:
+  cur = db.cursor()
   for i, min in enumerate(minutes_check):
     cur.execute("SELECT COUNT(*) FROM safesendmail WHERE user = %s AND time >= NOW() - INTERVAL %s MINUTE", (user, min))
     row = cur.fetchone()
@@ -77,6 +79,6 @@ with mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, con
     cur.execute("DELETE FROM safesendmail WHERE time < NOW() - INTERVAL %s HOUR", (gc_delete,))
     sys.stderr.write("%s [safesendmail] GC was run (probability: %s; %s rows older than %s hours deleted)\n" % (dt, gc_prob, cur.rowcount, gc_delete))
 
-  cur.commit()
+  db.commit()
     
   sys.exit(p.wait())
