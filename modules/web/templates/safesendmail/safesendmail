@@ -62,7 +62,11 @@ with mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, con
       sys.exit(1)
 
   # limit not exceeded, send mail
-  p = Popen(['/usr/sbin/sendmail', '-t', '-i', '-f', '%s@hcs.harvard.edu' % user], stdin=PIPE)
+  cmd = ['/usr/sbin/sendmail'] + argv[1:]
+  if '-f' not in cmd:
+    cmd = cmd + ['-f', '%s@hcs.harvard.edu' % user]
+  
+  p = Popen(cmd, stdin=PIPE)
   p.stdin.write(data)
   p.stdin.close()
 
@@ -73,3 +77,5 @@ with mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, con
   if random() < gc_prob:
     cur.execute("DELETE FROM safesendmail WHERE time < NOW() - INTERVAL %s HOUR", (gc_delete,))
     sys.stderr.write("%s [safesendmail] GC was run (probability: %s; %s rows older than %s hours deleted)\n" % (dt, gc_prob, cur.rowcount, gc_delete))
+
+  sys.exit(p.wait())
