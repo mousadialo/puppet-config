@@ -50,8 +50,7 @@ if user in minutes_limit:
 else:
   user_limit = minutes_limit['default']
 
-with mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, connect_timeout=2) as db:
-  cur = db.cursor()
+with mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, connect_timeout=2) as cur:
   for i, min in enumerate(minutes_check):
     cur.execute("SELECT COUNT(*) FROM safesendmail WHERE user = %s AND time >= NOW() - INTERVAL %s MINUTE", (user, min))
     row = cur.fetchone()
