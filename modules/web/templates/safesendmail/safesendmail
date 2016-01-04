@@ -61,7 +61,7 @@ with mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, con
       sys.exit(1)
 
   # limit not exceeded, send mail
-  cmd = ['/usr/sbin/sendmail'] + argv[1:]
+  cmd = ['/usr/sbin/sendmail'] + sys.argv[1:]
   if '-f' not in cmd:
     cmd = cmd + ['-f', '%s@hcs.harvard.edu' % user]
   
