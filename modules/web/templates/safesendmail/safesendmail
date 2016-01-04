@@ -1,0 +1,75 @@
+#!/usr/bin/python
+
+######## configuration
+db_host = "mysql.hcs.harvard.edu"
+db_user = "hcs_sendmail"
+db_password = "<%= @hcs_sendmail_mysql_password %>"
+db_name = "hcs_sendmail"
+
+sleep_val = 0.2                  # number of seconds to sleep when limit is exceeded
+gc_prob = 0.001                  # probability of gc (deleting old records from db); 0.1 means 10%
+gc_delete = 24 * 7               # delete records older than X hours (default 1 week)
+minutes_check = [1, 5, 60, 1440] # check limits within these minutes (i.e. 1min limit, 5min limit, ...)
+minutes_limit = {                # set limit for each from minutes_check (i.e. 10 msgs in 1min, 50 msgs in 5min, ...)
+ 'default':	    [ 10, 50, 100, 500],
+}
+######## configuration END
+
+import os
+import pwd
+import sys
+import time
+import MySQLdb as mdb
+from datetime import datetime
+from random import random
+from subprocess import Popen, PIPE
+
+user = pwd.getpwuid(os.getuid()).pw_name
+dt = datetime.today().strftime("[%a %b %e %H:%M:%S %Y]") # [Sun Apr  9 06:26:03 2006]
+
+### receive mail from stdin
+data = ""
+to = ""
+header = True
+for l in sys.stdin:
+  if header:
+    if l.startswith('To: '):
+      to = string.strip(string.split(l, ':', 1)[1])
+    elif l == "\n":
+      data += "X-Complaints-To: acctserv@hcs.harvard.edu\n"
+      data += "X-Abuse-Info: Email sent from user's PHP script.\n"
+      data += "X-Abuse-Info: Please be sure to forward a copy of ALL headers.\n"
+      data += "X-User: %s\n" % user
+      header = False
+  data += l
+
+### check limits
+# user_limit will be set to limits for current user (default or specific if exists)
+if user in minutes_limit:
+  user_limit = minutes_limit[user]
+else:
+  user_limit = minutes_limit['default']
+
+with mdb.connect(host=db_host, user=db_user, passwd=db_password, db=db_name, connect_timeout=2) as db:
+  cur = db.cursor()
+  for i, min in enumerate(minutes_check):
+    cur.execute("SELECT COUNT(*) FROM safesendmail WHERE user = %s AND time >= NOW() - INTERVAL %s MINUTE", (user, min))
+    row = cur.fetchone()
+    lim = user_limit[i]
+    if row[0] > lim:
+      sys.stderr.write("%s [safesendmail] user %s: exceeded limit for %s minutes (%s)\n" % (dt, user, min, lim))
+      time.sleep(sleep_val)
+      sys.exit(1)
+
+  # limit not exceeded, send mail
+  p = Popen(['/usr/sbin/sendmail', '-t', '-i', '-f', '%s@hcs.harvard.edu' % user], stdin=PIPE)
+  p.stdin.write(data)
+  p.stdin.close()
+
+  # log to sql
+  cur.execute("INSERT INTO safesendmail (user, to) VALUES (%s, %s)", (user, to))
+
+  # gc - delete old records
+  if random() < gc_prob:
+    cur.execute("DELETE FROM safesendmail WHERE time < NOW() - INTERVAL %s HOUR", (gc_delete,))
+    sys.stderr.write("%s [safesendmail] GC was run (probability: %s; %s rows older than %s hours deleted)\n" % (dt, gc_prob, cur.rowcount, gc_delete))

@@ -22,11 +22,20 @@ class web {
     # RT
     include web::request_tracker
     
-    # Packages needed by helios
+    # safesendmail rate limits PHP mail
+    include web::safesendmail
+    
+    # Python packages
     package { 'python-crypto': }
+    package { 'python-django': }
     package { 'python-ecdsa': }
+    package { 'python-elixir': }
     package { 'python-flask': }
+    package { 'python-gd': }
+    package { 'python-imaging': }
     package { 'python-ldap': }
+    package { 'python-mysqldb': }
+    package { 'python-tz': }
     package { 'python-yaml': }
     
     require filesystem
