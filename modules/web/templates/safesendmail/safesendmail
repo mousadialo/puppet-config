@@ -34,7 +34,7 @@ header = True
 for l in sys.stdin:
   if header:
     if l.startswith('To: '):
-      to = string.strip(string.split(l, ':', 1)[1])
+      to = l.split(':', 1)[1].strip()
     elif l == "\n":
       data += "X-Complaints-To: acctserv@hcs.harvard.edu\n"
       data += "X-Abuse-Info: Email sent from user's PHP script.\n"
