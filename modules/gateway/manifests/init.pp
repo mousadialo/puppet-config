@@ -4,7 +4,7 @@ class gateway {
   require sshd
   include apt
   
-  apt::ppa { 'ppa:vbernat/haproxy-1.5':
+  apt::ppa { 'ppa:vbernat/haproxy-1.6':
     package_manage => false,
   }
   
@@ -42,7 +42,7 @@ class gateway {
       'default-server' => 'inter 30000 fastinter 10000 downinter 3000',
     },
     restart_command  => '/usr/sbin/service haproxy reload',
-    require => Apt::Ppa['ppa:vbernat/haproxy-1.5'],
+    require => Apt::Ppa['ppa:vbernat/haproxy-1.6'],
   }
   
   package { 'socat':
@@ -284,9 +284,10 @@ class gateway {
       'stats'               => [
         'enable',
         'realm HAProxy\ Statistics',
-        'uri /admin?stats',
+        'uri /haproxy_stats',
         'hide-version',
         "auth hcs:${stats_password}",
+        'admin if TRUE',
       ],
     },
   }
