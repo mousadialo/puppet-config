@@ -71,8 +71,26 @@ class web {
       options           => ['send-proxy', 'check'],
     }
     
+    @@haproxy::balancermember { "${::hostname}-web-http-local":
+      listening_service => 'web-http-local',
+      server_names      => $::fqdn,
+      ipaddresses       => $::ipaddress,
+      ports             => ['80'],
+      define_cookies    => true,
+      options           => ['send-proxy', 'check'],
+    }
+    
     @@haproxy::balancermember { "${::hostname}-web-https":
       listening_service => 'web-https',
+      server_names      => $::fqdn,
+      ipaddresses       => $::ipaddress,
+      ports             => ['443'],
+      define_cookies    => true,
+      options           => ['send-proxy', 'check', 'ssl verify none'],
+    }
+    
+    @@haproxy::balancermember { "${::hostname}-web-https-local":
+      listening_service => 'web-https-local',
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['443'],
@@ -118,8 +136,26 @@ class web {
       options           => ['send-proxy', 'check'],
     }
     
+    @@haproxy::balancermember { "${::hostname}-lists-http-local":
+      listening_service => 'lists-http-local',
+      server_names      => $::fqdn,
+      ipaddresses       => $::ipaddress,
+      ports             => ['80'],
+      define_cookies    => true,
+      options           => ['send-proxy', 'check'],
+    }
+    
     @@haproxy::balancermember { "${::hostname}-lists-https":
       listening_service => 'lists-https',
+      server_names      => $::fqdn,
+      ipaddresses       => $::ipaddress,
+      ports             => ['443'],
+      define_cookies    => true,
+      options           => ['send-proxy', 'check', 'ssl verify none'],
+    }
+    
+    @@haproxy::balancermember { "${::hostname}-lists-https-local":
+      listening_service => 'lists-https-local',
       server_names      => $::fqdn,
       ipaddresses       => $::ipaddress,
       ports             => ['443'],

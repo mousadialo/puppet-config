@@ -149,7 +149,11 @@ class gateway {
         'tarpit if throttled',
       ],
       'monitor-uri'            => '/health',
-      'use_backend'            => 'lists-http if host_lists',
+      'use_backend'            => [
+        'lists-http-local if host_lists mynetworks',
+        'lists-http if host_lists',
+        'web-http-local if mynetworks',
+      ],
       'default_backend'        => 'web-http',
     },
   }
@@ -190,6 +194,18 @@ class gateway {
     },
   }
   
+  haproxy::backend { 'web-http-local':
+    options => {
+      'mode'                => 'http',
+      'balance'             => 'roundrobin',
+      'option'              => [
+        'forwardfor',
+        'httpchk HEAD /health HTTP/1.1\r\nHost:www.hcs.harvard.edu',
+        'httplog',
+      ],
+    },
+  }
+  
   haproxy::backend { 'lists-http':
     options => {
       'mode'                => 'http',
@@ -220,6 +236,18 @@ class gateway {
       ],
     },
   }
+  
+  haproxy::backend { 'lists-http-local':
+    options => {
+      'mode'                => 'http',
+      'balance'             => 'roundrobin',
+      'option'              => [
+        'forwardfor',
+        'httpchk',
+        'httplog',
+      ],
+    },
+  }
 
   haproxy::frontend { 'https':
     bind    => {
@@ -243,7 +271,11 @@ class gateway {
         'tarpit if throttled',
       ],
       'monitor-uri'            => '/health',
-      'use_backend'            => 'lists-https if host_lists',
+      'use_backend'            => [
+        'lists-https-local if host_lists mynetworks',
+        'lists-https if host_lists',
+        'web-https-local if mynetworks',
+      ],
       'default_backend'        => 'web-https',
     },
   }
@@ -293,6 +325,18 @@ class gateway {
     },
   }
   
+  haproxy::backend { 'web-https-local':
+    options => {
+      'mode'                => 'http',
+      'balance'             => 'roundrobin',
+      'option'              => [
+        'forwardfor',
+        'httpchk HEAD /health HTTP/1.1\r\nHost:www.hcs.harvard.edu',
+        'httplog',
+      ],
+    },
+  }
+  
   haproxy::backend { 'lists-https':
     options => {
       'mode'                => 'http',
@@ -315,6 +359,18 @@ class gateway {
         'deny if high_req_rate throttle',
         'deny if high_err_rate throttle',
       ],
+      'option'              => [
+        'forwardfor',
+        'httpchk',
+        'httplog',
+      ],
+    },
+  }
+  
+  haproxy::backend { 'lists-https-local':
+    options => {
+      'mode'                => 'http',
+      'balance'             => 'roundrobin',
       'option'              => [
         'forwardfor',
         'httpchk',
