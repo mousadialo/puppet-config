@@ -6,17 +6,6 @@ classes:
   - web
   - mail # null client config
 
-rt-database-password: >
-    ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEw
-    DQYJKoZIhvcNAQEBBQAEggEARHaPaDRCv0sswzzc2j8lcXbQc944t/OMs0Ze
-    rZE/TMfv+NQSDXVCCb+EyZ/RkJh2AMzw1Xz0MnG04BE6P36JW01tnwFf5QtZ
-    Xz9JSBlHtjF3aydzoQ+196FnR+EUoEXlb1IRbqGGuFgUPigI+oQaTxWX55le
-    zqRZi1vAVwcv4Ajj6beJ+f8AxHz8YLbjR1yIedkcei7/A0UPQolMZTqFJTUk
-    Bznz8FKofI2Pb4/a4cQCJZrR+YOVC9lLiqv3fEecuFhx2xf0gN7gsQyjMN6P
-    YkDBmaFg778Km7tEe1bkI2RaCJkZHjzpfW477MwWtefYKdsaxHtF94Kd4nym
-    Dh1MRTBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBB3QlL+VfwXPM6lvjwY
-    aciXgCCWZl+59gjRF6vzK+rCNVPbnaA93+bjyAdNSlnI0lhprA==]
-
 hcs_harvard_edu.key: >
     ENC[PKCS7,MIIH/QYJKoZIhvcNAQcDoIIH7jCCB+oCAQAxggEhMIIBHQIBADAFMAACAQEw
     DQYJKoZIhvcNAQEBBQAEggEAgphcGGNJvo9AnSgOSl6KWsiPJ//dcvdUI6oK
@@ -65,7 +54,18 @@ hcs_harvard_edu.key: >
     zbUDj45gZ1HggCHXf+rz0Kq6xLyOVqN1wLZgPo3wT0k10kJOrF+BJ0Tdbrhj
     q+v5M/1TYwIFKhxBTaEMLadQV+NL9IrI]
 
-hcs_sendmail_mysql_password: >
+rt-database-password: >
+    ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEw
+    DQYJKoZIhvcNAQEBBQAEggEARHaPaDRCv0sswzzc2j8lcXbQc944t/OMs0Ze
+    rZE/TMfv+NQSDXVCCb+EyZ/RkJh2AMzw1Xz0MnG04BE6P36JW01tnwFf5QtZ
+    Xz9JSBlHtjF3aydzoQ+196FnR+EUoEXlb1IRbqGGuFgUPigI+oQaTxWX55le
+    zqRZi1vAVwcv4Ajj6beJ+f8AxHz8YLbjR1yIedkcei7/A0UPQolMZTqFJTUk
+    Bznz8FKofI2Pb4/a4cQCJZrR+YOVC9lLiqv3fEecuFhx2xf0gN7gsQyjMN6P
+    YkDBmaFg778Km7tEe1bkI2RaCJkZHjzpfW477MwWtefYKdsaxHtF94Kd4nym
+    Dh1MRTBMBgkqhkiG9w0BBwEwHQYJYIZIAWUDBAEqBBB3QlL+VfwXPM6lvjwY
+    aciXgCCWZl+59gjRF6vzK+rCNVPbnaA93+bjyAdNSlnI0lhprA==]
+
+hcs-sendmail-mysql-password: >
     ENC[PKCS7,MIIBiQYJKoZIhvcNAQcDoIIBejCCAXYCAQAxggEhMIIBHQIBADAFMAACAQEw
     DQYJKoZIhvcNAQEBBQAEggEAEqlKbVbmbE1PfUR/EXH5hpBuMZu2QuU621b0
     LyzD98KJS8RVsz0IKX7JywueB3BsrFhXuSNd0zPGLIhA0pSt+/XEDAj0imLl

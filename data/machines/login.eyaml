@@ -127,7 +127,7 @@ scylla_ca.key: >
     pXYr4F9J1UpmR0Y6r7UDI8Rt/9JhYjKha8m9Zh709aP/H5J2tDZ0J0u2FtI6
     pVEKtz98qdluXYSDyO+Wuo7GyDmQq/od]
 
-hcs_passwords:
+hcs-passwords:
     acctserfs:
         gapps:
             password: >

@@ -68,7 +68,7 @@ class hcsscripts::acctutils {
       require => File['/etc/hcs'],
     }
     
-    $hcs_passwords = hiera_hash('hcs_passwords')
+    $hcs_passwords = hiera_hash('hcs-passwords')
     file { '/etc/hcs/passwords/acctserfs.yaml':
       ensure  => file,
       content => inline_template('<%= @hcs_passwords["acctserfs"].to_yaml %>'),
