@@ -9,6 +9,7 @@ class gateway {
   }
   
   class { 'haproxy':
+    package_ensure => latest,
     global_options => {
       'log'     => [
         '/dev/log local0',
