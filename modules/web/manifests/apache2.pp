@@ -187,6 +187,15 @@ class web::apache2 {
     web::apache2::vhost{ 'lists.hcs.harvard.edu-ssl': }
   }
   
+  exec { '/usr/bin/wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb -qO /tmp/mod-pagespeed-stable_current_amd64.deb':
+    creates => '/tmp/mod-pagespeed-stable_current_amd64.deb',
+  } ->
+  package { 'mod-pagespeed-stable':
+    provider => dpkg,
+    ensure   => installed,
+    source   => '/tmp/mod-pagespeed-stable_current_amd64.deb',
+  } ->
+  web::apache2::mod { 'pagespeed': }
   
   # Apache2 module which enables the proxy protocol.
   # For more information and updates: https://github.com/ggrandes/apache24-modules/blob/master/mod_myfixip.c
