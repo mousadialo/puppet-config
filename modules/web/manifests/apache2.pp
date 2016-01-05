@@ -195,6 +195,9 @@ class web::apache2 {
     ensure   => installed,
     source   => '/tmp/mod-pagespeed-stable_current_amd64.deb',
   } ->
+  web::apache2::config { 'pagespeed':
+    directory => 'mods-available/',
+  } ->
   web::apache2::mod { 'pagespeed': }
   
   # Apache2 module which enables the proxy protocol.
