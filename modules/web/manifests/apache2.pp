@@ -126,8 +126,19 @@ class web::apache2 {
     # Mods enabled
     web::apache2::mod { 'actions': }
     web::apache2::mod { 'alias': }
+    web::apache2::mod { 'asis': }
+    web::apache2::mod { 'auth_basic': }
+    web::apache2::mod { 'auth_form': }
+    web::apache2::mod { 'authn_dbd': }
+    web::apache2::mod { 'authn_dbm': }
+    web::apache2::mod { 'authn_file': }
     web::apache2::mod { 'authnz_ldap': }
+    web::apache2::mod { 'authz_dbd': }
+    web::apache2::mod { 'authz_dbm': }
     web::apache2::mod { 'authz_groupfile': }
+    web::apache2::mod { 'authz_host': }
+    web::apache2::mod { 'authz_user': }
+    web::apache2::mod { 'autoindex': }
     web::apache2::mod { 'cache': } ->
     web::apache2::mod { 'cache_disk': }
     web::apache2::mod { 'cgid': }
@@ -137,14 +148,17 @@ class web::apache2 {
       directory => 'mods-available/',
     } ->
     web::apache2::mod { 'deflate': }
+    web::apache2::mod { 'dir': }
     web::apache2::mod { 'expires': }
     web::apache2::mod { 'fcgid':
       require => Package['libapache2-mod-fcgid'],
     }
+    web::apache2::mod { 'filter': }
     web::apache2::mod { 'headers': }
     web::apache2::mod { 'include': }
     web::apache2::mod { 'ldap': }
     web::apache2::mod { 'mime': }
+    web::apache2::mod { 'negotiation': }
     web::apache2::mod { 'passenger':
       require => Package['libapache2-mod-passenger'],
     }
@@ -152,11 +166,14 @@ class web::apache2 {
       require => Package['libapache2-mod-python'],
     }
     web::apache2::mod { 'rewrite': }
+    web::apache2::mod { 'spelling': }
     web::apache2::config { 'ssl':
       directory => 'mods-available/',
     } ->
     web::apache2::mod { 'ssl': }
+    web::apache2::mod { 'status': }
     web::apache2::mod { 'suexec': }
+    web::apache2::mod { 'unique_id': }
     web::apache2::config { 'userdir':
       directory => 'mods-available/',
     } ->
@@ -186,19 +203,6 @@ class web::apache2 {
     web::apache2::vhost{ 'lists.hcs.harvard.edu': }
     web::apache2::vhost{ 'lists.hcs.harvard.edu-ssl': }
   }
-  
-  exec { '/usr/bin/wget https://dl-ssl.google.com/dl/linux/direct/mod-pagespeed-stable_current_amd64.deb -qO /tmp/mod-pagespeed-stable_current_amd64.deb':
-    creates => '/tmp/mod-pagespeed-stable_current_amd64.deb',
-  } ->
-  package { 'mod-pagespeed-stable':
-    provider => dpkg,
-    ensure   => installed,
-    source   => '/tmp/mod-pagespeed-stable_current_amd64.deb',
-  } ->
-  web::apache2::config { 'pagespeed':
-    directory => 'mods-available/',
-  } ->
-  web::apache2::mod { 'pagespeed': }
   
   # Apache2 module which enables the proxy protocol.
   # For more information and updates: https://github.com/ggrandes/apache24-modules/blob/master/mod_myfixip.c
