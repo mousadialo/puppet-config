@@ -166,7 +166,7 @@ class web::apache2 {
       require => Package['libapache2-mod-python'],
     }
     web::apache2::mod { 'rewrite': }
-    web::apache2::mod { 'spelling': }
+    web::apache2::mod { 'speling': }
     web::apache2::config { 'ssl':
       directory => 'mods-available/',
     } ->
