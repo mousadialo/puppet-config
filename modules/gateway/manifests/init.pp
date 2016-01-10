@@ -149,11 +149,7 @@ class gateway {
         'tarpit if throttled',
       ],
       'monitor-uri'            => '/health',
-      'use_backend'            => [
-        'lists-http-local if host_lists mynetworks',
-        'lists-http if host_lists',
-        'web-http-local if mynetworks',
-      ],
+      'use_backend'            => 'lists-http if host_lists',
       'default_backend'        => 'web-http',
     },
   }
@@ -247,11 +243,7 @@ class gateway {
         'tarpit if throttled',
       ],
       'monitor-uri'            => '/health',
-      'use_backend'            => [
-        'lists-https-local if host_lists mynetworks',
-        'lists-https if host_lists',
-        'web-https-local if mynetworks',
-      ],
+      'use_backend'            => 'lists-https if host_lists',
       'default_backend'        => 'web-https',
     },
   }
