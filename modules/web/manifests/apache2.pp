@@ -120,8 +120,8 @@ class web::apache2 {
     }
 
     # HCS enabled virtual hosts.
-    web::apache2::vhost{ 'hcs.harvard.edu': }
-    web::apache2::vhost{ 'hcs.harvard.edu-ssl': }
+    web::apache2::vhost{ 'www.hcs.harvard.edu': }
+    web::apache2::vhost{ 'www.hcs.harvard.edu-ssl': }
 
     # Mods enabled
     web::apache2::mod { 'actions': }
