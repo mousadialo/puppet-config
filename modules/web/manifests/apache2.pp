@@ -70,14 +70,6 @@ class web::apache2 {
 
     # APACHE CONFIGURATION
 
-    # create the hcs conf directories
-    file{ [ '/etc/apache2/hcs-conf',
-            '/etc/apache2/hcs-nonsecure-conf',
-            '/etc/apache2/hcs-ssl-conf' ]:
-      ensure  => directory,
-      require => Package['apache2'],
-    }
-
     # Enable user vhosts
     web::apache2::config { 'user-vhosts':
       ensure    => enabled,
@@ -88,30 +80,39 @@ class web::apache2 {
     # These do spiffy HCS specific things like redirects for special people,
     # hosting from user directories and removing the tilde. These are applied to
     # secure and non-secure pages.
-    web::apache2::config { 'directories':
-      directory => 'hcs-conf/',
-    }
-    web::apache2::config { 'redirects':
-      directory => 'hcs-conf/',
-    }
-    web::apache2::config { 'tilde-rewrites':
-      directory => 'hcs-conf/',
+    file { '/etc/apache2/hcs-conf':
+      ensure  => directory,
+      recurse => true,
+      purge   => true,
+      source  => 'puppet:///modules/web/apache2/hcs-conf',
+      owner   => 'root',
+      group   => 'root',
+      notify  => Service['apache2'],
+      require => Package['apache2'],
     }
 
     # HCS configurations for non-secure pages
-    web::apache2::config { 'nonsecure-redirects':
-      directory => 'hcs-nonsecure-conf/',
+    file { '/etc/apache2/hcs-nonsecure-conf':
+      ensure  => directory,
+      recurse => true,
+      purge   => true,
+      source  => 'puppet:///modules/web/apache2/hcs-nonsecure-conf',
+      owner   => 'root',
+      group   => 'root',
+      notify  => Service['apache2'],
+      require => Package['apache2'],
     }
 
     # HCS configurations for secure pages
-    web::apache2::config { 'helios':
-      directory => 'hcs-ssl-conf/',
-    }
-    web::apache2::config { 'phpmyadmin':
-      directory => 'hcs-ssl-conf/',
-    }
-    web::apache2::config { 'rt':
-      directory => 'hcs-ssl-conf/',
+    file { '/etc/apache2/hcs-ssl-conf':
+      ensure  => directory,
+      recurse => true,
+      purge   => true,
+      source  => 'puppet:///modules/web/apache2/hcs-ssl-conf',
+      owner   => 'root',
+      group   => 'root',
+      notify  => Service['apache2'],
+      require => Package['apache2'],
     }
     
     # Remove default vhost
