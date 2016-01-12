@@ -16,11 +16,11 @@ class mail::dovecot {
     source  => 'puppet:///modules/mail/dovecot/dovecot.conf',
     notify  => Service['dovecot'],
     require => [Package['dovecot-imapd'], Package['dovecot-pop3d']],
-  } ~>
+  }
+  
   service { 'dovecot':
     ensure  => running,
     enable  => true,
-    restart => true,
     require => [Package['dovecot-imapd'], Package['dovecot-pop3d']],
   }
     
