@@ -337,9 +337,37 @@ class gateway {
     },
   }
   
+  haproxy::listen { 'mail-imap':
+    bind    => {
+      '*:143' => [],
+    },
+    mode    => 'tcp',
+    options => {
+      'balance' => 'leastconn',
+      'option'  => [
+        'tcp-check',
+        'tcplog',
+      ],
+    },
+  }
+  
   haproxy::listen { 'mail-imaps':
     bind    => {
       '*:993' => [],
+    },
+    mode    => 'tcp',
+    options => {
+      'balance' => 'leastconn',
+      'option'  => [
+        'tcp-check',
+        'tcplog',
+      ],
+    },
+  }
+  
+  haproxy::listen { 'mail-pop3':
+    bind    => {
+      '*:110' => [],
     },
     mode    => 'tcp',
     options => {

@@ -24,11 +24,27 @@ class mail::dovecot {
     require => [Package['dovecot-imapd'], Package['dovecot-pop3d']],
   }
     
+  @@haproxy::balancermember { "${::hostname}-mail-imap":
+    listening_service => 'mail-imap',
+    server_names      => $::fqdn,
+    ipaddresses       => $::ipaddress,
+    ports             => ['143'],
+    options           => ['check'],
+  }
+    
   @@haproxy::balancermember { "${::hostname}-mail-imaps":
     listening_service => 'mail-imaps',
     server_names      => $::fqdn,
     ipaddresses       => $::ipaddress,
     ports             => ['993'],
+    options           => ['check'],
+  }
+    
+  @@haproxy::balancermember { "${::hostname}-mail-pop3":
+    listening_service => 'mail-pop3',
+    server_names      => $::fqdn,
+    ipaddresses       => $::ipaddress,
+    ports             => ['110'],
     options           => ['check'],
   }
     
