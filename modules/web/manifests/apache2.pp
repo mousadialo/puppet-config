@@ -182,6 +182,8 @@ class web::apache2 {
     web::apache2::mod { 'wsgi':
       require => Package['libapache2-mod-wsgi'],
     }
+	
+	include web::mime
   }
   elsif $::machine_type == 'lists' {
     require certs
