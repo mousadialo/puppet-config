@@ -3,7 +3,7 @@ class web::mime {
   
   file_line { 'x-httpd-php':
     path  => '/etc/mime.types',
-    line  => 'application/x-httpd-php			phtml pht php',
+    line  => 'application/x-httpd-php				phtml pht php',
     match => '^#?application/x-httpd-php\s+',
     notify  => Service['apache2'],
   }
