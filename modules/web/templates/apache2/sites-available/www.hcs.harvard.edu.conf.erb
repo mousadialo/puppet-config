@@ -24,3 +24,46 @@
   Include /etc/apache2/hcs-nonsecure-conf/[^.#]*
 </VirtualHost>
 
+<VirtualHost *:443>
+  ServerName  www.hcs.harvard.edu
+  ServerAlias<%= @secondary_domains.map{ |domain| " www." + domain }.join("") %> hcs.harvard.edu<%= @secondary_domains.map{ |domain| " " + domain }.join("") %>
+  
+  # Always canonicalize host to www.hcs.harvard.edu
+  RewriteEngine On
+  RewriteOptions Inherit
+  RewriteCond %{HTTP_HOST} !^www\.hcs\.harvard\.edu$ [NC]  # [NC]: case-insensitive
+  RewriteRule ^ https://www.hcs.harvard.edu%{REQUEST_URI} [R=301,L]
+  UseCanonicalName On
+  
+  DocumentRoot /var/www/hcs.harvard.edu/htdocs
+  ServerAdmin  webmaster@hcs
+  
+  # Generated using https://mozilla.github.io/server-side-tls/ssl-config-generator/?server=apache-2.4.7&openssl=1.0.1f&hsts=no&profile=intermediate
+  SSLEngine               on
+  SSLCertificateFile      /etc/ssl/certs/hcs_harvard_edu_cert.cer
+  SSLCertificateChainFile /etc/ssl/certs/hcs_harvard_edu_interm.cer
+  SSLCertificateKeyFile   /etc/ssl/private/hcs_harvard_edu.key
+  SSLCACertificateFile    /etc/ssl/certs/hcs_harvard_edu_interm.cer
+  
+  SSLProtocol             all -SSLv2 -SSLv3
+  SSLCipherSuite          <%= @ssl_ciphers %>
+  SSLHonorCipherOrder     on
+  SSLCompression          off
+  
+  # OCSP Stapling
+  SSLUseStapling          on
+  SSLStaplingResponderTimeout 5
+  SSLStaplingReturnResponderErrors off
+
+  # Base website is the same for ssl as for non-ssl
+  # Access to pages is controlled within drupal
+  <Directory "/var/www/hcs.harvard.edu/htdocs">
+    Options Indexes FollowSymLinks MultiViews
+    AllowOverride All
+    Require all granted
+  </Directory>
+
+  # Use both secure and generic confs
+  Include /etc/apache2/hcs-conf/[^.#]*
+  Include /etc/apache2/hcs-ssl-conf/[^.#]*
+</VirtualHost>

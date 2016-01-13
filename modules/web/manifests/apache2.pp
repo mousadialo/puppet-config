@@ -119,10 +119,7 @@ class web::apache2 {
     web::apache2::vhost{ '000-default':
       ensure => disabled,
     }
-
-    # HCS enabled virtual hosts.
     web::apache2::vhost{ 'www.hcs.harvard.edu': }
-    web::apache2::vhost{ 'www.hcs.harvard.edu-ssl': }
 
     # Mods enabled
     web::apache2::mod { 'actions': }
@@ -204,7 +201,6 @@ class web::apache2 {
       ensure => disabled,
     }
     web::apache2::vhost{ 'lists.hcs.harvard.edu': }
-    web::apache2::vhost{ 'lists.hcs.harvard.edu-ssl': }
   }
   
   # Apache2 module which enables the proxy protocol.
