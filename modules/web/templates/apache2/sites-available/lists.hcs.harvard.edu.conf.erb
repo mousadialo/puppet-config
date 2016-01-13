@@ -19,3 +19,85 @@
   ServerAdmin  webmaster@hcs
 </VirtualHost>
 
+<VirtualHost *:443>
+  ServerName lists.hcs.harvard.edu
+<% unless @secondary_domains.empty? %>
+  ServerAlias <%= @secondary_domains.map{ |domain| "lists." + domain }.join(" ") %>
+<% end %>
+  
+  # Always canonicalize host to lists.hcs.harvard.edu
+  RewriteEngine  On
+  RewriteOptions Inherit
+  RewriteCond %{HTTP_HOST} !^lists\.hcs\.harvard\.edu$ [NC]  # [NC]: case-insensitive
+  RewriteRule ^ https://lists.hcs.harvard.edu%{REQUEST_URI} [R=301,L]
+  UseCanonicalName On
+  
+  DocumentRoot /var/www/
+  ServerAdmin webmaster@hcs
+  
+  # Generated using https://mozilla.github.io/server-side-tls/ssl-config-generator/?server=apache-2.4.7&openssl=1.0.1f&hsts=yes&profile=intermediate
+  SSLEngine               on
+  SSLCertificateFile      /etc/ssl/certs/hcs_harvard_edu_cert.cer
+  SSLCertificateChainFile /etc/ssl/certs/hcs_harvard_edu_interm.cer
+  SSLCertificateKeyFile   /etc/ssl/private/hcs_harvard_edu.key
+  SSLCACertificateFile    /etc/ssl/certs/hcs_harvard_edu_interm.cer
+  
+  SSLProtocol             all -SSLv2 -SSLv3
+  SSLCipherSuite          <%= @ssl_ciphers %>
+  SSLHonorCipherOrder     on
+  SSLCompression          off
+  
+  # OCSP Stapling
+  SSLUseStapling          on
+  SSLStaplingResponderTimeout 5
+  SSLStaplingReturnResponderErrors off
+
+  # HSTS (15768000 seconds = 6 months)
+  Header always set Strict-Transport-Security "max-age=15768000"
+  # Upgrade all requests to HTTPS
+  Header always set Content-Security-Policy "upgrade-insecure-requests"
+  
+  Alias /pipermail/ /var/lib/mailman/archives/public/
+  ScriptAlias /mailman/ /usr/lib/cgi-bin/mailman/
+
+  # Get static files from main web servers
+  Redirect permanent /static https://www.hcs.harvard.edu/static
+  Redirect permanent /favicon.ico https://www.hcs.harvard.edu/favicon.ico
+  
+  # With mailman modifications, misses won't bring down the server
+  RedirectMatch ^/(?:(?:pipermail|mailman)/?)?$ https://lists.hcs.harvard.edu/mailman/listinfo
+  RedirectMatch ^/(?!pipermail|mailman|icons|static|robots\.txt|favicon\.ico|index\.html)(.+) https://lists.hcs.harvard.edu/mailman/listinfo/$1
+
+  <Directory "/var/www/">
+    Require all granted
+  </Directory>
+
+  # This is the directory seen as pipermail, which everyone would be able to see.
+  # Note that it is actually the stuff down one more directory level that is seen.
+  #
+  <Directory "/var/lib/mailman/archives/public">
+    Options FollowSymlinks
+    AllowOverride all
+    Require all granted
+  </Directory>
+
+  # Cache configuration
+  CacheQuickHandler off
+  CacheIgnoreCacheControl on
+  CacheIgnoreNoLastMod on
+  CacheIgnoreHeaders Set-Cookie
+  CacheLock on
+  CacheLockMaxAge 60
+  
+  # We want to prevent outside sites from seeing the list of publicly available
+  # lists, as spammers will abuse it if they can see it.
+  #
+  <LocationMatch "^/mailman/(listinfo|admin)/?$">
+    ErrorDocument 403 "<html><head><title>403 Forbidden</title></head><body><h1>Forbidden</h1><p>To prevent spam, the public lists index can only be accessed within the Harvard network or through the <a href=\"https://vpn.harvard.edu/\">Harvard VPN</a>.</p></body></html>"
+    Require ip 140.247.0.0/16 128.103.0.0/16 65.112.10.0/23 65.112.8.0/23 67.134.206.0/24
+    # Cache the listinfo page since it takes a long time to load
+    CacheEnable disk
+    # Expire in 1 hour
+    CacheDefaultExpire 3600
+  </LocationMatch>
+</VirtualHost>
