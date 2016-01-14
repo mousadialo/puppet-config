@@ -66,7 +66,7 @@
   
   # With mailman modifications, misses won't bring down the server
   RedirectMatch ^/(?:(?:pipermail|mailman)/?)?$ https://lists.hcs.harvard.edu/mailman/listinfo
-  RedirectMatch ^/(?!pipermail|mailman|icons|static|robots\.txt|favicon\.ico|index\.html)(.+) https://lists.hcs.harvard.edu/mailman/listinfo/$1
+  RedirectMatch ^/(?!pipermail|mailman|icons|static|[^/\.]+\.[^/\.]+)(.+) https://lists.hcs.harvard.edu/mailman/listinfo/$1
 
   <Directory "/var/www/">
     Require all granted
