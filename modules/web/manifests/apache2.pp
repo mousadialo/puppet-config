@@ -26,6 +26,12 @@ class web::apache2 {
     ensure    => enabled,
     directory => 'conf-available/',
   }
+    
+  # Remove default vhost
+  web::apache2::vhost{ 'default':
+    ensure => disabled,
+    order  => '000',
+  }
 
   if $::machine_type == 'web' {
     require certs
@@ -69,13 +75,6 @@ class web::apache2 {
     }
 
     # APACHE CONFIGURATION
-
-    # Enable user vhosts
-    web::apache2::config { 'user-vhosts':
-      ensure    => enabled,
-      directory => 'conf-available/',
-      require   => Nfs::Client::Mount['vhosts'],
-    }
     
     # These do spiffy HCS specific things like redirects for special people,
     # hosting from user directories and removing the tilde. These are applied to
@@ -115,11 +114,16 @@ class web::apache2 {
       require => Package['apache2'],
     }
     
-    # Remove default vhost
-    web::apache2::vhost{ '000-default':
-      ensure => disabled,
+    # Virtual hosts enabled
+    web::apache2::vhost{ 'www.hcs.harvard.edu':
+      order => '000',
     }
-    web::apache2::vhost{ 'www.hcs.harvard.edu': }
+    web::apache2::vhost{ 'mail.hcs.harvard.edu':
+      order => '010',
+    }
+    web::apache2::vhost{ 'user_vhosts':
+      order => '999',
+    }
 
     # Mods enabled
     web::apache2::mod { 'actions': }
@@ -180,11 +184,18 @@ class web::apache2 {
       require => Package['libapache2-mod-wsgi'],
     }
 	
+    # Add custom MIME types
 	include web::mime
   }
   elsif $::machine_type == 'lists' {
     require certs
     
+    # Virtual hosts enabled
+    web::apache2::vhost{ 'lists.hcs.harvard.edu':
+      order => '000',
+    }
+    
+    # Mods enabled
     web::apache2::mod { 'alias': }
     web::apache2::mod { 'cache': } ->
     web::apache2::mod { 'cache_disk': }
@@ -195,12 +206,6 @@ class web::apache2 {
       directory => 'mods-available/',
     } ->
     web::apache2::mod { 'ssl': }
-    
-    # Remove default vhost
-    web::apache2::vhost{ '000-default':
-      ensure => disabled,
-    }
-    web::apache2::vhost{ 'lists.hcs.harvard.edu': }
   }
   
   # Apache2 module which enables the proxy protocol.
