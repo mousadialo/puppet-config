@@ -100,4 +100,10 @@
     # Expire in 1 hour
     CacheDefaultExpire 3600
   </LocationMatch>
+  
+  # Prevent spammers from using GET requests to subscribe to lists
+  #
+  RewriteCond %{QUERY_STRING} !=""
+  RewriteCond %{REQUEST_URI} ^/mailman/subscribe/.+
+  RewriteRule .* - [F,L]
 </VirtualHost>
