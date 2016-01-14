@@ -11,9 +11,12 @@ class mail::dovecot {
     ensure => installed
   }
 
-  file { '/etc/dovecot/dovecot.conf' :
-    ensure  => present,
-    source  => 'puppet:///modules/mail/dovecot/dovecot.conf',
+  file { '/etc/dovecot' :
+    ensure  => directory,
+    recurse => remote,
+    source  => 'puppet:///modules/mail/dovecot',
+    owner   => 'root',
+    group   => 'root',
     notify  => Service['dovecot'],
     require => [Package['dovecot-imapd'], Package['dovecot-pop3d']],
   }
