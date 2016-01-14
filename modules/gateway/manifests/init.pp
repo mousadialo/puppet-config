@@ -100,6 +100,16 @@ class gateway {
     before  => Service['haproxy'],
   }
   
+  file { '/etc/haproxy/abuser_ips':
+    ensure  => file,
+    source  => 'puppet:///modules/gateway/haproxy/abuser_ips',
+    owner   => 'haproxy',
+    group   => 'haproxy',
+    mode    => '0644',
+    require => Package['haproxy'],
+    before  => Service['haproxy'],
+  }
+  
   file { '/etc/cron.daily/update-ocsp-stapling':
     ensure  => file,
     source  => 'puppet:///modules/gateway/haproxy/update-ocsp-stapling',
@@ -138,6 +148,7 @@ class gateway {
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
+        'abuser src -f /etc/haproxy/abuser_ips',
         'throttled sc0_get_gpc0(http) gt 0',
       ],
       'tcp-request connection' => [
@@ -146,7 +157,7 @@ class gateway {
       ],
       'http-request'           => [
         'allow if mynetworks or harvard or cloudflare',
-        'tarpit if throttled',
+        'tarpit if abuser or throttled',
       ],
       'monitor-uri'            => '/health',
       'use_backend'            => 'lists-http if host_lists',
@@ -232,6 +243,7 @@ class gateway {
         'mynetworks src 127.0.0.0/8 10.0.0.0/8',
         'harvard src -f /etc/haproxy/harvard_ips',
         'cloudflare src -f /etc/haproxy/cloudflare_ips',
+        'abuser src -f /etc/haproxy/abuser_ips',
         'throttled sc0_get_gpc0(http) gt 0',
       ],
       'tcp-request connection' => [
@@ -240,7 +252,7 @@ class gateway {
       ],
       'http-request'           => [
         'allow if mynetworks or harvard or cloudflare',
-        'tarpit if throttled',
+        'tarpit if abuser or throttled',
       ],
       'monitor-uri'            => '/health',
       'use_backend'            => 'lists-https if host_lists',
