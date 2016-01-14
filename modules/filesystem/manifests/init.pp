@@ -36,6 +36,17 @@ class filesystem {
       require => Class['ldap'],
     }
     
+    nfs::client::mount { 'www-mail.hcs.harvard.edu':
+      server  => $nfs_server,
+      share   => "/${zpool_name}/services/www-mail.hcs.harvard.edu",
+      mount   => "${mount_dir}/www-mail.hcs.harvard.edu",
+      options => 'nfsvers=3,rw,relatime,nosuid,nodev',
+      atboot  => true,
+      owner   => 'webapps',
+      group   => 'hcs',
+      require => Class['ldap'],
+    }
+    
     # Mount vhosts directory
     nfs::client::mount { 'vhosts':
       server  => $nfs_server,
