@@ -10,7 +10,7 @@
         </RequestMap>
     </RequestMapper>
     
-    <ApplicationDefaults entityID="https://hcs.harvard.edu/hcs/login/sp" REMOTE_USER="eppn">
+    <ApplicationDefaults entityID="https://hcs.harvard.edu/hcs/default/sp" REMOTE_USER="eppn">
 
         <!-- You should use secure cookies if at all possible.  See cookieProps in this Wiki article. -->
         <!-- https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPSessions -->
@@ -47,8 +47,7 @@
         </Sessions>
 
         <!-- Error pages to display to yourself if something goes horribly wrong. -->
-        <Errors supportContact="help@hcs.harvard.edu" logoLocation="/shibboleth-sp/logo.jpg"
-                styleSheet="/shibboleth-sp/main.css"/>
+        <Errors supportContact="help@hcs.harvard.edu" />
 
         <!-- Loads and trusts a metadata file that describes only the Harvard IdP and how to communicate with it. -->
         <MetadataProvider type="XML" uri="https://fed.huit.harvard.edu/idp/profile/Metadata/SAML"
