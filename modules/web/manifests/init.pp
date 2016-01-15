@@ -1,7 +1,8 @@
-# web configuration
-# will install and configure apache2 and other software required to run web servers
+# Web configuration
+# Installs and configures apache2 and other software required to run web servers
 class web {
   
+  # Apache2
   include web::apache2
 
   if $::machine_type == 'web' {
@@ -21,6 +22,9 @@ class web {
 
     # RT
     include web::request_tracker
+	
+    # Add custom MIME types
+    include web::mime
     
     # safesendmail rate limits PHP mail
     include web::safesendmail
@@ -117,8 +121,13 @@ class web {
       owner  => 'root',
       group  => 'root',
     }
+
   }
   elsif $::machine_type == 'lists' {
+
+    # Shibboleth
+    include web::shibboleth
+    
     @@haproxy::balancermember { "${::hostname}-lists-http":
       listening_service => 'lists-http',
       server_names      => $::fqdn,
@@ -136,6 +145,7 @@ class web {
       define_cookies    => true,
       options           => ['send-proxy', 'check', 'ssl verify none'],
     }
+
   }
   
 }
