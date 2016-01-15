@@ -1,11 +1,20 @@
 <SPConfig xmlns="urn:mace:shibboleth:2.0:native:sp:config" xmlns:md="urn:oasis:names:tc:SAML:2.0:metadata"
     clockSkew="1800">
 
-    <ApplicationDefaults entityID="https://hcs.harvard.edu/hcs/login/sp" REMOTE_USER="eppn">
+    <RequestMapper type="Native">
+        <RequestMap>
+            <Host name="www.hcs.harvard.edu" applicationId="www.hcs.harvard.edu" />
+            <Host name="accounts.hcs.harvard.edu" applicationId="accounts.hcs.harvard.edu" />
+            <Host name="lists.hcs.harvard.edu" applicationId="lists.hcs.harvard.edu" />
+            <Host name="datamatch.hcs.harvard.edu" applicationId="datamatch.hcs.harvard.edu" />
+        </RequestMap>
+    </RequestMapper>
+    
+    <ApplicationDefaults REMOTE_USER="eppn">
 
         <!-- You should use secure cookies if at all possible.  See cookieProps in this Wiki article. -->
         <!-- https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPSessions -->
-        <Sessions lifetime="28800" timeout="3600" checkAddress="false" relayState="ss:mem" handlerSSL="true" >
+        <Sessions lifetime="28800" timeout="3600" checkAddress="false" relayState="ss:mem" handlerURL="/Shibboleth.sso" handlerSSL="true" >
 
             <SSO entityID="https://fed.huit.harvard.edu/idp/shibboleth">
                 SAML2 SAML1
@@ -53,6 +62,11 @@
         <!-- Your SP generated these credentials.  They're used to talk to IdP's. -->
         <CredentialResolver type="File" key="/etc/ssl/private/hcs_harvard_edu.key" certificate="/etc/ssl/certs/hcs_harvard_edu_cert.cer"/>
 
+        <!-- Entity IDs for different domains. -->
+        <ApplicationOverride id="www.hcs.harvard.edu" entityID="https://hcs.harvard.edu/hcs/login/sp" />
+        <ApplicationOverride id="accounts.hcs.harvard.edu" entityID="https://hcs.harvard.edu/hcs/helios/sp" />
+        <ApplicationOverride id="lists.hcs.harvard.edu" entityID="https://hcs.harvard.edu/hcs/lists/sp" />
+        <ApplicationOverride id="datamatch.hcs.harvard.edu" entityID="https://hcs.harvard.edu/hcs/datamatch/sp" />
     </ApplicationDefaults>
 
     <!-- Security policies you shouldn't change unless you know what you're doing. -->
