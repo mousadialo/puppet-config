@@ -10,7 +10,7 @@
         </RequestMap>
     </RequestMapper>
     
-    <ApplicationDefaults REMOTE_USER="eppn">
+    <ApplicationDefaults entityID="https://hcs.harvard.edu/hcs/login/sp" REMOTE_USER="eppn">
 
         <!-- You should use secure cookies if at all possible.  See cookieProps in this Wiki article. -->
         <!-- https://wiki.shibboleth.net/confluence/display/SHIB2/NativeSPSessions -->
