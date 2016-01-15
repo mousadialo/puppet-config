@@ -64,7 +64,7 @@
         <!-- Entity IDs for different domains. -->
         <ApplicationOverride id="www.hcs.harvard.edu" entityID="https://hcs.harvard.edu/hcs/login/sp" />
         <ApplicationOverride id="accounts.hcs.harvard.edu" entityID="https://hcs.harvard.edu/hcs/helios/sp" />
-        <ApplicationOverride id="lists.hcs.harvard.edu" entityID="https://hcs.harvard.edu/hcs/lists/sp" />
+        <ApplicationOverride id="lists.hcs.harvard.edu" entityID="https://hcs.harvard.edu/hcs/mailman/sp" />
         <ApplicationOverride id="datamatch.hcs.harvard.edu" entityID="https://hcs.harvard.edu/hcs/datamatch/sp" />
     </ApplicationDefaults>
 
