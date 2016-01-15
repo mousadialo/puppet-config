@@ -45,8 +45,8 @@
   SSLStaplingReturnResponderErrors off
 
   WSGIScriptAlias /account /var/www/accounts.hcs.harvard.edu/helios/helios.wsgi
-  WSGIDaemonProcess helios user=webapps group=hcs
-  WSGIProcessGroup helios
+  WSGIDaemonProcess accounts user=webapps group=hcs
+  WSGIProcessGroup accounts
 
   <Location />
     ShibDisable Off
