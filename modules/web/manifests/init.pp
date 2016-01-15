@@ -66,13 +66,23 @@ class web {
       require => [Nfs::Client::Mount['www-hcs.harvard.edu-ssl'], Package['apache2']],
     }
     
+    file { '/var/www/accounts.hcs.harvard.edu':
+      ensure  => link,
+      target  => "${mount_dir}/www-accounts.hcs.harvard.edu",
+      force   => true,
+      owner   => 'root',
+      group   => 'root',
+      # Must have mounted www-accounts.harvard.edu
+      require => [Nfs::Client::Mount['www-accounts.hcs.harvard.edu'], Package['apache2']],
+    }
+    
     file { '/var/www/mail.hcs.harvard.edu':
       ensure  => link,
       target  => "${mount_dir}/www-mail.hcs.harvard.edu",
       force   => true,
       owner   => 'root',
       group   => 'root',
-      # Must have mounted www-hcs.harvard.edu
+      # Must have mounted www-mail.hcs.harvard.edu
       require => [Nfs::Client::Mount['www-mail.hcs.harvard.edu'], Package['apache2']],
     }
     

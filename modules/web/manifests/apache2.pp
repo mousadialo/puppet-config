@@ -118,6 +118,9 @@ class web::apache2 {
     web::apache2::vhost{ 'www.hcs.harvard.edu':
       order => '000',
     }
+    web::apache2::vhost{ 'accounts.hcs.harvard.edu':
+      order => '010',
+    }
     web::apache2::vhost{ 'mail.hcs.harvard.edu':
       order => '010',
     }
