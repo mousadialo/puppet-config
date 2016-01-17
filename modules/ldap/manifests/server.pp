@@ -40,12 +40,30 @@ class ldap::server {
     require => Package['389-ds-base'],
   }
   
+  file { '/etc/dirsrv/config/setupshadow.sh':
+    ensure  => file,
+    source  => 'puppet:///modules/ldap/setupshadow.sh',
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0700',
+    require => Package['389-ds-base'],
+  }
+  
   exec { 'setup-ds':
     command => '/usr/sbin/setup-ds --silent --file=/etc/dirsrv/config/setup.inf',
     creates => "/etc/dirsrv/slapd-${::hostname}",
     user    => 'root',
     require => File['/etc/dirsrv/config/setup.inf'],
-    notify  => [Exec['setup-ds-ssl'], Exec['import-backup']],
+    notify  => [
+      Exec['setup-ds-ssl'],
+      Exec['import-backup'],
+    ],
+  }
+  
+  service { 'dirsrv':
+    ensure  => running,
+    enable  => true,
+    require => Exec['setup-ds'],
   }
   
   exec { 'setup-ds-ssl':
@@ -53,7 +71,11 @@ class ldap::server {
     environment => "DMPWD=${root_dn_password}",
     refreshonly => true,
     user        => 'root',
-    require     => [File['/etc/dirsrv/config/setupssl.sh'], Package['libnss3-tools'], Service['dirsrv']],
+    require     => [
+      File['/etc/dirsrv/config/setupssl.sh'],
+      Package['libnss3-tools'],
+      Service['dirsrv'],
+    ],
   }
   
   exec { 'import-backup':
@@ -61,13 +83,24 @@ class ldap::server {
     command     => "/usr/local/bin/aws s3 ls s3://hcs-backups/ldap/ | /usr/bin/tail -n 1 | /usr/bin/awk \'{print \$4}\' | /usr/bin/xargs -I % /usr/local/bin/aws s3 cp s3://hcs-backups/ldap/% - | /bin/gunzip -c | /usr/bin/ldapadd -xc -D \"cn=Directory Manager\" -w \"${root_dn_password}\" -H ldap://localhost",
     refreshonly => true,
     user        => 'root',
-    require     => [Class['awscli'], Service['dirsrv']],
+    require     => [
+      Class['awscli'],
+      Service['dirsrv'],
+    ],
+    notify      => [
+      Exec['setup-ds-shadow'],
+    ]
   }
   
-  service { 'dirsrv':
-    ensure  => running,
-    enable  => true,
-    require => Exec['setup-ds'],
+  exec { 'setup-ds-shadow':
+    command     => "/etc/dirsrv/config/setupshadow.sh",
+    environment => "DMPWD=${root_dn_password}",
+    refreshonly => true,
+    user        => 'root',
+    require     => [
+      File['/etc/dirsrv/config/setupshadow.sh'],
+      Service['dirsrv'],
+    ],
   }
   
   file { '/etc/cron.daily/backup-ldap':
