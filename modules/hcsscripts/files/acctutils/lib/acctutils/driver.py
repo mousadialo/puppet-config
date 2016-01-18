@@ -362,7 +362,7 @@ class LDAPUser(LDAPDriver):
         elif self.type == 'group':
             start = 2001
             filter = '(|(&(uidNumber>=2000)(uidNumber<=2999))(uidNumber>=4000))'
-        elif self.type == 'general':
+        elif self.type == 'general' or self.type == 'hcs':
             start = 3001
             filter = '(|(&(uidNumber>=3000)(uidNumber<=3999))(uidNumber>=5000))'
         else:

@@ -184,7 +184,7 @@ class User(model.Model, driver.LDAPUser):
 
     def default_objectClass(self):
         if self.type == 'group':
-            return ['account', 'posixAccount', 'shadowAccount', 'top', 'groupofuniquenames']
+            return ['account', 'posixAccount', 'shadowAccount', 'top', 'groupOfUniqueNames']
         else:
             return ['account', 'posixAccount', 'shadowAccount', 'top']
 

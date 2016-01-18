@@ -19,8 +19,8 @@ def main():
     new_user = User()
     print "Welcome to HCS User Account creation"
     type = None
-    while type not in ['member', 'group']:
-        type = Requestor.request('What type of user are you trying to create? [member|group]:')
+    while type not in User.valid_types:
+        type = Requestor.request('What type of user are you trying to create? [%s]:' % User.valid_types.join('|'))
     new_user.type = type
 
     username = None
